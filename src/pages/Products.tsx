@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react"
-import { Icon } from "../components/Shared"
+import { Icon, LinkButton } from "../components/Shared"
 import { products } from "../data/products"
 import { Link } from "react-router-dom"
 
@@ -56,100 +56,39 @@ export default function Products() {
 
   return (
     <>
-      <section className="products section-pad" id="products" style={{ paddingTop: '150px' }}>
-        <div className="products-head" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '30px' }}>
-          <div className="section-heading reveal">
-            <p className="kicker">Bộ sưu tập</p>
-            <h2>Sản phẩm</h2>
-          </div>
-          
-          <div className="products-controls reveal" style={{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
-            gap: '15px', 
-            width: '100%', 
-            alignItems: 'center',
-            marginBottom: '40px'
-          }}>
-            <div style={{ flex: '1 1 300px', position: 'relative' }}>
-              <input 
-                type="text" 
-                placeholder="Tìm kiếm sản phẩm..." 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px 40px 12px 15px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  fontSize: '15px',
-                  fontFamily: 'inherit',
-                  outline: 'none'
-                }}
-              />
-              {searchTerm ? (
-                <button 
-                  onClick={() => setSearchTerm("")}
-                  style={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    opacity: 0.5,
-                    padding: '5px'
-                  }}
-                  aria-label="Xóa tìm kiếm"
-                >
-                  <Icon name="close" size={16} />
-                </button>
-              ) : null}
-            </div>
-            
-            <select 
-              value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
-              style={{
-                padding: '12px 15px',
-                borderRadius: '8px',
-                border: '1px solid rgba(0,0,0,0.1)',
-                fontSize: '15px',
-                fontFamily: 'inherit',
-                backgroundColor: 'white',
-                minWidth: '200px',
-                outline: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              {categories.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
+      <section className="shop-hero">
+        <div className="reveal">
+          <p className="kicker">Bộ sưu tập Kiến Tích Việt</p>
+          <h1>Những dấu tích <em>trong lòng bàn tay.</em></h1>
+          <p className="hero-description">Mỗi bộ mô hình là một công trình di sản thu nhỏ — tự tay lắp ghép, trưng bày và chạm NFC để nghe câu chuyện phía sau.</p>
+        </div>
+        <div className="shop-hero-stats reveal">
+          <div><b>{products.length}</b><span>Mô hình di sản</span></div>
+          <div><Icon name="cube" size={28} /><span>Lắp ghép gỗ</span></div>
+          <div><Icon name="nfc" size={28} /><span>Chạm NFC</span></div>
+        </div>
+      </section>
 
-            <select 
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              style={{
-                padding: '12px 15px',
-                borderRadius: '8px',
-                border: '1px solid rgba(0,0,0,0.1)',
-                fontSize: '15px',
-                fontFamily: 'inherit',
-                backgroundColor: 'white',
-                minWidth: '180px',
-                outline: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <option value="Mặc định">Mặc định</option>
-              <option value="Tên A-Z">Tên A-Z</option>
-              <option value="Tên Z-A">Tên Z-A</option>
-              <option value="Giá thấp đến cao">Giá thấp đến cao</option>
-              <option value="Giá cao đến thấp">Giá cao đến thấp</option>
-            </select>
+      <section className="products section-pad" id="products" style={{ paddingTop: 40 }}>
+        <div className="shop-controls reveal">
+          <div className="shop-search">
+            <input type="text" placeholder="Tìm kiếm sản phẩm..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            {searchTerm ? (
+              <button onClick={() => setSearchTerm("")} aria-label="Xóa tìm kiếm"><Icon name="close" size={16} /></button>
+            ) : null}
           </div>
+          <div className="shop-chips">
+            {categories.map((c) => (
+              <button key={c} className={filterCategory === c ? "is-active" : ""} onClick={() => setFilterCategory(c)}>{c}</button>
+            ))}
+          </div>
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} aria-label="Sắp xếp">
+            <option value="Mặc định">Mặc định</option>
+            <option value="Tên A-Z">Tên A-Z</option>
+            <option value="Tên Z-A">Tên Z-A</option>
+            <option value="Giá thấp đến cao">Giá thấp đến cao</option>
+            <option value="Giá cao đến thấp">Giá cao đến thấp</option>
+          </select>
         </div>
 
         {filteredAndSortedProducts.length > 0 ? (
@@ -205,6 +144,14 @@ export default function Products() {
             </button>
           </div>
         )}
+      </section>
+
+      <section className="statement reveal">
+        <div className="statement-mark">“</div>
+        <p>Từ những mảnh ghép nhỏ,</p>
+        <h2>dựng nên những dấu tích lớn.</h2>
+        <LinkButton href="/our-story">Câu chuyện thương hiệu</LinkButton>
+        <span className="statement-outline">KIẾN TÍCH VIỆT</span>
       </section>
     </>
   )

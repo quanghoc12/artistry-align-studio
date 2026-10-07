@@ -822,3 +822,24 @@ h2 { letter-spacing: -0.015em !important; }
   .journey-steps { grid-template-columns: repeat(3,1fr); }
   .brand-logo img { height: 60px; }
 }
+
+/* Products page */
+.shop-hero { display: grid; grid-template-columns: 1.3fr .7fr; gap: clamp(32px,5vw,80px); align-items: end; max-width: 1400px; margin: 0 auto; padding: clamp(150px,14vw,190px) clamp(24px,6vw,96px) 40px; background: linear-gradient(180deg, var(--cream) 0%, transparent 100%); }
+.shop-hero h1 { color: var(--red); font-size: clamp(42px,5vw,76px); line-height: 1.16; letter-spacing: -0.02em; margin-bottom: 24px; }
+.shop-hero h1 em { display: block; font-weight: 500; }
+.shop-hero-stats { display: grid; gap: 12px; }
+.shop-hero-stats div { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 1px solid color-mix(in srgb, var(--red) 20%, transparent); color: var(--red); background: var(--cream-light); transition: transform 300ms, background 300ms; }
+.shop-hero-stats div:hover { transform: translateX(6px); background: color-mix(in srgb, var(--gold) 35%, transparent); }
+.shop-hero-stats b { font-family: "Vollkorn", serif; font-size: 30px; min-width: 28px; }
+.shop-hero-stats span { font-weight: 600; }
+.shop-controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; padding: 18px 0; margin-bottom: 40px; border-block: 1px solid color-mix(in srgb, var(--red) 16%, transparent); }
+.shop-search { position: relative; flex: 1 1 260px; }
+.shop-search input, .shop-controls select { width: 100%; padding: 12px 40px 12px 16px; border: 1px solid color-mix(in srgb, var(--red) 25%, transparent); background: var(--cream-light); color: var(--red); font: inherit; outline: none; }
+.shop-search input:focus, .shop-controls select:focus { border-color: var(--red); }
+.shop-search button { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: var(--red); cursor: pointer; }
+.shop-controls select { width: auto; padding-right: 16px; cursor: pointer; }
+.shop-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.shop-chips button { padding: 10px 16px; border: 1px solid color-mix(in srgb, var(--red) 25%, transparent); background: transparent; color: var(--red); font: inherit; font-weight: 600; cursor: pointer; transition: all 250ms; }
+.shop-chips button:hover { background: color-mix(in srgb, var(--gold) 40%, transparent); }
+.shop-chips button.is-active { background: var(--red); color: var(--cream); border-color: var(--red); }
+@media (max-width: 860px) { .shop-hero { grid-template-columns: 1fr; } }
