@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import heritageDoor from "../assets/heritage-door.jpg"
 import heritagePagoda from "../assets/heritage-pagoda.jpg"
 import onePillarPagoda from "../assets/one-pillar-pagoda.jpg"
-import logoAsset from "../assets/logo.png.asset.json"
+import logoUrl from "../assets/logo.png"
 
 export type IconName = "arrow" | "bag" | "box" | "close" | "cube" | "headphones" | "menu" | "nfc" | "phone" | "play" | "plus" | "sparkle"
 
@@ -103,7 +103,7 @@ export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
 export function Logo({ light = false }: { light?: boolean }) {
   return (
     <Link aria-label="Kiến Tích Việt — Trang chủ" className={`brand-logo ${light ? "is-light" : ""}`} to="/">
-      <img src={logoAsset.url} alt="Kiến Tích Việt" width={600} height={725} />
+      <img src={logoUrl} alt="Kiến Tích Việt" width={600} height={725} />
     </Link>
   )
 }

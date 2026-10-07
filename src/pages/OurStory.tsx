@@ -2,7 +2,7 @@ import { LinkButton } from "../components/Shared"
 import heritageDoor from "../assets/heritage-door.jpg"
 import heritagePagoda from "../assets/heritage-pagoda.jpg"
 import onePillarPagoda from "../assets/one-pillar-pagoda.jpg"
-import logoAsset from "../assets/logo.png.asset.json"
+import logoUrl from "../assets/logo.png"
 
 const chapters = [
   {
@@ -44,7 +44,7 @@ export default function OurStory() {
           </p>
         </div>
         <div className="story-hero-logo reveal">
-          <img src={logoAsset.url} alt="Logo Kiến Tích Việt" width={600} height={725} />
+          <img src={logoUrl} alt="Logo Kiến Tích Việt" width={600} height={725} />
         </div>
       </section>
 
