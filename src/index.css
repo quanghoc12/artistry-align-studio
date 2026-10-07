@@ -614,7 +614,7 @@ footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(2
 .footer-top { display: grid; gap: 8vw; grid-template-columns: 0.7fr 1.3fr 1fr; }
 .logo-light { color: var(--cream); }
 .footer-brand > p { color: var(--gold); font-family: "Vollkorn", serif; font-size: 24px; line-height: 1.25; margin-top: 28px; }
-.footer-links { display: grid; gap: 35px; grid-template-columns: repeat(3, 1fr); }
+.footer-links { display: grid; gap: 35px; grid-template-columns: repeat(2, 1fr); }
 .footer-links div { display: flex; flex-direction: column; gap: 9px; }
 .footer-links strong, .newsletter strong { color: var(--gold); font-size: 13px; letter-spacing: 0.12em; margin-bottom: 10px; text-transform: uppercase; }
 .footer-links a { color: color-mix(in srgb, var(--cream) 76%, transparent); font-size: 15px; }
