@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import heritageDoor from "../assets/heritage-door.jpg"
 import heritagePagoda from "../assets/heritage-pagoda.jpg"
 import onePillarPagoda from "../assets/one-pillar-pagoda.jpg"
+import logoAsset from "../assets/logo.png.asset.json"
 
 export type IconName = "arrow" | "bag" | "box" | "close" | "cube" | "headphones" | "menu" | "nfc" | "phone" | "play" | "plus" | "sparkle"
 
@@ -101,24 +102,8 @@ export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
 
 export function Logo({ light = false }: { light?: boolean }) {
   return (
-    <Link
-      aria-label="Kiến Tích Việt — Trang chủ"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: light ? 'rgba(255,255,255,0.1)' : 'rgba(143, 0, 25, 0.1)',
-        color: light ? '#fff' : '#8F0019',
-        fontSize: '11px',
-        fontWeight: 'bold',
-        padding: '8px',
-        textAlign: 'center',
-        textDecoration: 'none',
-        border: light ? '1px dashed rgba(255,255,255,0.4)' : '1px dashed rgba(143, 0, 25, 0.4)'
-      }}
-      to="/"
-    >
-      [LOGO BLOCKED]
+    <Link aria-label="Kiến Tích Việt — Trang chủ" className={`brand-logo ${light ? "is-light" : ""}`} to="/">
+      <img src={logoAsset.url} alt="Kiến Tích Việt" width={600} height={725} />
     </Link>
   )
 }
