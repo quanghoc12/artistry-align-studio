@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;600;700&family=Vollkorn:ital,wght@0,500;0,600;0,700;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@700;900&family=Alegreya+Sans:wght@400;500;600;700&family=Vollkorn:ital,wght@0,500;0,600;0,700;1,500&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -74,7 +74,7 @@ img {
   background: color-mix(in srgb, var(--cream-light) 92%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--red) 14%, transparent);
   display: grid;
-  grid-template-columns: 180px 1fr 180px;
+  grid-template-columns: 200px 1fr 200px;
   height: 104px;
   padding: 0 clamp(24px, 5vw, 80px);
   position: absolute;
@@ -230,8 +230,8 @@ h3 {
   color: var(--red);
   font-size: clamp(54px, 5.6vw, 92px);
   font-weight: 600;
-  letter-spacing: -0.055em;
-  line-height: 0.98;
+  letter-spacing: -0.02em;
+  line-height: 1.16;
   margin-bottom: 32px;
   max-width: 720px;
 }
@@ -607,7 +607,7 @@ h3 {
 }
 .statement-mark { font-family: "Vollkorn", serif; font-size: 78px; height: 70px; }
 .statement p { font-family: "Vollkorn", serif; font-size: clamp(25px, 2.5vw, 38px); margin-bottom: 5px; }
-.statement h2 { font-size: clamp(46px, 6.2vw, 94px); font-weight: 600; letter-spacing: -0.055em; line-height: 1; margin-bottom: 48px; position: relative; z-index: 2; }
+.statement h2 { font-size: clamp(46px, 6.2vw, 94px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 48px; position: relative; z-index: 2; }
 .statement-outline { bottom: -75px; color: transparent; font-family: "Vollkorn", serif; font-size: clamp(80px, 15vw, 230px); font-weight: 700; left: 50%; line-height: 1; opacity: 0.12; position: absolute; transform: translateX(-50%); -webkit-text-stroke: 2px var(--red); white-space: nowrap; }
 
 footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(24px, 7vw, 110px) 30px; }
@@ -774,4 +774,51 @@ footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(2
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* Brand logo */
+.brand-logo { display: inline-flex; align-items: center; }
+.brand-logo img { height: 78px; width: auto; transition: transform 400ms ease; }
+.brand-logo:hover img { transform: scale(1.04); }
+.brand-logo.is-light img { height: 120px; filter: brightness(0) invert(92%) sepia(20%) saturate(400%); }
+h1, h2, h3 { line-height: 1.2; }
+h2 { letter-spacing: -0.015em !important; }
+
+/* Our Story */
+.story-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(32px,5vw,80px); align-items: center; padding: clamp(140px,14vw,180px) clamp(24px,6vw,96px) clamp(60px,7vw,100px); max-width: 1400px; margin: 0 auto; }
+.story-hero h1 { color: var(--red); font-size: clamp(36px,4.4vw,64px); line-height: 1.22; margin-bottom: 28px; }
+.story-hero p.lead { font-size: 19px; line-height: 1.75; color: var(--muted); }
+.story-hero-logo { position: relative; background: var(--red); border-radius: 4px; padding: clamp(32px,4vw,56px); display: grid; place-items: center; }
+.story-hero-logo img { width: 70%; max-width: 300px; filter: brightness(0) invert(92%) sepia(20%) saturate(400%); }
+.story-hero-logo::after { content: ""; position: absolute; inset: 14px; border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent); pointer-events: none; }
+.name-strip { display: grid; grid-template-columns: repeat(3,1fr); border-block: 1px solid color-mix(in srgb, var(--red) 18%, transparent); max-width: 1400px; margin: 0 auto; }
+.name-strip a { padding: 28px clamp(16px,3vw,40px); text-decoration: none; color: var(--red); border-right: 1px solid color-mix(in srgb, var(--red) 18%, transparent); transition: background 300ms; }
+.name-strip a:last-child { border-right: 0; }
+.name-strip a:hover { background: color-mix(in srgb, var(--gold) 35%, transparent); }
+.name-strip b { font-family: "Playfair Display SC", serif; font-size: 34px; font-weight: 900; display: block; line-height: 1.2; }
+.name-strip span { font-size: 15px; color: var(--muted); }
+.chapter { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,80px); align-items: center; max-width: 1400px; margin: 0 auto; padding: clamp(56px,7vw,100px) clamp(24px,6vw,96px); }
+.chapter.alt { background: color-mix(in srgb, var(--gold) 18%, transparent); max-width: none; padding-inline: max(clamp(24px,6vw,96px), calc((100vw - 1400px)/2 + 96px)); }
+.chapter.flip .chapter-media { order: 2; }
+.chapter-media { position: relative; }
+.chapter-media img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; }
+.chapter-media .seal { position: absolute; bottom: -22px; right: -14px; background: var(--red); color: var(--cream-light, #FFEBD1); font-family: "Playfair Display SC", serif; font-weight: 900; font-size: 15px; padding: 12px 16px; letter-spacing: .1em; }
+.chapter-word { font-family: "Playfair Display SC", serif; font-weight: 900; font-size: clamp(72px,9vw,128px); line-height: 1.05; color: var(--red); letter-spacing: .02em; margin: 4px 0 6px; text-shadow: 4px 4px 0 var(--gold); }
+.chapter-meaning { font-family: "Playfair Display SC", serif; font-weight: 700; font-size: 15px; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; margin-bottom: 22px; }
+.chapter h3 { font-size: clamp(26px,3vw,36px); color: var(--red); margin-bottom: 18px; }
+.chapter p.body { font-size: 17.5px; line-height: 1.75; color: var(--muted); margin-bottom: 14px; }
+.journey { max-width: 1400px; margin: 0 auto; padding: clamp(64px,8vw,110px) clamp(24px,6vw,96px); display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(32px,5vw,80px); }
+.journey h2 { color: var(--red); font-size: clamp(32px,4vw,52px); }
+.journey-steps { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-top: 28px; }
+.journey-steps div { border: 1px solid color-mix(in srgb, var(--red) 22%, transparent); padding: 18px 10px; text-align: center; color: var(--red); transition: transform 300ms, background 300ms; }
+.journey-steps div:hover { transform: translateY(-4px); background: color-mix(in srgb, var(--gold) 35%, transparent); }
+.journey-steps small { display: block; font-size: 12px; opacity: .6; }
+.journey-steps b { font-family: "Vollkorn", serif; font-size: 18px; }
+@media (max-width: 860px) {
+  .story-hero, .chapter, .journey { grid-template-columns: 1fr; }
+  .chapter.flip .chapter-media { order: 0; }
+  .name-strip { grid-template-columns: 1fr; }
+  .name-strip a { border-right: 0; border-bottom: 1px solid color-mix(in srgb, var(--red) 18%, transparent); }
+  .journey-steps { grid-template-columns: repeat(3,1fr); }
+  .brand-logo img { height: 60px; }
 }
