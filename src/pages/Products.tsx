@@ -114,7 +114,7 @@ export default function Products() {
                       <Link to={`/products/${product.slug}`}>{product.name}</Link>
                     </h3>
                     {product.description && (
-                      <p style={{ marginTop: '10px', fontSize: '14px', opacity: 0.8, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      <p className="shop-desc" style={{ marginTop: '10px', fontSize: '15px', opacity: 0.8, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {product.description}
                       </p>
                     )}
