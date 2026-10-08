@@ -33,9 +33,10 @@ Deno.serve(async (req) => {
       .map((k) => Deno.env.get(k)).filter(Boolean) as string[];
 
     let lastStatus = 500;
-    for (const key of keys) {
+    const attempts = ["gemini-3.8-flash", "gemini-3.1-flash-lite"].flatMap((model) => keys.map((key) => ({ model, key })));
+    for (const { model, key } of attempts) {
       const r = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-goog-api-key": key },
@@ -48,7 +49,7 @@ Deno.serve(async (req) => {
         return json({ reply: text || "Xin lỗi, mình chưa có câu trả lời phù hợp." });
       }
       lastStatus = r.status;
-      console.error("gemini key failed", r.status, (await r.text()).slice(0, 300));
+      console.error("gemini failed", model, r.status, (await r.text()).slice(0, 300));
     }
     return json({ error: lastStatus === 429 ? "Trợ lý đang quá tải, vui lòng thử lại sau ít phút." : "Trợ lý tạm thời không phản hồi. Vui lòng thử lại." }, 503);
   } catch (e) {
