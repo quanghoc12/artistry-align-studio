@@ -8,11 +8,11 @@ interface Message {
 }
 
 const STARTER_QUESTIONS = [
-  "Sản phẩm này có gì đặc biệt?",
-  "Sản phẩm này phù hợp với ai?",
-  "Có những sản phẩm nào khác?",
-  "Chuyện di sản của sản phẩm này là gì?",
-  "Tôi có thể khám phá AR như thế nào?"
+  "Kể tôi nghe về công trình này",
+  "Công trình này có lịch sử như thế nào?",
+  "Kiến trúc có gì đặc biệt?",
+  "Sản phẩm này được làm từ gì?",
+  "Tìm sản phẩm phù hợp cho tôi"
 ]
 
 export default function Chatbox() {
@@ -38,16 +38,63 @@ export default function Chatbox() {
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate AI Service Abstraction (Placeholder)
-    setTimeout(() => {
-      setIsTyping(false)
+    try {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      
+      if (!supabaseUrl) {
+        setIsTyping(false);
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          sender: 'assistant',
+          text: "Xin lỗi, trợ lý AI hiện chưa được cấu hình. Vui lòng thử lại sau."
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        return;
+      }
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(anonKey ? { 'Authorization': `Bearer ${anonKey}` } : {})
+        },
+        body: JSON.stringify({ 
+          message: text,
+          history: messages 
+        })
+      });
+
+      if (!response.ok) {
+        setIsTyping(false);
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          sender: 'assistant',
+          text: "Xin lỗi, hiện tại trợ lý AI chưa thể phản hồi. Bạn vui lòng thử lại sau."
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        return;
+      }
+
+      const data = await response.json();
+      
+      setIsTyping(false);
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         sender: 'assistant',
-        text: "Trợ lý AI hiện đang được hoàn thiện. Thông tin này hiện chưa được Kiến Tích Việt cung cấp."
-      }
-      setMessages(prev => [...prev, aiMessage])
-    }, 1000)
+        text: data?.reply || "Xin lỗi, hiện tại trợ lý AI chưa thể phản hồi. Bạn vui lòng thử lại sau."
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error(error);
+      setIsTyping(false);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        sender: 'assistant',
+        text: "Xin lỗi, hiện tại trợ lý AI chưa thể phản hồi. Bạn vui lòng thử lại sau."
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -188,6 +235,8 @@ export default function Chatbox() {
                     borderBottomLeftRadius: m.sender === 'assistant' ? '4px' : '12px',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                     lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
                   }}>
                     {m.text}
                   </div>
@@ -228,6 +277,7 @@ export default function Chatbox() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Nhập câu hỏi của bạn..."
+              maxLength={1000}
               style={{
                 flex: 1,
                 padding: '12px 16px',
