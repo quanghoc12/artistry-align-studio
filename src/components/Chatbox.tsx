@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Icon } from "./Shared"
+import { supabase } from "../integrations/supabase/client"
 
 interface Message {
   id: string
@@ -38,16 +39,23 @@ export default function Chatbox() {
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate AI Service Abstraction (Placeholder)
-    setTimeout(() => {
-      setIsTyping(false)
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        sender: 'assistant',
-        text: "Trợ lý AI hiện đang được hoàn thiện. Thông tin này hiện chưa được Kiến Tích Việt cung cấp."
+    try {
+      const history = [...messages, userMessage].map(({ sender, text }) => ({ sender, text }))
+      const { data, error } = await supabase.functions.invoke("heritage-chat", { body: { messages: history } })
+      let reply = data?.reply as string | undefined
+      if (!reply) {
+        let msg = data?.error as string | undefined
+        if (!msg && error && "context" in error) {
+          try { msg = (await (error as { context: Response }).context.json()).error } catch { /* ignore */ }
+        }
+        reply = msg || "Trợ lý tạm thời không phản hồi. Vui lòng thử lại."
       }
-      setMessages(prev => [...prev, aiMessage])
-    }, 1000)
+      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), sender: 'assistant', text: reply! }])
+    } catch {
+      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), sender: 'assistant', text: "Không kết nối được trợ lý. Vui lòng thử lại." }])
+    } finally {
+      setIsTyping(false)
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -188,6 +196,7 @@ export default function Chatbox() {
                     borderBottomLeftRadius: m.sender === 'assistant' ? '4px' : '12px',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                     lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap',
                   }}>
                     {m.text}
                   </div>
