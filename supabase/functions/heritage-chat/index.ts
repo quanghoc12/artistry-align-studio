@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
       .map((k) => Deno.env.get(k)).filter(Boolean) as string[];
 
     let lastStatus = 500;
-    const attempts = ["gemini-3.8-flash", "gemini-3.1-flash-lite"].flatMap((model) => keys.map((key) => ({ model, key })));
+    const attempts = ["gemini-3.1-flash-lite", "gemini-3.8-flash"].flatMap((model) => keys.map((key) => ({ model, key })));
     for (const { model, key } of attempts) {
       const r = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
