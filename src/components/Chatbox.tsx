@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Icon } from "./Shared"
+import { supabase } from "../integrations/supabase/client"
 
 interface Message {
   id: string
@@ -8,11 +9,11 @@ interface Message {
 }
 
 const STARTER_QUESTIONS = [
-  "Kể tôi nghe về công trình này",
-  "Công trình này có lịch sử như thế nào?",
-  "Kiến trúc có gì đặc biệt?",
-  "Sản phẩm này được làm từ gì?",
-  "Tìm sản phẩm phù hợp cho tôi"
+  "Sản phẩm này có gì đặc biệt?",
+  "Sản phẩm này phù hợp với ai?",
+  "Có những sản phẩm nào khác?",
+  "Chuyện di sản của sản phẩm này là gì?",
+  "Tôi có thể khám phá AR như thế nào?"
 ]
 
 export default function Chatbox() {
@@ -39,61 +40,21 @@ export default function Chatbox() {
     setIsTyping(true)
 
     try {
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-      
-      if (!supabaseUrl) {
-        setIsTyping(false);
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          sender: 'assistant',
-          text: "Xin lỗi, trợ lý AI hiện chưa được cấu hình. Vui lòng thử lại sau."
-        };
-        setMessages(prev => [...prev, errorMessage]);
-        return;
+      const history = [...messages, userMessage].map(({ sender, text }) => ({ sender, text }))
+      const { data, error } = await supabase.functions.invoke("heritage-chat", { body: { messages: history } })
+      let reply = data?.reply as string | undefined
+      if (!reply) {
+        let msg = data?.error as string | undefined
+        if (!msg && error && "context" in error) {
+          try { msg = (await (error as { context: Response }).context.json()).error } catch { /* ignore */ }
+        }
+        reply = msg || "Trợ lý tạm thời không phản hồi. Vui lòng thử lại."
       }
-
-      const response = await fetch(`${supabaseUrl}/functions/v1/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(anonKey ? { 'Authorization': `Bearer ${anonKey}` } : {})
-        },
-        body: JSON.stringify({ 
-          message: text,
-          history: messages 
-        })
-      });
-
-      if (!response.ok) {
-        setIsTyping(false);
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          sender: 'assistant',
-          text: "Xin lỗi, hiện tại trợ lý AI chưa thể phản hồi. Bạn vui lòng thử lại sau."
-        };
-        setMessages(prev => [...prev, errorMessage]);
-        return;
-      }
-
-      const data = await response.json();
-      
-      setIsTyping(false);
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        sender: 'assistant',
-        text: data?.reply || "Xin lỗi, hiện tại trợ lý AI chưa thể phản hồi. Bạn vui lòng thử lại sau."
-      };
-      setMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
-      console.error(error);
-      setIsTyping(false);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        sender: 'assistant',
-        text: "Xin lỗi, hiện tại trợ lý AI chưa thể phản hồi. Bạn vui lòng thử lại sau."
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), sender: 'assistant', text: reply! }])
+    } catch {
+      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), sender: 'assistant', text: "Không kết nối được trợ lý. Vui lòng thử lại." }])
+    } finally {
+      setIsTyping(false)
     }
   }
 
@@ -236,7 +197,6 @@ export default function Chatbox() {
                     boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                     lineHeight: 1.5,
                     whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-word',
                   }}>
                     {m.text}
                   </div>
@@ -277,7 +237,6 @@ export default function Chatbox() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Nhập câu hỏi của bạn..."
-              maxLength={1000}
               style={{
                 flex: 1,
                 padding: '12px 16px',

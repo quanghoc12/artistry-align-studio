@@ -192,7 +192,6 @@ export default function Cart() {
                 </label>
                 <input 
                   type="text"
-                  maxLength={100}
                   value={formData.name}
                   onChange={e => setFormData({...formData, name: e.target.value})}
                   style={{ width: '100%', padding: '12px 15px', border: '1px solid rgba(143, 0, 25, 0.2)', borderRadius: '4px', background: 'white' }}
@@ -207,7 +206,6 @@ export default function Cart() {
                   </label>
                   <input 
                     type="tel"
-                    maxLength={20}
                     value={formData.phone}
                     onChange={e => setFormData({...formData, phone: e.target.value})}
                     style={{ width: '100%', padding: '12px 15px', border: '1px solid rgba(143, 0, 25, 0.2)', borderRadius: '4px', background: 'white' }}
@@ -220,7 +218,6 @@ export default function Cart() {
                   </label>
                   <input 
                     type="email"
-                    maxLength={255}
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
                     style={{ width: '100%', padding: '12px 15px', border: '1px solid rgba(143, 0, 25, 0.2)', borderRadius: '4px', background: 'white' }}
@@ -235,7 +232,6 @@ export default function Cart() {
                 </label>
                 <input 
                   type="text"
-                  maxLength={255}
                   value={formData.address}
                   onChange={e => setFormData({...formData, address: e.target.value})}
                   style={{ width: '100%', padding: '12px 15px', border: '1px solid rgba(143, 0, 25, 0.2)', borderRadius: '4px', background: 'white' }}
@@ -248,7 +244,6 @@ export default function Cart() {
                   Ghi chú (Tuỳ chọn)
                 </label>
                 <textarea 
-                  maxLength={1000}
                   value={formData.note}
                   onChange={e => setFormData({...formData, note: e.target.value})}
                   style={{ width: '100%', padding: '12px 15px', border: '1px solid rgba(143, 0, 25, 0.2)', borderRadius: '4px', background: 'white', minHeight: '100px', resize: 'vertical' }}

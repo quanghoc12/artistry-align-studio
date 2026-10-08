@@ -35,7 +35,6 @@ export default function Footer() {
               aria-label="Email của bạn"
               placeholder="Email của bạn"
               type="email"
-              maxLength={255}
             />
             <button aria-label="Đăng ký">
               <Icon name="arrow" />
