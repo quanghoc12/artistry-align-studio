@@ -29,31 +29,54 @@ Deno.serve(async (req) => {
       role: m.sender === "user" ? "user" : "model",
       parts: [{ text: String(m.text).slice(0, 2000) }],
     }));
-    const keys = ["GOOGLE_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4", "GEMINI_API_KEY_5"]
-      .map((k) => Deno.env.get(k)).filter(Boolean) as string[];
+    const rawKeys = [
+      "GOOGLE_API_KEY",
+      "GEMINI_API_KEY",
+      "GEMINI_API_KEY_1",
+      "GEMINI_API_KEY_2",
+      "GEMINI_API_KEY_3",
+      "GEMINI_API_KEY_4",
+      "GEMINI_API_KEY_5",
+    ].map((k) => Deno.env.get(k)).filter(Boolean) as string[];
+
+    // Remove duplicates and keep only API keys
+    const keys = Array.from(new Set(rawKeys));
+
+    if (keys.length === 0) {
+      console.error("No Gemini API key found in environment variables (GOOGLE_API_KEY / GEMINI_API_KEY).");
+      return json({ error: "Chưa cấu hình API Key (GOOGLE_API_KEY) trên Supabase." }, 500);
+    }
 
     let lastStatus = 500;
-    const attempts = ["gemini-3.1-flash-lite", "gemini-3.8-flash"].flatMap((model) => keys.map((key) => ({ model, key })));
+    const models = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-flash-latest", "gemini-3.7-flash"];
+    const attempts = models.flatMap((model) => keys.map((key) => ({ model, key })));
     for (const { model, key } of attempts) {
-      const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-          body: JSON.stringify({ systemInstruction: { parts: [{ text: SYSTEM }] }, contents }),
-        },
-      );
-      if (r.ok) {
-        const d = await r.json();
-        const text = d?.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text ?? "").join("").trim();
-        return json({ reply: text || "Xin lỗi, mình chưa có câu trả lời phù hợp." });
+      try {
+        const r = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+            body: JSON.stringify({ systemInstruction: { parts: [{ text: SYSTEM }] }, contents }),
+          },
+        );
+        if (r.ok) {
+          const d = await r.json();
+          const text = d?.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text ?? "").join("").trim();
+          if (text) {
+            return json({ reply: text });
+          }
+        }
+        lastStatus = r.status;
+        const errText = await r.text();
+        console.error(`Gemini request failed [${model}]:`, r.status, errText.slice(0, 300));
+      } catch (err) {
+        console.error(`Network error calling Gemini [${model}]:`, err);
       }
-      lastStatus = r.status;
-      console.error("gemini failed", model, r.status, (await r.text()).slice(0, 300));
     }
-    return json({ error: lastStatus === 429 ? "Trợ lý đang quá tải, vui lòng thử lại sau ít phút." : "Trợ lý tạm thời không phản hồi. Vui lòng thử lại." }, 503);
+    return json({ error: lastStatus === 429 ? "Trợ lý đang quá tải (Rate Limit), vui lòng thử lại sau ít phút." : "Trợ lý tạm thời không phản hồi. Vui lòng thử lại." }, 503);
   } catch (e) {
-    console.error(e);
+    console.error("Heritage chat error:", e);
     return json({ error: "Có lỗi xảy ra, vui lòng thử lại." }, 500);
   }
 });
@@ -61,3 +84,4 @@ Deno.serve(async (req) => {
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } });
 }
+

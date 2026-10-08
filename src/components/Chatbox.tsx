@@ -32,7 +32,7 @@ export default function Chatbox() {
   }, [messages, isTyping])
 
   const handleSend = async (text: string) => {
-    if (!text.trim()) return
+    if (!text.trim() || isTyping) return
 
     const userMessage: Message = { id: Date.now().toString(), sender: 'user', text }
     setMessages(prev => [...prev, userMessage])
