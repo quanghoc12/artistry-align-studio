@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react"
+import ReactMarkdown from "react-markdown"
 import { Icon } from "./Shared"
 import { supabase } from "../integrations/supabase/client"
 
@@ -185,7 +186,7 @@ export default function Chatbox() {
             ) : (
               <>
                 {messages.map((m) => (
-                  <div key={m.id} style={{
+                  <div key={m.id} className={m.sender === 'assistant' ? 'markdown-body' : ''} style={{
                     alignSelf: m.sender === 'user' ? 'flex-end' : 'flex-start',
                     maxWidth: '85%',
                     background: m.sender === 'user' ? '#8F0019' : '#fff',
@@ -196,9 +197,14 @@ export default function Chatbox() {
                     borderBottomLeftRadius: m.sender === 'assistant' ? '4px' : '12px',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                     lineHeight: 1.5,
-                    whiteSpace: 'pre-wrap',
+                    whiteSpace: m.sender === 'user' ? 'pre-wrap' : 'normal',
+                    overflowWrap: 'break-word',
                   }}>
-                    {m.text}
+                    {m.sender === 'assistant' ? (
+                      <ReactMarkdown>{m.text}</ReactMarkdown>
+                    ) : (
+                      m.text
+                    )}
                   </div>
                 ))}
                 {isTyping && (
@@ -281,6 +287,33 @@ export default function Chatbox() {
         @keyframes pulse {
           0%, 100% { opacity: 0.4; }
           50% { opacity: 1; }
+        }
+        .markdown-body {
+          font-size: 15px;
+        }
+        .markdown-body p {
+          margin: 0 0 8px 0;
+        }
+        .markdown-body p:last-child {
+          margin-bottom: 0;
+        }
+        .markdown-body strong {
+          font-weight: 600;
+          color: #8F0019;
+        }
+        .markdown-body ul, .markdown-body ol {
+          margin: 0 0 8px 0;
+          padding-left: 20px;
+        }
+        .markdown-body ul:last-child, .markdown-body ol:last-child {
+          margin-bottom: 0;
+        }
+        .markdown-body li {
+          margin-bottom: 4px;
+        }
+        .markdown-body a {
+          color: #8F0019;
+          text-decoration: underline;
         }
         @media (max-width: 480px) {
           .chat-panel-container {
