@@ -3,6 +3,7 @@ import Header from "./Header"
 import Footer from "./Footer"
 import CartDrawer from "./CartDrawer"
 import Chatbox from "../Chatbox"
+import { ScrollReveal, Toaster } from "../Motion"
 
 export default function MainLayout() {
   return (
@@ -14,6 +15,8 @@ export default function MainLayout() {
       <Footer />
       <CartDrawer />
       <Chatbox />
+      <ScrollReveal />
+      <Toaster />
     </div>
   )
 }
