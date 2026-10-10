@@ -48,8 +48,16 @@ Deno.serve(async (req) => {
     }
 
     let lastStatus = 500;
-    const models = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-flash-latest", "gemini-3.7-flash"];
-    const attempts = models.flatMap((model) => keys.map((key) => ({ model, key })));
+    const models = [
+      "gemini-2.5-flash",
+      "gemini-2.5-flash-lite",
+      "gemini-2.0-flash",
+      "gemini-1.5-flash",
+      "gemini-flash-latest"
+    ];
+    // Shuffle keys per request for even load balancing across all available API keys
+    const shuffledKeys = [...keys].sort(() => Math.random() - 0.5);
+    const attempts = models.flatMap((model) => shuffledKeys.map((key) => ({ model, key })));
     for (const { model, key } of attempts) {
       try {
         const r = await fetch(
