@@ -845,3 +845,87 @@ h2 { letter-spacing: -0.015em !important; }
 @media (max-width: 860px) { .shop-hero { grid-template-columns: 1fr; } }
 .product-info p.shop-desc { text-transform: none; letter-spacing: 0; font-family: "Alegreya Sans", sans-serif; color: var(--muted); }
 #products { padding-bottom: clamp(80px,9vw,130px); }
+
+/* ===== Motion system ===== */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Scroll reveal: fade + slide-up 24px, 0.5s, once, staggered */
+.reveal { opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 0.5s var(--ease-out) var(--rv-delay, 0s), transform 0.5s var(--ease-out) var(--rv-delay, 0s); will-change: opacity, transform; }
+.reveal.is-in { opacity: 1; transform: none; will-change: auto; }
+
+/* Buttons: scale, brightness, shimmer, spring press */
+.button, .checkout-button, .modal-buy button, button[type="submit"] { position: relative; overflow: hidden; isolation: isolate; transition: transform 0.35s var(--ease-spring), filter 0.25s ease, background 0.25s ease, box-shadow 0.3s ease; }
+.button::before, .checkout-button::before, .modal-buy button::before, button[type="submit"]::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 235, 209, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+.button:hover, .checkout-button:hover, .modal-buy button:hover, button[type="submit"]:not(:disabled):hover { transform: scale(1.03); filter: brightness(1.08); box-shadow: 0 12px 28px -12px rgba(143, 0, 25, 0.55); }
+.button:hover::before, .checkout-button:hover::before, .modal-buy button:hover::before, button[type="submit"]:not(:disabled):hover::before { transform: translateX(120%); transition: transform 0.75s var(--ease-out); }
+.button:active, .checkout-button:active, .modal-buy button:active, button[type="submit"]:not(:disabled):active { transform: scale(0.96); transition-duration: 0.12s; }
+.button svg, .checkout-button svg, .text-link svg { transition: transform 0.3s var(--ease-spring); }
+.button:hover svg, .checkout-button:hover svg, .text-link:hover svg { transform: translateX(4px); }
+.cart-button, .menu-button, .play-button { transition: transform 0.35s var(--ease-spring); }
+.cart-button:active, .menu-button:active, .play-button:active { transform: scale(0.94); }
+
+/* Cards: lift, shadow, image zoom, glowing gradient border */
+.product-card, .step-card, .chapter, .story-item { position: relative; transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out); }
+.product-card, .step-card { box-shadow: 0 2px 6px -2px rgba(143, 0, 25, 0.12); }
+.product-card.reveal.is-in:hover, .step-card.reveal.is-in:hover, .product-card:not(.reveal):hover, .step-card:not(.reveal):hover { transform: translate3d(0, -6px, 0); box-shadow: 0 24px 48px -18px rgba(143, 0, 25, 0.35); }
+.product-image { overflow: hidden; }
+.product-image img { transition: transform 0.6s var(--ease-out), filter 0.4s ease; }
+.product-card:hover .product-image img { transform: scale(1.05); }
+.product-card::after, .step-card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; padding: 1px; border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 209, 141, 0.9), rgba(143, 0, 25, 0.35), rgba(255, 209, 141, 0.9));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.product-card:hover::after, .step-card:hover::after { opacity: 1; }
+
+/* Links: underline sweeps left → right in 0.2s */
+.text-link, .site-footer a, .story-item h3 a, .product-info h3 a { background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size 0.2s ease-out, color 0.2s ease; }
+.text-link:hover, .site-footer a:hover, .story-item h3 a:hover, .product-info h3 a:hover { background-size: 100% 1px; }
+.main-nav a::after { transition: transform 0.2s ease-out !important; transform-origin: center; }
+
+/* Modal / dialog */
+.modal-backdrop, .cart-backdrop { transition: opacity 0.3s ease; }
+.modal-panel { animation: modal-in 0.35s var(--ease-out) both; }
+.modal-panel.is-closing { animation: modal-out 0.2s ease-in both; }
+@keyframes modal-in { from { opacity: 0; transform: translate3d(0, -15px, 0) scale(0.95); } to { opacity: 1; transform: none; } }
+@keyframes modal-out { to { opacity: 0; transform: scale(0.95); } }
+
+/* Accordion: natural-height open via grid rows */
+.accordion-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s var(--ease-out), opacity 0.3s ease; opacity: 0; }
+.accordion-body > * { overflow: hidden; }
+.accordion.is-open .accordion-body { grid-template-rows: 1fr; opacity: 1; }
+.accordion-icon { transition: transform 0.3s var(--ease-out); }
+.accordion.is-open .accordion-icon { transform: rotate(180deg); }
+
+/* Skeleton shimmer */
+.skeleton { display: block; position: relative; overflow: hidden; background: #f3d9b8; border-radius: 4px; min-height: 1em; }
+.skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255, 245, 230, 0.8), transparent); animation: shimmer 1.4s infinite; }
+@keyframes shimmer { to { transform: translateX(100%); } }
+
+/* Spinner */
+.spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; display: inline-block; animation: spin 0.7s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Toast: slide in from right with bounce, auto-out after 4s */
+.toast-stack { position: fixed; right: 20px; top: 96px; z-index: 90; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast { pointer-events: auto; display: flex; align-items: center; gap: 12px; background: var(--red); color: var(--cream-light, #ffebd1); padding: 14px 20px; font-weight: 600; box-shadow: 0 18px 40px -16px rgba(143, 0, 25, 0.6); border-left: 3px solid var(--gold); max-width: 340px; animation: toast-in 0.6s var(--ease-spring) both; }
+.toast.is-leaving { animation: toast-out 0.4s ease-in both; }
+.toast-dot { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); color: var(--red); font-size: 13px; flex: none; }
+@keyframes toast-in { from { opacity: 0; transform: translate3d(110%, 0, 0); } to { opacity: 1; transform: none; } }
+@keyframes toast-out { to { opacity: 0; transform: translate3d(110%, 0, 0); } }
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}

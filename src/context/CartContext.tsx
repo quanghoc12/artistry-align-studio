@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react"
 import { Product } from "../data/products"
+import { toast } from "../components/Motion"
 
 export interface CartItem {
   product: Product
@@ -37,6 +38,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   const addToCart = (product: Product, quantity = 1) => {
+    toast(`Đã thêm "${product.name}" vào giỏ hàng`)
     setCartItems((prev) => {
       const existing = prev.find((item) => item.product.id === product.id)
       if (existing) {
