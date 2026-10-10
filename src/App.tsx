@@ -6,6 +6,7 @@ import Products from "./pages/Products"
 import ProductDetail from "./pages/ProductDetail"
 import Heritage from "./pages/Heritage"
 import Cart from "./pages/Cart"
+import NotFound from "./pages/NotFound"
 import { CartProvider } from "./context/CartContext"
 import ScrollToTop from "./components/ScrollToTop"
 
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="products/:slug" element={<ProductDetail />} />
             <Route path="heritage/:id" element={<Heritage />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </CartProvider>
