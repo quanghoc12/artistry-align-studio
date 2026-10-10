@@ -4,10 +4,12 @@ import Footer from "./Footer"
 import CartDrawer from "./CartDrawer"
 import Chatbox from "../Chatbox"
 import { ScrollReveal, Toaster } from "../Motion"
+import ScrollProgress from "../ScrollProgress"
 
 export default function MainLayout() {
   return (
     <div id="top" className="site-shell">
+      <ScrollProgress />
       <Header />
       <main>
         <Outlet />
@@ -20,4 +22,5 @@ export default function MainLayout() {
     </div>
   )
 }
+
 
