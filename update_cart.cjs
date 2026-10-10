@@ -1,20 +1,25 @@
-const fs = require('fs');
+const fs = require("fs")
 
-const content = fs.readFileSync('src/App.tsx', 'utf8');
+const content = fs.readFileSync("src/App.tsx", "utf8")
 
 // Add state for checkout
+
 let newContent = content.replace(
-  'const [playing, setPlaying] = useState(false)',
-  'const [playing, setPlaying] = useState(false)\n  const [isCheckout, setIsCheckout] = useState(false)\n  const [orderSuccess, setOrderSuccess] = useState(false)'
-);
+  "const [playing, setPlaying] = useState(false)",
+
+  "const [playing, setPlaying] = useState(false)\n  const [isCheckout, setIsCheckout] = useState(false)\n  const [orderSuccess, setOrderSuccess] = useState(false)",
+)
 
 // Reset checkout state when closing cart
+
 newContent = newContent.replace(
   /onClick={\(\) => setCartOpen\(false\)}/g,
-  'onClick={() => { setCartOpen(false); setIsCheckout(false); setOrderSuccess(false); }}'
-);
+
+  "onClick={() => { setCartOpen(false); setIsCheckout(false); setOrderSuccess(false); }}",
+)
 
 // Cart Drawer Replacement
+
 const oldCartDrawer = `<aside className="cart-drawer">
           <div className="cart-head">
             <div>
@@ -54,7 +59,7 @@ const oldCartDrawer = `<aside className="cart-drawer">
               </button>
             </>
           )}
-        </aside>`;
+        </aside>`
 
 const newCartDrawer = `<aside className="cart-drawer" style={{ display: 'flex', flexDirection: 'column' }}>
           <div className="cart-head">
@@ -133,11 +138,12 @@ const newCartDrawer = `<aside className="cart-drawer" style={{ display: 'flex', 
               </>
             )}
           </div>
-        </aside>`;
+        </aside>`
 
-newContent = newContent.replace(oldCartDrawer, newCartDrawer);
+newContent = newContent.replace(oldCartDrawer, newCartDrawer)
 
 // Also let's update some <a href> to <Link> for React Router if needed, but not strictly necessary in App.tsx right now.
 
-fs.writeFileSync('src/App.tsx', newContent, 'utf8');
-console.log("App.tsx modified");
+fs.writeFileSync("src/App.tsx", newContent, "utf8")
+
+console.log("App.tsx modified")

@@ -1,10 +1,14 @@
 import { useState } from "react"
+
 import { Icon, Logo } from "../Shared"
+
 import { useCart } from "../../context/CartContext"
+
 import { Link } from "react-router-dom"
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+
   const { cartCount, setCartOpen } = useCart()
 
   return (

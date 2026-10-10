@@ -10,8 +10,13 @@ export default function ScrollProgress() {
 
     const updateScrollProgress = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
-      const percentage = scrollHeight > 0 ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0
+      const scrollHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight
+      const percentage =
+        scrollHeight > 0
+          ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1)
+          : 0
       setProgress(percentage)
       ticking = false
     }
@@ -56,4 +61,3 @@ export default function ScrollProgress() {
     />
   )
 }
-

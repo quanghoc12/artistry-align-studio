@@ -1,13 +1,24 @@
 import { useEffect } from "react"
+
 import { Icon } from "../Shared"
+
 import { useCart } from "../../context/CartContext"
+
 import { Link } from "react-router-dom"
 
 export default function CartDrawer() {
-  const { cartOpen, setCartOpen, cartCount, cartItems, updateQuantity, removeFromCart } = useCart()
+  const {
+    cartOpen,
+    setCartOpen,
+    cartCount,
+    cartItems,
+    updateQuantity,
+    removeFromCart,
+  } = useCart()
 
   useEffect(() => {
     document.body.style.overflow = cartOpen ? "hidden" : ""
+
     return () => {
       document.body.style.overflow = ""
     }
@@ -15,6 +26,7 @@ export default function CartDrawer() {
 
   const subtotal = cartItems.reduce((total, item) => {
     const numericPrice = parseInt(item.product.price.replace(/\D/g, "")) || 0
+
     return total + numericPrice * item.quantity
   }, 0)
 
@@ -49,31 +61,80 @@ export default function CartDrawer() {
           </div>
         ) : (
           <>
-            <div className="cart-items" style={{ flex: 1, overflowY: 'auto' }}>
+            <div className="cart-items" style={{ flex: 1, overflowY: "auto" }}>
               {cartItems.map((item) => (
-                <div className="cart-product" key={item.product.id} style={{ marginBottom: '20px' }}>
+                <div
+                  className="cart-product"
+                  key={item.product.id}
+                  style={{ marginBottom: "20px" }}
+                >
                   <img src={item.product.image} alt={item.product.name} />
                   <div>
-                    <small>{item.product.eyebrow.split('·')[0].trim() || "Bộ sưu tập Thăng Long"}</small>
+                    <small>
+                      {item.product.eyebrow.split("·")[0].trim() ||
+                        "Bộ sưu tập Thăng Long"}
+                    </small>
                     <h3>{item.product.name}</h3>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '10px' }}>
-                      <div className="quantity-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px', border: '1px solid rgba(255, 235, 209, 0.2)', padding: '4px 12px', borderRadius: '4px' }}>
-                        <button 
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <div
+                        className="quantity-controls"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "15px",
+                          border: "1px solid rgba(255, 235, 209, 0.2)",
+                          padding: "4px 12px",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.product.id, item.quantity - 1)
+                          }
                           disabled={item.quantity <= 1}
-                          style={{ opacity: item.quantity <= 1 ? 0.5 : 1, cursor: item.quantity <= 1 ? 'not-allowed' : 'pointer', background: 'none', border: 'none', color: 'inherit', fontSize: '18px' }}
+                          style={{
+                            opacity: item.quantity <= 1 ? 0.5 : 1,
+                            cursor:
+                              item.quantity <= 1 ? "not-allowed" : "pointer",
+                            background: "none",
+                            border: "none",
+                            color: "inherit",
+                            fontSize: "18px",
+                          }}
                         >
                           -
                         </button>
                         <span>{item.quantity}</span>
-                        <button 
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          style={{ background: 'none', border: 'none', color: 'inherit', fontSize: '18px', cursor: 'pointer' }}
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.product.id, item.quantity + 1)
+                          }
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: "inherit",
+                            fontSize: "18px",
+                            cursor: "pointer",
+                          }}
                         >
                           +
                         </button>
                       </div>
-                      <button onClick={() => removeFromCart(item.product.id)} style={{ color: 'var(--color-primary)', textDecoration: 'underline', fontSize: '12px' }}>
+                      <button
+                        onClick={() => removeFromCart(item.product.id)}
+                        style={{
+                          color: "var(--color-primary)",
+                          textDecoration: "underline",
+                          fontSize: "12px",
+                        }}
+                      >
                         Xoá
                       </button>
                     </div>
@@ -86,7 +147,11 @@ export default function CartDrawer() {
               <span>Tạm tính</span>
               <strong>{subtotal.toLocaleString("vi-VN")}₫</strong>
             </div>
-            <Link to="/cart" onClick={() => setCartOpen(false)} className="checkout-button">
+            <Link
+              to="/cart"
+              onClick={() => setCartOpen(false)}
+              className="checkout-button"
+            >
               Tiến hành đặt hàng <Icon name="arrow" />
             </Link>
           </>

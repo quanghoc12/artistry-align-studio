@@ -1,4 +1,5 @@
 import { Icon, Logo } from "../Shared"
+
 import { Link } from "react-router-dom"
 
 export default function Footer() {
@@ -22,8 +23,20 @@ export default function Footer() {
           </div>
           <div>
             <strong>Kết nối</strong>
-            <a href="https://www.facebook.com/share/1JRBKEJnSZ/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="https://www.tiktok.com/@kientichviet.official?_r=1&_t=ZS-9AJ4MAhHC69" target="_blank" rel="noopener noreferrer">TikTok</a>
+            <a
+              href="https://www.facebook.com/share/1JRBKEJnSZ/?mibextid=wwXIfr"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook
+            </a>
+            <a
+              href="https://www.tiktok.com/@kientichviet.official?_r=1&_t=ZS-9AJ4MAhHC69"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              TikTok
+            </a>
             <a href="mailto:kientichviet.official@gmail.com">Email</a>
           </div>
         </div>

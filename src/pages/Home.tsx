@@ -1,6 +1,9 @@
 import { useState } from "react"
+
 import { Icon, LinkButton, stories } from "../components/Shared"
+
 import { products } from "../data/products"
+
 import { Link } from "react-router-dom"
 
 export default function Home() {
@@ -16,8 +19,8 @@ export default function Home() {
             <em>nối nhịp thời gian.</em>
           </h1>
           <p className="hero-description">
-            Kiến Tích Việt biến những dấu tích văn hóa Việt thành những mô hình lắp ghép
-            để bạn tự tay kiến tạo, trưng bày và khám phá.
+            Kiến Tích Việt biến những dấu tích văn hóa Việt thành những mô hình
+            lắp ghép để bạn tự tay kiến tạo, trưng bày và khám phá.
           </p>
           <div className="hero-actions">
             <LinkButton href="/products">Khám phá sản phẩm</LinkButton>
@@ -72,20 +75,31 @@ export default function Home() {
           {[
             [
               "01",
+
               "Build",
+
               "Lắp ghép",
+
               "Tự tay ghép từng mảnh gỗ, cảm nhận cấu trúc và dáng hình của công trình.",
             ],
+
             [
               "02",
+
               "Display",
+
               "Trưng bày",
+
               "Biến di sản thành một vật phẩm trang trí có chiều sâu và câu chuyện.",
             ],
+
             [
               "03",
+
               "Discover",
+
               "Khám phá",
+
               "Chạm NFC để lắng nghe, tương tác AR và mở ra thế giới phía sau mô hình.",
             ],
           ].map(([number, en, title, text]) => (
@@ -190,7 +204,8 @@ export default function Home() {
             Cả ngàn câu chuyện.
           </h2>
           <p>
-            Một mô hình không chỉ dừng lại ở những mảnh gỗ. Chạm NFC để mở ra câu chuyện phía sau di sản.
+            Một mô hình không chỉ dừng lại ở những mảnh gỗ. Chạm NFC để mở ra
+            câu chuyện phía sau di sản.
           </p>
           <div className="tech-features">
             <div>

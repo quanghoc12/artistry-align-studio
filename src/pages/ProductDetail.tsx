@@ -1,19 +1,27 @@
 import { useParams, Navigate, Link } from "react-router-dom"
+
 import { products } from "../data/products"
+
 import { Icon, LinkButton } from "../components/Shared"
+
 import { useCart } from "../context/CartContext"
+
 import { useState } from "react"
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
+
   const { addToCart } = useCart()
+
   const [playing, setPlaying] = useState(false)
-  
+
   const product = products.find((p) => p.slug === slug)
 
   if (!product) {
     return (
-      <div style={{ paddingTop: '200px', textAlign: 'center', minHeight: '60vh' }}>
+      <div
+        style={{ paddingTop: "200px", textAlign: "center", minHeight: "60vh" }}
+      >
         <h2>Sản phẩm không tồn tại</h2>
         <LinkButton href="/products">Quay lại bộ sưu tập</LinkButton>
       </div>
@@ -22,17 +30,35 @@ export default function ProductDetail() {
 
   return (
     <>
-      <div style={{ padding: '150px 5vw 80px', display: 'flex', justifyContent: 'center' }}>
-        <div className="product-modal" style={{ 
-          position: 'relative', 
-          top: 'auto', 
-          left: 'auto', 
-          transform: 'none', 
-          maxHeight: 'none',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.05)'
-        }}>
+      <div
+        style={{
+          padding: "150px 5vw 80px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          className="product-modal"
+          style={{
+            position: "relative",
+
+            top: "auto",
+
+            left: "auto",
+
+            transform: "none",
+
+            maxHeight: "none",
+
+            boxShadow: "0 20px 40px rgba(0,0,0,0.05)",
+          }}
+        >
           <div className="modal-image reveal">
-            <img className="reveal-image" src={product.image} alt={product.name} />
+            <img
+              className="reveal-image"
+              src={product.image}
+              alt={product.name}
+            />
             <span>Mô hình gỗ · Tỉ lệ 1:120</span>
           </div>
           <div className="modal-copy reveal stagger-1">
@@ -53,13 +79,25 @@ export default function ProductDetail() {
                 <strong>{product.specifications.difficulty}</strong>
               </span>
             </div>
-            <div style={{ marginTop: '20px' }}>
-              <p><small>Chất liệu:</small> <strong>{product.specifications.material}</strong></p>
-              <p><small>Kích thước:</small> <strong>{product.specifications.size}</strong></p>
-              <p><small>Trọng lượng:</small> <strong>{product.specifications.weight}</strong></p>
-              <p><small>Đối tượng:</small> <strong>{product.specifications.audience}</strong></p>
+            <div style={{ marginTop: "20px" }}>
+              <p>
+                <small>Chất liệu:</small>{" "}
+                <strong>{product.specifications.material}</strong>
+              </p>
+              <p>
+                <small>Kích thước:</small>{" "}
+                <strong>{product.specifications.size}</strong>
+              </p>
+              <p>
+                <small>Trọng lượng:</small>{" "}
+                <strong>{product.specifications.weight}</strong>
+              </p>
+              <p>
+                <small>Đối tượng:</small>{" "}
+                <strong>{product.specifications.audience}</strong>
+              </p>
             </div>
-            <div className="modal-buy" style={{ marginTop: '35px' }}>
+            <div className="modal-buy" style={{ marginTop: "35px" }}>
               <strong>{product.price}</strong>
               <button onClick={() => addToCart(product)}>
                 <span>Thêm vào giỏ</span>
@@ -83,26 +121,41 @@ export default function ProductDetail() {
           {[
             [
               "01",
+
               "Open",
+
               "Mở hộp",
+
               "Bắt đầu hành trình với những mảnh ghép gỗ được sắp xếp tinh tế.",
             ],
+
             [
               "02",
+
               "Build",
+
               "Lắp ghép",
+
               "Lắp từng mảnh gỗ, cảm nhận cấu trúc nguyên bản của di sản.",
             ],
+
             [
               "03",
+
               "Complete",
+
               "Hoàn thiện",
+
               "Hoàn thiện mô hình và biến nó thành một dấu tích đáng tự hào.",
             ],
+
             [
               "04",
+
               "Discover",
+
               "Khám phá",
+
               "Chạm NFC và khám phá câu chuyện phía sau di sản.",
             ],
           ].map(([number, en, title, text]) => (
@@ -111,7 +164,13 @@ export default function ProductDetail() {
               <div className="step-icon">
                 <Icon
                   name={
-                    number === "01" ? "box" : number === "02" ? "cube" : number === "03" ? "sparkle" : "nfc"
+                    number === "01"
+                      ? "box"
+                      : number === "02"
+                        ? "cube"
+                        : number === "03"
+                          ? "sparkle"
+                          : "nfc"
                   }
                   size={30}
                 />
@@ -190,17 +249,34 @@ export default function ProductDetail() {
       </section>
 
       {/* REVIEWS SECTION */}
-      <section className="reviews section-pad" style={{ background: '#f9f9f9' }}>
-        <div className="section-heading reveal" style={{ textAlign: 'center' }}>
+      <section
+        className="reviews section-pad"
+        style={{ background: "#f9f9f9" }}
+      >
+        <div className="section-heading reveal" style={{ textAlign: "center" }}>
           <p className="kicker">Đánh giá</p>
           <h2>Khách hàng nói gì</h2>
         </div>
-        <div style={{ maxWidth: '600px', margin: '40px auto 0', textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
-          <div style={{ opacity: 0.3, marginBottom: '20px' }}>
+        <div
+          style={{
+            maxWidth: "600px",
+            margin: "40px auto 0",
+            textAlign: "center",
+            padding: "40px",
+            background: "#fff",
+            borderRadius: "8px",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+          }}
+        >
+          <div style={{ opacity: 0.3, marginBottom: "20px" }}>
             <Icon name="sparkle" size={48} />
           </div>
-          <h3 style={{ marginBottom: '10px', fontSize: '24px' }}>Chưa có đánh giá</h3>
-          <p style={{ color: '#666' }}>Hãy là người đầu tiên chia sẻ trải nghiệm của bạn.</p>
+          <h3 style={{ marginBottom: "10px", fontSize: "24px" }}>
+            Chưa có đánh giá
+          </h3>
+          <p style={{ color: "#666" }}>
+            Hãy là người đầu tiên chia sẻ trải nghiệm của bạn.
+          </p>
         </div>
       </section>
 
@@ -210,10 +286,13 @@ export default function ProductDetail() {
           <p className="kicker">Khám phá thêm</p>
           <h2>CÓ THỂ BẠN CŨNG QUAN TÂM</h2>
         </div>
-        <div className="product-grid" style={{ marginTop: '40px' }}>
+        <div className="product-grid" style={{ marginTop: "40px" }}>
           {products
+
             .filter((p) => p.id !== product.id)
+
             .slice(0, 3)
+
             .map((relatedProduct) => (
               <article className="product-card reveal" key={relatedProduct.id}>
                 <Link
@@ -221,9 +300,17 @@ export default function ProductDetail() {
                   className="product-image"
                   aria-label={`Xem ${relatedProduct.name}`}
                 >
-                  <img className="reveal-image" src={relatedProduct.image} alt={relatedProduct.name} />
-                  <span className="product-number">{relatedProduct.number}</span>
-                  <span className="product-accent">{relatedProduct.accent}</span>
+                  <img
+                    className="reveal-image"
+                    src={relatedProduct.image}
+                    alt={relatedProduct.name}
+                  />
+                  <span className="product-number">
+                    {relatedProduct.number}
+                  </span>
+                  <span className="product-accent">
+                    {relatedProduct.accent}
+                  </span>
                   <span className="product-view">
                     <Icon name="plus" /> Xem chi tiết
                   </span>
@@ -232,7 +319,9 @@ export default function ProductDetail() {
                   <div>
                     <p>{relatedProduct.eyebrow}</p>
                     <h3>
-                      <Link to={`/products/${relatedProduct.slug}`}>{relatedProduct.name}</Link>
+                      <Link to={`/products/${relatedProduct.slug}`}>
+                        {relatedProduct.name}
+                      </Link>
                     </h3>
                   </div>
                   <strong>{relatedProduct.price}</strong>
@@ -244,4 +333,3 @@ export default function ProductDetail() {
     </>
   )
 }
-
