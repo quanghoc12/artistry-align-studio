@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react"
+import { Spinner, toast } from "../components/Motion"
 import { useCart } from "../context/CartContext"
 import { LinkButton, Icon } from "../components/Shared"
 import { Link } from "react-router-dom"
@@ -83,6 +84,7 @@ export default function Cart() {
       }
       
       setStatus("success")
+      toast("Đặt hàng thành công! Chúng tôi sẽ liên hệ sớm.")
       clearCart()
       window.scrollTo(0, 0)
     } catch (err) {
@@ -271,7 +273,7 @@ export default function Cart() {
                 }}
               >
                 {status === "loading" ? (
-                  "Đang xử lý..."
+                  <><Spinner /> Đang xử lý...</>
                 ) : (
                   <>Hoàn tất đặt hàng <Icon name="arrow" /></>
                 )}
