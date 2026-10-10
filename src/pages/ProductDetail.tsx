@@ -3,7 +3,6 @@ import { products } from "../data/products"
 import { Icon, LinkButton } from "../components/Shared"
 import { useCart } from "../context/CartContext"
 import { useState } from "react"
-import onePillarPagoda from "../assets/one-pillar-pagoda.jpg"
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -131,7 +130,7 @@ export default function ProductDetail() {
           <div className="phone">
             <div className="phone-screen">
               <span className="phone-label">Kiến Tích Việt</span>
-              <img src={onePillarPagoda} alt="" />
+              <img src="/images/one-pillar-pagoda.jpg" alt="" />
               <button
                 className={`play-button ${playing ? "is-playing" : ""}`}
                 onClick={() => setPlaying(!playing)}

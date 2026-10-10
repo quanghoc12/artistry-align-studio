@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Icon, LinkButton, stories } from "../components/Shared"
 import { products } from "../data/products"
-import onePillarPagoda from "../assets/one-pillar-pagoda.jpg"
 import { Link } from "react-router-dom"
 
 export default function Home() {
@@ -30,7 +29,7 @@ export default function Home() {
         <div className="hero-visual">
           <div className="hero-image-wrap parallax-layer" data-speed="0.08">
             <img
-              src={onePillarPagoda}
+              src="/images/one-pillar-pagoda.jpg"
               alt="Chùa Một Cột giữa khuôn viên xanh"
             />
             <div className="image-frame" aria-hidden="true" />
@@ -157,7 +156,7 @@ export default function Home() {
           <div className="phone">
             <div className="phone-screen">
               <span className="phone-label">Kiến Tích Việt</span>
-              <img src={onePillarPagoda} alt="" />
+              <img src="/images/one-pillar-pagoda.jpg" alt="" />
               <button
                 className={`play-button ${playing ? "is-playing" : ""}`}
                 onClick={() => setPlaying(!playing)}

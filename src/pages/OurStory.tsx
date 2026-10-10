@@ -1,26 +1,22 @@
 import { LinkButton } from "../components/Shared"
-import heritageDoor from "../assets/heritage-door.jpg"
-import heritagePagoda from "../assets/heritage-pagoda.jpg"
-import onePillarPagoda from "../assets/one-pillar-pagoda.jpg"
-import logoUrl from "../assets/logo.png"
 
 const chapters = [
   {
-    id: "tich", no: "Chương 01", word: "Tích", meaning: "Dấu tích · Ký ức", title: "Dấu Tích Của Thời Gian", img: heritageDoor, seal: "TÍCH", flip: false, alt: false,
+    id: "tich", no: "Chương 01", word: "Tích", meaning: "Dấu tích · Ký ức", title: "Dấu Tích Của Thời Gian", img: "/images/heritage-door.jpg", seal: "TÍCH", flip: false, alt: false,
     body: [
       "Thời gian có thể đi qua một công trình, nhưng không thể xóa đi những dấu tích mà nó để lại. Một ngôi đình, một mái chùa không chỉ là gạch ngói hay những cây cột gỗ — chúng mang theo bóng dáng người xưa và bản sắc dân tộc.",
       "Trân trọng những mảnh ghép ấy là cách giữ cho nhịp đập của quá khứ tiếp tục vang vọng trong hiện tại.",
     ],
   },
   {
-    id: "kien", no: "Chương 02", word: "Kiến", meaning: "Kiến tạo · Lắp ráp", title: "Tự Tay Kiến Tạo", img: heritagePagoda, seal: "KIẾN", flip: true, alt: true,
+    id: "kien", no: "Chương 02", word: "Kiến", meaning: "Kiến tạo · Lắp ráp", title: "Tự Tay Kiến Tạo", img: "/images/heritage-pagoda.jpg", seal: "KIẾN", flip: true, alt: true,
     body: [
       "Kiến Tích Việt bắt đầu từ chữ “Kiến” – kiến tạo, lắp ráp, xây dựng. Một mảnh gỗ, một khớp nối, một cấu trúc dần hình thành đưa bạn vào hành trình của những người thợ mộc tài hoa thuở trước.",
       "Lịch sử không còn khô khan trên trang giấy, mà sống lại ngay dưới đôi tay bạn.",
     ],
   },
   {
-    id: "viet", no: "Chương 03", word: "Việt", meaning: "Văn hóa · Con người", title: "Một Câu Chuyện Mang Tên Việt Nam", img: onePillarPagoda, seal: "VIỆT", flip: false, alt: false,
+    id: "viet", no: "Chương 03", word: "Việt", meaning: "Văn hóa · Con người", title: "Một Câu Chuyện Mang Tên Việt Nam", img: "/images/one-pillar-pagoda.jpg", seal: "VIỆT", flip: false, alt: false,
     body: [
       "Cảm hứng của chúng tôi khởi nguồn từ dòng chảy văn hóa, kiến trúc và con người Việt Nam — tìm một ngôn ngữ đương đại để đưa di sản đến gần cuộc sống hôm nay.",
       "Kiến tạo những dấu tích Việt bằng đôi tay và khối óc của thế hệ hôm nay.",
@@ -44,7 +40,7 @@ export default function OurStory() {
           </p>
         </div>
         <div className="story-hero-logo reveal">
-          <img src={logoUrl} alt="Logo Kiến Tích Việt" width={600} height={725} />
+          <img src="/images/logo.png" alt="Logo Kiến Tích Việt" width={600} height={725} />
         </div>
       </section>
 

@@ -1,7 +1,3 @@
-import heritageDoor from "../assets/heritage-door.jpg"
-import heritagePagoda from "../assets/heritage-pagoda.jpg"
-import onePillarPagoda from "../assets/one-pillar-pagoda.jpg"
-
 export interface Product {
   id: string
   slug: string
@@ -30,7 +26,7 @@ export const products: Product[] = [
     name: "Chùa Một Cột",
     eyebrow: "Hà Nội · Bộ sưu tập Thăng Long",
     price: "890.000₫",
-    image: onePillarPagoda,
+    image: "/images/one-pillar-pagoda.jpg",
     number: "01",
     accent: "Mới",
     description: "Mỗi chi tiết được cắt chính xác từ gỗ tự nhiên, tái hiện tinh thần kiến trúc nguyên bản trong một trải nghiệm lắp ghép đầy cảm hứng.",
@@ -50,7 +46,7 @@ export const products: Product[] = [
     name: "Khuê Văn Các",
     eyebrow: "Văn Miếu · Quốc Tử Giám",
     price: "790.000₫",
-    image: heritageDoor,
+    image: "/images/heritage-door.jpg",
     number: "02",
     accent: "Bán chạy",
     description: "Mỗi chi tiết được cắt chính xác từ gỗ tự nhiên, tái hiện tinh thần kiến trúc nguyên bản trong một trải nghiệm lắp ghép đầy cảm hứng.",
@@ -70,7 +66,7 @@ export const products: Product[] = [
     name: "Tháp Phổ Minh",
     eyebrow: "Nam Định · Dấu ấn nhà Trần",
     price: "820.000₫",
-    image: heritagePagoda,
+    image: "/images/heritage-pagoda.jpg",
     number: "03",
     accent: "Sắp ra mắt",
     description: "Mỗi chi tiết được cắt chính xác từ gỗ tự nhiên, tái hiện tinh thần kiến trúc nguyên bản trong một trải nghiệm lắp ghép đầy cảm hứng.",
@@ -85,3 +81,4 @@ export const products: Product[] = [
     }
   },
 ]
+
