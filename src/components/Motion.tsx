@@ -18,9 +18,11 @@ export function ScrollReveal() {
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
     )
+    const seen = new WeakSet<Element>()
     const prepare = () => {
-      document.querySelectorAll<HTMLElement>(".reveal:not([data-rv])").forEach((el) => {
-        el.dataset.rv = "1"
+      document.querySelectorAll<HTMLElement>(".reveal:not(.is-in)").forEach((el) => {
+        if (seen.has(el)) return
+        seen.add(el)
         if (reduce) return el.classList.add("is-in")
         const sibs = el.parentElement
           ? Array.from(el.parentElement.children).filter((c) => c.classList.contains("reveal"))
