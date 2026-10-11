@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom"
 
 import { Icon, Logo, LinkButton } from "../components/Shared"
+import AudioGuidePlayer from "../components/AudioGuidePlayer"
 
 import { products } from "../data/products"
 
@@ -152,7 +153,7 @@ export default function Heritage() {
             className="reveal"
             style={{
               maxWidth: "800px",
-              margin: "0 auto 60px",
+              margin: "0 auto 40px",
               textAlign: "center",
             }}
           >
@@ -160,12 +161,34 @@ export default function Heritage() {
               style={{
                 fontSize: "20px",
                 lineHeight: 1.6,
-                color: "rgba(255,255,255,0.8)",
+                color: "rgba(255,255,255,0.85)",
+                fontFamily: '"Vollkorn", serif',
               }}
             >
-              [NỘI DUNG GIỚI THIỆU CHỜ CUNG CẤP]
+              {product.slug === "chua-mot-cot"
+                ? "Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh thời gian thực dưới đây."
+                : "[NỘI DUNG GIỚI THIỆU CHỜ CUNG CẤP]"}
             </p>
           </section>
+
+          {/* Audio Guide Section */}
+          {product.audioUrl && (
+            <section
+              className="reveal"
+              style={{
+                maxWidth: "860px",
+                margin: "0 auto 70px",
+              }}
+            >
+              <AudioGuidePlayer
+                audioUrl={product.audioUrl}
+                title={product.audioTitle || product.name}
+                subtitle={product.audioAuthor || "Thuyết minh Di sản · Kiến Tích Việt"}
+                heritageName={product.name}
+                coverImage={product.image}
+              />
+            </section>
+          )}
 
           {/* Heritage Cards / Destinations */}
           <section

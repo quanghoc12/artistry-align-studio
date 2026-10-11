@@ -32,6 +32,12 @@ export interface Product {
 
     weight: string
   }
+
+  audioUrl?: string
+
+  audioTitle?: string
+
+  audioAuthor?: string
 }
 
 export const products: Product[] = [
@@ -47,6 +53,12 @@ export const products: Product[] = [
     price: "890.000 ₫",
 
     image: "/images/one-pillar-pagoda.jpg",
+
+    audioUrl: "/audio/chuyen_ve_doa_sen_go_cua_ngan_nam_van_hienco_270f3316-cf23-4e17-8255-8693ab8597a5.mp3",
+
+    audioTitle: "Chuyện về đóa sen gỗ của ngàn năm văn hiến",
+
+    audioAuthor: "Thuyết minh Di sản · Kiến Tích Việt",
 
     number: "01",
 
