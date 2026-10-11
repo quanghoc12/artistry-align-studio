@@ -8,7 +8,7 @@
   --cream-light: #fff7ec;
   --gold: #ffd18d;
   --ink: #351b18;
-  --muted: #7b5b52;
+  --muted: #5d3d35;
   --paper: #f8ead7;
   --white: #fffaf3;
   --wine: #8f0019;
@@ -187,8 +187,9 @@ img {
 }
 
 .main-nav a {
-  font-size: 16px;
+  font-size: 14.5px;
   font-weight: 600;
+  letter-spacing: 0.02em;
   position: relative;
 }
 
@@ -387,14 +388,18 @@ h3 {
 
 .hero-copy h1 {
   margin: 0;
-  max-width: 710px;
+  max-width: 680px;
   font-family: "Prata", serif;
-  font-size: clamp(52px, 5.5vw, 88px);
+  font-size: clamp(48px, 5.2vw, 84px);
   font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.045em;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
   text-wrap: balance;
   color: var(--cream);
+}
+
+.hero-copy h1 span {
+  display: block;
 }
 
 .hero-copy h1 em {
@@ -404,12 +409,12 @@ h3 {
 }
 
 .hero-copy .hero-description {
-  max-width: 600px;
-  margin: 30px 0 0;
-  color: rgba(255, 235, 209, 0.78);
-  font-size: clamp(15px, 1.1vw, 18px);
-  font-weight: 300;
-  line-height: 1.8;
+  max-width: 580px;
+  margin: 28px 0 0;
+  color: rgba(255, 235, 209, 0.9);
+  font-size: clamp(15.5px, 1.1vw, 17.5px);
+  font-weight: 400;
+  line-height: 1.75;
   font-family: "Be Vietnam Pro", sans-serif;
 }
 
@@ -429,7 +434,7 @@ h3 {
   border-radius: 4px;
   background: var(--gold);
   color: var(--ink-hero);
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 700;
   box-shadow: 0 14px 40px rgba(53, 0, 9, 0.32);
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
@@ -452,7 +457,7 @@ h3 {
   flex-direction: column;
   gap: 7px;
   color: var(--cream);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   font-family: "Be Vietnam Pro", sans-serif;
   text-decoration: none;
@@ -473,40 +478,40 @@ h3 {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 46px;
+  margin-top: 42px;
   font-family: "Be Vietnam Pro", sans-serif;
 }
 
 .sound-chip {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 209, 141, 0.35);
+  border: 1px solid rgba(255, 209, 141, 0.45);
   border-radius: 50%;
   color: var(--gold);
   flex: none;
 }
 
 .sound-chip svg {
-  width: 19px;
+  width: 20px;
 }
 
 .experience-note p {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   margin: 0;
-  color: rgba(255, 235, 209, 0.52);
-  font-size: 9px;
-  letter-spacing: 0.14em;
+  color: rgba(255, 235, 209, 0.76);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .experience-note strong {
   color: var(--cream);
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 13.5px;
+  font-weight: 600;
 }
 
 .hero-visual {
@@ -552,7 +557,7 @@ h3 {
   right: -1%;
   top: 4%;
   z-index: 2;
-  color: rgba(255, 209, 141, 0.28);
+  color: rgba(255, 209, 141, 0.18);
   font-family: "Prata", serif;
   font-size: 76px;
   pointer-events: none;
@@ -588,8 +593,9 @@ h3 {
 
 .visual-caption span {
   color: var(--gold);
-  font-size: 9px;
-  letter-spacing: 0.18em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-family: "Be Vietnam Pro", sans-serif;
 }
@@ -618,7 +624,7 @@ h3 {
 
 .nfc-ripple {
   inset: 0;
-  border: 1px solid rgba(255, 209, 141, 0.4);
+  border: 1px solid rgba(255, 209, 141, 0.35);
   animation: pulse 2.6s ease-out infinite;
 }
 
@@ -643,24 +649,24 @@ h3 {
 }
 
 .nfc-core span {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   font-family: "Be Vietnam Pro", sans-serif;
 }
 
 .floating-card {
   position: absolute;
-  left: -4%;
-  top: 24%;
+  left: -8%;
+  top: 26%;
   z-index: 5;
-  width: 140px;
-  padding: 20px;
+  width: 124px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(255, 209, 141, 0.38);
-  background: rgba(94, 0, 18, 0.85);
-  box-shadow: 0 22px 38px rgba(46, 0, 8, 0.28);
+  background: rgba(94, 0, 18, 0.88);
+  box-shadow: 0 20px 36px rgba(46, 0, 8, 0.28);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   animation: float 4.5s ease-in-out infinite;
@@ -668,23 +674,24 @@ h3 {
 
 .card-index {
   color: var(--gold);
-  font-size: 8px;
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.14em;
   font-family: "Be Vietnam Pro", sans-serif;
 }
 
 .card-line {
-  width: 28px;
+  width: 24px;
   height: 1px;
-  margin: 15px 0 13px;
+  margin: 11px 0 10px;
   background: var(--gold);
 }
 
 .floating-card strong {
   font-family: "Prata", serif;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 400;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--cream);
 }
 
@@ -696,9 +703,9 @@ h3 {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   border-top: 1px solid rgba(255, 235, 209, 0.18);
-  color: rgba(255, 235, 209, 0.48);
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  color: rgba(255, 235, 209, 0.72);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-family: "Be Vietnam Pro", sans-serif;
 }
@@ -849,15 +856,15 @@ h3 {
   }
 }
 
-.section-pad { padding: 130px clamp(24px, 7vw, 110px); }
-.intro { background: var(--cream-light); }
+.section-pad { padding: 92px clamp(24px, 6vw, 96px); }
+.intro { background: var(--cream-light); position: relative; }
 
 .section-heading h2 {
   color: var(--red);
-  font-size: clamp(44px, 5vw, 78px);
+  font-size: clamp(42px, 4.8vw, 72px);
   font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 1.04;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
   margin-bottom: 0;
 }
 
@@ -869,7 +876,7 @@ h3 {
 .intro-copy {
   align-self: end;
   color: var(--muted);
-  font-size: 21px;
+  font-size: 20px;
   margin: 0 0 8px auto;
   max-width: 490px;
 }
@@ -880,7 +887,7 @@ h3 {
   gap: 0;
   grid-column: 1 / -1;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 100px;
+  margin-top: 80px;
 }
 
 .step-card {
@@ -911,14 +918,14 @@ h3 {
 .step-line { background: var(--red); bottom: 0; height: 3px; left: 0; position: absolute; transition: width 0.35s ease; width: 40px; }
 .step-card:hover .step-line { width: calc(100% - 45px); }
 
-.products { background: var(--paper); }
+.products { background: var(--paper); border-top: 1px solid color-mix(in srgb, var(--red) 14%, transparent); }
 .products-head { align-items: flex-end; display: flex; justify-content: space-between; }
-.product-grid { display: grid; gap: clamp(20px, 2.7vw, 42px); grid-template-columns: repeat(3, 1fr); margin-top: 75px; }
-.product-card { display: flex; flex-direction: column; height: min-content; }
-.product-card:nth-child(2) { margin-top: 70px; }
+.product-grid { display: grid; gap: clamp(24px, 3vw, 38px); grid-template-columns: repeat(3, 1fr); margin-top: 60px; }
+.product-card { display: flex; flex-direction: column; height: 100%; border-radius: 4px; overflow: hidden; background: var(--cream-light); }
+.product-card:nth-child(2) { margin-top: 0; }
 
 .product-image {
-  aspect-ratio: 0.78;
+  aspect-ratio: 0.82;
   background: var(--gold);
   border: 0;
   cursor: pointer;
@@ -930,29 +937,33 @@ h3 {
 }
 
 .product-image::after {
-  background: linear-gradient(180deg, rgba(61, 0, 11, 0.08), rgba(61, 0, 11, 0.55));
+  background: linear-gradient(180deg, rgba(61, 0, 11, 0.05), rgba(61, 0, 11, 0.52));
   content: "";
   inset: 0;
   position: absolute;
 }
 
 .product-image img {
-  filter: sepia(0.35) saturate(0.75);
+  filter: sepia(0.3) saturate(0.85);
   height: 100%;
   object-fit: cover;
   transition: transform 0.6s ease, filter 0.6s ease;
   width: 100%;
 }
 
-.product-card:hover img { filter: sepia(0.12); transform: scale(1.045); }
-.product-number { color: white; font-family: "Vollkorn", serif; font-size: 17px; left: 22px; position: absolute; top: 20px; z-index: 2; }
-.product-accent { background: var(--cream); color: var(--red); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; padding: 8px 11px; position: absolute; right: 0; text-transform: uppercase; top: 0; z-index: 2; }
-.product-view { align-items: center; bottom: 22px; color: white; display: flex; font-size: 15px; font-weight: 700; gap: 9px; left: 22px; opacity: 0; position: absolute; transform: translateY(8px); transition: 0.3s ease; z-index: 2; }
+.product-card:hover img { filter: sepia(0.08) saturate(1); transform: scale(1.045); }
+.product-number { color: white; font-family: "Vollkorn", serif; font-size: 16px; font-weight: 600; left: 20px; position: absolute; top: 18px; z-index: 2; letter-spacing: 0.04em; }
+.product-accent { background: var(--cream); color: var(--red); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; padding: 7px 11px; position: absolute; right: 0; text-transform: uppercase; top: 0; z-index: 2; border-bottom-left-radius: 4px; }
+.product-view { align-items: center; bottom: 20px; color: white; display: flex; font-size: 14px; font-weight: 700; gap: 8px; left: 20px; opacity: 0; position: absolute; transform: translateY(8px); transition: 0.3s ease; z-index: 2; font-family: "Be Vietnam Pro", sans-serif; }
 .product-card:hover .product-view { opacity: 1; transform: translateY(0); }
-.product-info { align-items: flex-start; display: flex; justify-content: space-between; padding: 22px; flex-grow: 1; }
-.product-info p { color: var(--muted); font-size: 13px; letter-spacing: 0.06em; margin-bottom: 4px; text-transform: uppercase; }
-.product-info h3 { color: var(--red); font-size: 28px; font-weight: 600; margin: 0; }
-.product-info > strong { color: var(--red); font-size: 17px; margin-top: 25px; white-space: nowrap; }
+.product-info { display: flex; flex-direction: column; justify-content: space-between; padding: 22px 20px 24px; flex-grow: 1; }
+.product-info-main { display: flex; flex-direction: column; }
+.product-info p { color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 5px; text-transform: uppercase; }
+.product-info h3 { color: var(--red); font-size: 26px; font-weight: 600; margin: 0; }
+.product-specs-summary { display: flex; align-items: center; gap: 8px; margin-top: 10px; color: var(--muted); font-size: 12.5px; font-family: "Be Vietnam Pro", sans-serif; font-weight: 500; }
+.product-specs-summary i { font-style: normal; opacity: 0.45; }
+.product-price { color: var(--red); font-size: 19px; font-family: "Vollkorn", serif; font-weight: 700; margin-top: 20px; padding-top: 14px; border-top: 1px solid color-mix(in srgb, var(--red) 14%, transparent); display: block; }
+.products-footer { display: flex; justify-content: center; margin-top: 56px; }
 
 .tech {
   align-items: center;
@@ -1018,7 +1029,7 @@ h3 {
 .nfc-tag { align-items: center; background: var(--gold); bottom: 20px; color: var(--red); display: flex; flex-direction: column; font-size: 11px; font-weight: 700; gap: 6px; padding: 20px 16px; position: absolute; right: 4%; text-transform: uppercase; z-index: 4; }
 .kicker.light { color: var(--gold); }
 .tech-copy h2 { color: var(--cream); font-size: clamp(48px, 5vw, 76px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; margin-bottom: 28px; }
-.tech-copy > p:not(.kicker) { color: color-mix(in srgb, var(--cream) 75%, transparent); font-size: 20px; max-width: 570px; }
+.tech-copy > p:not(.kicker) { color: rgba(255, 235, 209, 0.92); font-size: 19.5px; max-width: 570px; }
 .tech-features { border-bottom: 1px solid rgba(255, 235, 209, 0.25); border-top: 1px solid rgba(255, 235, 209, 0.25); margin: 42px 0; }
 .tech-features > div { align-items: center; display: grid; gap: 20px; grid-template-columns: 30px 1fr; padding: 16px 0; }
 .tech-features > div + div { border-top: 1px solid rgba(255, 235, 209, 0.15); }
@@ -1026,18 +1037,18 @@ h3 {
 .tech-features span { font-size: 16px; }
 .tech-features strong { color: var(--gold); display: inline-block; letter-spacing: 0.11em; min-width: 78px; text-transform: uppercase; }
 
-.journal { background: var(--cream-light); display: grid; gap: 8vw; grid-template-columns: 0.75fr 1.25fr; }
+.journal { background: var(--cream-light); border-top: 1px solid color-mix(in srgb, var(--red) 14%, transparent); display: grid; gap: 6vw; grid-template-columns: 0.75fr 1.25fr; }
 .journal-intro { position: sticky; top: 70px; align-self: start; }
 .journal-intro h2 { color: var(--red); font-size: clamp(42px, 4.5vw, 68px); font-weight: 600; letter-spacing: -0.045em; line-height: 1.04; }
-.journal-intro > p:not(.kicker) { color: var(--muted); font-size: 19px; max-width: 460px; }
+.journal-intro > p:not(.kicker) { color: var(--muted); font-size: 18.5px; max-width: 460px; }
 .journal-intro .text-link { margin-top: 25px; }
 .story-item { align-items: center; border-bottom: 1px solid color-mix(in srgb, var(--red) 22%, transparent); display: grid; gap: 25px; grid-template-columns: 35px 140px 1fr 30px; padding: 25px 0; }
 .story-item:first-child { padding-top: 0; }
-.story-item img { filter: sepia(0.35); height: 125px; object-fit: cover; transition: filter 0.3s ease, transform 0.3s ease; width: 140px; }
+.story-item img { filter: sepia(0.35); height: 125px; object-fit: cover; transition: filter 0.3s ease, transform 0.3s ease; width: 140px; border-radius: 3px; }
 .story-item:hover img { filter: sepia(0); transform: scale(1.025); }
-.story-index { color: var(--red); font-size: 13px; }
-.story-item p { color: var(--muted); font-size: 12px; letter-spacing: 0.09em; margin-bottom: 7px; text-transform: uppercase; }
-.story-item h3 { color: var(--red); font-size: clamp(22px, 2.2vw, 33px); font-weight: 600; line-height: 1.15; margin: 0; }
+.story-index { color: var(--red); font-size: 14px; font-weight: 700; }
+.story-item p { color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 7px; text-transform: uppercase; }
+.story-item h3 { color: var(--red); font-size: clamp(23px, 2.2vw, 32px); font-weight: 600; line-height: 1.15; margin: 0; }
 .story-arrow { color: var(--red); transition: transform 0.3s ease; }
 .story-item:hover .story-arrow { transform: translateX(7px); }
 
@@ -1159,7 +1170,7 @@ footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(2
   .step-card { min-height: 310px; }
   .step-card + .step-card { border-left: 0; border-top: 1px solid rgba(143, 0, 25, 0.18); padding-left: 0; }
   .product-grid { gap: 24px; grid-template-columns: repeat(2, 1fr); }
-  .product-card:nth-child(2) { margin-top: 45px; }
+  .product-card:nth-child(2) { margin-top: 0; }
   .product-card:nth-child(3) { margin-top: 0; }
   .tech { grid-template-columns: 1fr; padding-top: 60px; }
   .tech-visual { order: 2; }

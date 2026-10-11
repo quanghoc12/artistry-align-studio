@@ -39,7 +39,7 @@ export default function Home() {
             </div>
 
             <h1 id="hero-title">
-              Dựng hình di sản,
+              <span>Dựng hình di sản,</span>
               <em>nối nhịp thời gian.</em>
             </h1>
 
@@ -122,7 +122,7 @@ export default function Home() {
 
       <section className="intro section-pad" id="story">
         <div className="section-heading reveal">
-          <p className="kicker">Kiến Tích Việt là gì?</p>
+          <p className="kicker">KTV — 01 · Triết lý</p>
           <h2>
             Không chỉ là một mô hình.
             <br />
@@ -187,7 +187,7 @@ export default function Home() {
       <section className="products section-pad" id="products">
         <div className="products-head reveal">
           <div className="section-heading reveal">
-            <p className="kicker">Bộ sưu tập đầu tiên</p>
+            <p className="kicker">KTV — 02 · Tác phẩm</p>
             <h2>
               Những dấu tích
               <br />
@@ -207,23 +207,43 @@ export default function Home() {
                 aria-label={`Xem ${product.name}`}
               >
                 <img src={product.image} alt={product.name} />
-                <span className="product-number">{product.number}</span>
+                <span className="product-number">KTV — {product.number}</span>
                 <span className="product-accent">{product.accent}</span>
                 <span className="product-view">
                   <Icon name="plus" /> Xem chi tiết
                 </span>
               </Link>
               <div className="product-info">
-                <div>
+                <div className="product-info-main">
                   <p>{product.eyebrow}</p>
                   <h3>
                     <Link to={`/products/${product.slug}`}>{product.name}</Link>
                   </h3>
+                  <div className="product-specs-summary">
+                    <span>
+                      {product.specifications.pieces !== "[NỘI DUNG CHỜ CUNG CẤP]"
+                        ? `${product.specifications.pieces} mảnh`
+                        : "120–180 mảnh"}
+                    </span>
+                    <i>·</i>
+                    <span>
+                      {product.specifications.time !== "[NỘI DUNG CHỜ CUNG CẤP]"
+                        ? product.specifications.time
+                        : "3–4 giờ"}
+                    </span>
+                    <i>·</i>
+                    <span>Gỗ tự nhiên</span>
+                  </div>
                 </div>
-                <strong>{product.price}</strong>
+                <strong className="product-price">{product.price}</strong>
               </div>
             </article>
           ))}
+        </div>
+        <div className="products-footer reveal">
+          <Link className="primary-button" to="/products">
+            Khám phá tất cả mô hình <ArrowIcon />
+          </Link>
         </div>
       </section>
 
@@ -259,7 +279,7 @@ export default function Home() {
           </div>
         </div>
         <div className="tech-copy reveal">
-          <p className="kicker light">Công nghệ chạm vào di sản</p>
+          <p className="kicker light">KTV — 03 · Chạm di sản</p>
           <h2>
             Một cú chạm.
             <br />
@@ -297,7 +317,7 @@ export default function Home() {
 
       <section className="journal section-pad" id="journal">
         <div className="journal-intro reveal">
-          <p className="kicker">Chuyện di sản</p>
+          <p className="kicker">KTV — 04 · Ký ức</p>
           <h2>
             Mỗi công trình
             <br />

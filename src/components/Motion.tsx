@@ -21,7 +21,7 @@ export function ScrollReveal() {
         })
       },
 
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+      { rootMargin: "0px 0px 60px 0px", threshold: 0.02 },
     )
 
     const seen = new WeakSet<Element>()
