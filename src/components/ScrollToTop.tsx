@@ -6,10 +6,23 @@ export default function ScrollToTop() {
   const { pathname, hash } = useLocation()
 
   useEffect(() => {
-    // Only scroll to top if there is no hash
-
     if (!hash) {
       window.scrollTo(0, 0)
+    } else {
+      const id = hash.replace("#", "")
+      const scrollToElement = () => {
+        const element = document.getElementById(id)
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" })
+          return true
+        }
+        return false
+      }
+
+      if (!scrollToElement()) {
+        const timer = setTimeout(scrollToElement, 150)
+        return () => clearTimeout(timer)
+      }
     }
   }, [pathname, hash])
 

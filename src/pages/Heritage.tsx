@@ -168,7 +168,11 @@ export default function Heritage() {
           </section>
 
           {/* Heritage Cards / Destinations */}
-          <section className="reveal" style={{ marginBottom: "80px" }}>
+          <section
+            id="destinations"
+            className="reveal"
+            style={{ marginBottom: "80px", scrollMarginTop: "120px" }}
+          >
             <h3
               style={{
                 fontSize: "24px",
@@ -254,6 +258,7 @@ export default function Heritage() {
           </section>
 
           <div
+            id="story"
             className="reveal"
             style={{
               display: "grid",
@@ -261,6 +266,7 @@ export default function Heritage() {
               gap: "60px",
               maxWidth: "1200px",
               margin: "0 auto",
+              scrollMarginTop: "120px",
             }}
           >
             {/* Individual Heritage Story */}

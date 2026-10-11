@@ -214,7 +214,7 @@ export default function Cart() {
         >
           Một dấu tích đang chờ bạn tự tay dựng nên.
         </p>
-        <LinkButton href="/#products">Khám phá sản phẩm</LinkButton>
+        <LinkButton href="/products">Khám phá sản phẩm</LinkButton>
       </div>
     )
   }

@@ -18,8 +18,9 @@ export default function Footer() {
           <div>
             <strong>Khám phá</strong>
             <Link to="/our-story">Về chúng tôi</Link>
-            <a href="/#products">Sản phẩm</a>
-            <a href="/#discover">Khám phá di sản</a>
+            <Link to="/products">Sản phẩm</Link>
+            <Link to="/heritage#destinations">Khám phá di sản</Link>
+            <Link to="/heritage#story">Chuyện di sản</Link>
           </div>
           <div>
             <strong>Kết nối</strong>

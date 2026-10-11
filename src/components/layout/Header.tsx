@@ -52,12 +52,38 @@ export default function Header() {
         <Link to="/products" onClick={() => setMenuOpen(false)}>
           Sản phẩm
         </Link>
-        <a href="/#discover" onClick={() => setMenuOpen(false)}>
+        <Link
+          to="/heritage#destinations"
+          onClick={() => {
+            setMenuOpen(false)
+            if (
+              location.pathname === "/heritage" &&
+              location.hash === "#destinations"
+            ) {
+              document
+                .getElementById("destinations")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          }}
+        >
           Khám phá di sản
-        </a>
-        <a href="/#journal" onClick={() => setMenuOpen(false)}>
+        </Link>
+        <Link
+          to="/heritage#story"
+          onClick={() => {
+            setMenuOpen(false)
+            if (
+              location.pathname === "/heritage" &&
+              location.hash === "#story"
+            ) {
+              document
+                .getElementById("story")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          }}
+        >
           Chuyện di sản
-        </a>
+        </Link>
       </nav>
       <div className="header-actions">
         <button
