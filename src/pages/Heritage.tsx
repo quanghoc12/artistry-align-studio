@@ -55,7 +55,7 @@ export default function Heritage() {
           zIndex: 10,
         }}
       >
-        <Logo light />
+        <Logo horizontal light />
         <nav
           className="main-nav"
           style={{

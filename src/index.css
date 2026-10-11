@@ -1140,7 +1140,8 @@ footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(2
 @media (max-width: 820px) {
   html { scroll-padding-top: 88px; }
   .site-header { height: 88px; grid-template-columns: 1fr auto; position: fixed; }
-  .site-header .logo { transform: scale(0.9); transform-origin: left; position: relative; z-index: 2; }
+  .site-header .logo,
+  .site-header .brand-logo { position: relative; z-index: 2; }
   .main-nav {
     align-items: center;
     background: var(--cream);
@@ -1223,10 +1224,37 @@ footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(2
 }
 
 /* Brand logo */
-.brand-logo { display: inline-flex; align-items: center; }
-.brand-logo img { height: 78px; width: auto; transition: transform 400ms ease; }
-.brand-logo:hover img { transform: scale(1.04); }
-.brand-logo.is-light img { height: 120px; filter: brightness(0) invert(92%) sepia(20%) saturate(400%); }
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: 4px 0;
+  transition: opacity 0.25s ease;
+}
+.brand-logo img {
+  width: auto;
+  transition: transform 300ms ease, opacity 250ms ease;
+  object-fit: contain;
+}
+.brand-logo:hover img {
+  transform: scale(1.04);
+}
+.brand-logo:active img {
+  transform: scale(0.96);
+}
+
+/* Horizontal logo (Header) */
+.brand-logo.brand-logo-horizontal img {
+  height: 48px;
+}
+
+/* Vertical logo (Footer / default) - restored */
+.brand-logo.brand-logo-vertical img,
+.footer-brand .brand-logo img {
+  height: 120px;
+}
 h1, h2, h3 { line-height: 1.2; }
 h2 { letter-spacing: -0.015em !important; }
 
@@ -1266,7 +1294,23 @@ h2 { letter-spacing: -0.015em !important; }
   .name-strip { grid-template-columns: 1fr; }
   .name-strip a { border-right: 0; border-bottom: 1px solid color-mix(in srgb, var(--red) 18%, transparent); }
   .journey-steps { grid-template-columns: repeat(3,1fr); }
-  .brand-logo img { height: 60px; }
+  .brand-logo.brand-logo-horizontal img {
+    height: 40px;
+  }
+  .brand-logo.brand-logo-vertical img,
+  .footer-brand .brand-logo img {
+    height: 95px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-logo.brand-logo-horizontal img {
+    height: 36px;
+  }
+  .brand-logo.brand-logo-vertical img,
+  .footer-brand .brand-logo img {
+    height: 85px;
+  }
 }
 
 /* Products page */

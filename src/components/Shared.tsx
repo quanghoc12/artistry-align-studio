@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 export type IconName = "arrow" | "bag" | "box" | "close" | "cube" | "headphones" | "menu" | "nfc" | "phone" | "play" | "plus" | "sparkle"
 
@@ -117,18 +117,66 @@ export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   )
 }
 
-export function Logo({ light = false }: { light?: boolean }) {
+export function Logo({
+  light = false,
+  horizontal = false,
+  onClick,
+}: {
+  light?: boolean
+  horizontal?: boolean
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
+}) {
+  const location = useLocation()
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (onClick) {
+      onClick(e)
+    }
+
+    if (location.pathname === "/") {
+      e.preventDefault()
+      if (window.location.hash) {
+        window.history.pushState(null, "", "/")
+      }
+      try {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        })
+      } catch {
+        window.scrollTo(0, 0)
+      }
+    } else {
+      try {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        })
+      } catch {
+        window.scrollTo(0, 0)
+      }
+    }
+  }
+
+  const logoSrc = horizontal ? "/images/logo-horizontal.png" : "/images/logo.png"
+  const logoWidth = horizontal ? 848 : 600
+  const logoHeight = horizontal ? 244 : 725
+
   return (
     <Link
-      aria-label="Kiến Tích Việt — Trang chủ"
-      className={`brand-logo ${light ? "is-light" : ""}`}
+      aria-label="Kiến Tích Việt — Về đầu trang"
+      className={`brand-logo ${horizontal ? "brand-logo-horizontal" : "brand-logo-vertical"} ${light ? "is-light" : ""}`}
       to="/"
+      onClick={handleClick}
+      title="Về đầu trang"
     >
       <img
-        src="/images/logo.png"
+        src={logoSrc}
         alt="Kiến Tích Việt"
-        width={600}
-        height={725}
+        width={logoWidth}
+        height={logoHeight}
       />
     </Link>
   )

@@ -26,12 +26,24 @@ export default function Header() {
 
   return (
     <header className={`site-header ${isHeroTheme ? "is-hero-theme" : ""}`}>
-      <Logo light={isHeroTheme} />
+      <Logo horizontal light={isHeroTheme} onClick={() => setMenuOpen(false)} />
       <nav
         className={`main-nav ${menuOpen ? "is-open" : ""}`}
         aria-label="Điều hướng chính"
       >
-        <Link to="/" onClick={() => setMenuOpen(false)}>
+        <Link
+          to="/"
+          onClick={(e) => {
+            setMenuOpen(false)
+            if (location.pathname === "/") {
+              e.preventDefault()
+              if (window.location.hash) {
+                window.history.pushState(null, "", "/")
+              }
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }
+          }}
+        >
           Trang chủ
         </Link>
         <Link to="/our-story" onClick={() => setMenuOpen(false)}>
