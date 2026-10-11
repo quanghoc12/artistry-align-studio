@@ -85,17 +85,26 @@ export default function Products() {
           </p>
         </div>
         <div className="shop-hero-stats reveal">
-          <div>
-            <b>{products.length}</b>
-            <span>Mô hình di sản</span>
+          <div className="hero-stat-card">
+            <span className="stat-index">01</span>
+            <div className="stat-info">
+              <strong>Tự tay lắp ghép</strong>
+              <span>Gỗ tự nhiên · Cắt mộng chuẩn xác</span>
+            </div>
           </div>
-          <div>
-            <Icon name="cube" size={28} />
-            <span>Lắp ghép gỗ</span>
+          <div className="hero-stat-card">
+            <span className="stat-index">02</span>
+            <div className="stat-info">
+              <strong>Trưng bày nghệ thuật</strong>
+              <span>Tỉ lệ chuẩn di sản · Điểm nhấn không gian</span>
+            </div>
           </div>
-          <div>
-            <Icon name="nfc" size={28} />
-            <span>Chạm NFC</span>
+          <div className="hero-stat-card">
+            <span className="stat-index">03</span>
+            <div className="stat-info">
+              <strong>Chạm NFC khám phá</strong>
+              <span>Lắng nghe tích xưa & trải nghiệm văn hóa</span>
+            </div>
           </div>
         </div>
       </section>
@@ -109,7 +118,7 @@ export default function Products() {
           <div className="shop-search">
             <input
               type="text"
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Tìm kiếm tác phẩm di sản..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -122,34 +131,42 @@ export default function Products() {
               </button>
             ) : null}
           </div>
-          <div className="shop-chips">
+          <div className="shop-chips" role="tablist" aria-label="Lọc theo địa danh">
             {categories.map((c) => (
               <button
                 key={c}
-                className={filterCategory === c ? "is-active" : ""}
+                role="tab"
+                aria-selected={filterCategory === c}
+                className={`shop-chip-tab ${filterCategory === c ? "is-active" : ""}`}
                 onClick={() => setFilterCategory(c)}
               >
                 {c}
               </button>
             ))}
           </div>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            aria-label="Sắp xếp"
-          >
-            <option value="Mặc định">Mặc định</option>
-            <option value="Tên A-Z">Tên A-Z</option>
-            <option value="Tên Z-A">Tên Z-A</option>
-            <option value="Giá thấp đến cao">Giá thấp đến cao</option>
-            <option value="Giá cao đến thấp">Giá cao đến thấp</option>
-          </select>
+          <div className="shop-sort-wrap">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              aria-label="Sắp xếp"
+            >
+              <option value="Mặc định">Sắp xếp: Mặc định</option>
+              <option value="Tên A-Z">Tên A-Z</option>
+              <option value="Tên Z-A">Tên Z-A</option>
+              <option value="Giá thấp đến cao">Giá: Thấp đến cao</option>
+              <option value="Giá cao đến thấp">Giá: Cao đến thấp</option>
+            </select>
+          </div>
         </div>
 
         {filteredAndSortedProducts.length > 0 ? (
           <div className="product-grid">
             {filteredAndSortedProducts.map((product) => (
-              <article className="product-card reveal" key={product.id}>
+              <article
+                className={`product-card reveal ${product.accent === "Sắp ra mắt" ? "is-upcoming" : ""}`}
+                key={product.id}
+                data-slug={product.slug}
+              >
                 <Link
                   to={`/products/${product.slug}`}
                   className="product-image"
@@ -157,69 +174,74 @@ export default function Products() {
                 >
                   <img src={product.image} alt={product.name} />
                   <span className="product-number">{product.number}</span>
-                  <span className="product-accent">{product.accent}</span>
+                  <span
+                    className={`product-accent badge-${product.accent === "Mới" ? "new" : product.accent === "Bán chạy" ? "bestseller" : "upcoming"}`}
+                  >
+                    {product.accent}
+                  </span>
                   <span className="product-view">
                     <Icon name="plus" /> Xem chi tiết
                   </span>
                 </Link>
                 <div className="product-info">
-                  <div>
-                    <p>{product.eyebrow}</p>
-                    <h3>
+                  <div className="product-info-top">
+                    <p className="product-eyebrow">{product.eyebrow}</p>
+                    <h3 className="product-title">
                       <Link to={`/products/${product.slug}`}>
                         {product.name}
+                        <span className="title-arrow" aria-hidden="true"> →</span>
                       </Link>
                     </h3>
                     {product.description && (
-                      <p
-                        className="shop-desc"
-                        style={{
-                          marginTop: "10px",
-                          fontSize: "15px",
-                          opacity: 0.8,
-                          display: "-webkit-box",
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                        }}
-                      >
+                      <p className="shop-desc">
                         {product.description}
                       </p>
                     )}
+                    <div className="product-card-meta">
+                      <span>{product.specifications?.pieces || "100+"} mảnh</span>
+                      <i>·</i>
+                      <span>{product.specifications?.time || "3–4 giờ"}</span>
+                      <i>·</i>
+                      <span>Chạm NFC</span>
+                    </div>
                   </div>
-                  <strong style={{ marginTop: "15px", display: "block" }}>
-                    {product.price}
-                  </strong>
+                  <div className="product-price-row">
+                    <div className="price-block">
+                      {product.accent === "Sắp ra mắt" ? (
+                        <>
+                          <span className="price-label">Dự kiến</span>
+                          <strong className="product-price">{product.price}</strong>
+                        </>
+                      ) : (
+                        <strong className="product-price">{product.price}</strong>
+                      )}
+                    </div>
+                    <Link
+                      to={`/products/${product.slug}`}
+                      className="product-inline-cta"
+                      aria-label={`Xem chi tiết ${product.name}`}
+                    >
+                      {product.accent === "Sắp ra mắt" ? "Xem chi tiết" : "Khám phá"}
+                    </Link>
+                  </div>
                 </div>
               </article>
             ))}
           </div>
         ) : (
-          <div
-            className="empty-state reveal"
-            style={{
-              textAlign: "center",
-              padding: "60px 20px",
-              backgroundColor: "rgba(0,0,0,0.02)",
-              borderRadius: "12px",
-              width: "100%",
-            }}
-          >
-            <p style={{ fontSize: "16px", marginBottom: "20px", opacity: 0.7 }}>
-              Không tìm thấy sản phẩm phù hợp.
+          <div className="empty-state reveal">
+            <p className="empty-state-text">
+              Không tìm thấy tác phẩm di sản phù hợp với bộ lọc hiện tại.
             </p>
             <button
               onClick={() => {
                 setSearchTerm("")
-
                 setFilterCategory("Tất cả")
-
                 setSortBy("Mặc định")
               }}
               className="button button-dark"
               style={{
                 border: "none",
-
                 cursor: "pointer",
               }}
             >

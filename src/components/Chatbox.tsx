@@ -116,42 +116,14 @@ export default function Chatbox() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        style={{
-          position: "fixed",
-
-          bottom: "20px",
-
-          right: "20px",
-
-          zIndex: 999,
-
-          width: "60px",
-
-          height: "60px",
-
-          borderRadius: "50%",
-
-          background: "#8F0019",
-
-          color: "#FFEBD1",
-
-          border: "none",
-
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-
-          display: isOpen ? "none" : "flex",
-
-          alignItems: "center",
-
-          justifyContent: "center",
-
-          cursor: "pointer",
-
-          transition: "transform 0.2s",
-        }}
-        aria-label="Mở Trợ lý Kiến Tích Việt"
+        className="chat-floating-trigger"
+        style={{ display: isOpen ? "none" : "flex" }}
+        aria-label="Mở Trợ lý Kiến Tích AI"
       >
-        <Icon name="sparkle" size={28} />
+        <span className="chat-trigger-icon">
+          <Icon name="sparkle" size={22} />
+        </span>
+        <span className="chat-trigger-text">Hỏi Trợ lý AI</span>
       </button>
 
       {isOpen && (

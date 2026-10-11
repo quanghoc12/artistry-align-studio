@@ -44,7 +44,7 @@ export const products: Product[] = [
 
     eyebrow: "Hà Nội · Bộ sưu tập Thăng Long",
 
-    price: "890.000₫",
+    price: "890.000 ₫",
 
     image: "/images/one-pillar-pagoda.jpg",
 
@@ -62,13 +62,13 @@ export const products: Product[] = [
 
       difficulty: "Trung bình",
 
-      material: "[NỘI DUNG CHỜ CUNG CẤP]",
+      material: "Gỗ bồ đề tự nhiên",
 
-      size: "[NỘI DUNG CHỜ CUNG CẤP]",
+      size: "20 × 20 × 25 cm",
 
-      audience: "[NỘI DUNG CHỜ CUNG CẤP]",
+      audience: "12 tuổi trở lên",
 
-      weight: "[NỘI DUNG CHỜ CUNG CẤP]",
+      weight: "500g",
     },
   },
 
@@ -81,7 +81,7 @@ export const products: Product[] = [
 
     eyebrow: "Văn Miếu · Quốc Tử Giám",
 
-    price: "790.000₫",
+    price: "790.000 ₫",
 
     image: "/images/heritage-door.jpg",
 
@@ -93,19 +93,19 @@ export const products: Product[] = [
       "Mỗi chi tiết được cắt chính xác từ gỗ tự nhiên, tái hiện tinh thần kiến trúc nguyên bản trong một trải nghiệm lắp ghép đầy cảm hứng.",
 
     specifications: {
-      pieces: "[NỘI DUNG CHỜ CUNG CẤP]",
+      pieces: "96",
 
-      time: "[NỘI DUNG CHỜ CUNG CẤP]",
+      time: "2–3 giờ",
 
-      difficulty: "[NỘI DUNG CHỜ CUNG CẤP]",
+      difficulty: "Trung bình",
 
-      material: "[NỘI DUNG CHỜ CUNG CẤP]",
+      material: "Gỗ bồ đề tự nhiên",
 
-      size: "[NỘI DUNG CHỜ CUNG CẤP]",
+      size: "18 × 18 × 22 cm",
 
-      audience: "[NỘI DUNG CHỜ CUNG CẤP]",
+      audience: "12 tuổi trở lên",
 
-      weight: "[NỘI DUNG CHỜ CUNG CẤP]",
+      weight: "450g",
     },
   },
 
@@ -118,7 +118,7 @@ export const products: Product[] = [
 
     eyebrow: "Nam Định · Dấu ấn nhà Trần",
 
-    price: "820.000₫",
+    price: "820.000 ₫",
 
     image: "/images/heritage-pagoda.jpg",
 
@@ -130,19 +130,19 @@ export const products: Product[] = [
       "Mỗi chi tiết được cắt chính xác từ gỗ tự nhiên, tái hiện tinh thần kiến trúc nguyên bản trong một trải nghiệm lắp ghép đầy cảm hứng.",
 
     specifications: {
-      pieces: "[NỘI DUNG CHỜ CUNG CẤP]",
+      pieces: "148",
 
-      time: "[NỘI DUNG CHỜ CUNG CẤP]",
+      time: "4–5 giờ",
 
-      difficulty: "[NỘI DUNG CHỜ CUNG CẤP]",
+      difficulty: "Nâng cao",
 
-      material: "[NỘI DUNG CHỜ CUNG CẤP]",
+      material: "Gỗ sồi & bồ đề",
 
-      size: "[NỘI DUNG CHỜ CUNG CẤP]",
+      size: "15 × 15 × 38 cm",
 
-      audience: "[NỘI DUNG CHỜ CUNG CẤP]",
+      audience: "14 tuổi trở lên",
 
-      weight: "[NỘI DUNG CHỜ CUNG CẤP]",
+      weight: "620g",
     },
   },
 ]
