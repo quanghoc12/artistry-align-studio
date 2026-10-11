@@ -130,15 +130,18 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
     return html.replace(`<!-- ${slotName} -->`, content)
   }
 
-  const title = config.title ?? "Figma Make App"
+  const title =
+    config.title ?? "Kiến Tích Việt — Mô hình lắp ghép di sản Việt"
 
-  const description = config.description ?? ""
+  const description =
+    config.description ??
+    "Khám phá và lắp ráp mô hình gỗ di sản văn hóa Việt Nam kết hợp thuyết minh âm thanh NFC và trải nghiệm tương tác 3D/AR sinh động."
 
   const favicon = config.icons?.icon ?? ""
 
   const socialImage = config.openGraph?.image ?? ""
 
-  const language = sanitizeHtmlValue(config.language) || "en"
+  const language = sanitizeHtmlValue(config.language) || "vi"
 
   const googleAnalyticsId = sanitizeHtmlValue(
     config.analytics?.googleAnalyticsId,
@@ -153,7 +156,9 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
   const bodyEnd = config.customScripts?.bodyEnd ?? ""
 
   const robotsTxt =
-    config.robots?.index === false ? "User-agent: *\nDisallow: /\n" : ""
+    config.robots?.index === false
+      ? "User-agent: *\nDisallow: /\n"
+      : "User-agent: *\nAllow: /\n"
 
   return {
     name: "figma-site-configuration",
@@ -230,19 +235,38 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
         }
 
         if (title) {
-          tags.push({
-            tag: "meta",
-            attrs: { property: "og:title", content: title },
-            injectTo: "head",
-          })
+          tags.push(
+            {
+              tag: "meta",
+              attrs: { property: "og:title", content: title },
+              injectTo: "head",
+            },
+            {
+              tag: "meta",
+              attrs: { property: "og:site_name", content: "Kiến Tích Việt" },
+              injectTo: "head",
+            },
+            {
+              tag: "meta",
+              attrs: { name: "twitter:title", content: title },
+              injectTo: "head",
+            },
+          )
         }
 
         if (description) {
-          tags.push({
-            tag: "meta",
-            attrs: { property: "og:description", content: description },
-            injectTo: "head",
-          })
+          tags.push(
+            {
+              tag: "meta",
+              attrs: { property: "og:description", content: description },
+              injectTo: "head",
+            },
+            {
+              tag: "meta",
+              attrs: { name: "twitter:description", content: description },
+              injectTo: "head",
+            },
+          )
         }
 
         if (socialImage) {
