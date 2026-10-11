@@ -63,16 +63,14 @@ export default function Header() {
           Sản phẩm
         </Link>
         <Link
-          to="/heritage#destinations"
-          onClick={() => {
+          to="/heritage"
+          onClick={(e) => {
             setMenuOpen(false)
-            if (
-              location.pathname === "/heritage" &&
-              location.hash === "#destinations"
-            ) {
-              document
-                .getElementById("destinations")
-                ?.scrollIntoView({ behavior: "smooth" })
+            if (location.pathname.startsWith("/heritage")) {
+              if (window.location.hash) {
+                window.history.pushState(null, "", "/heritage")
+              }
+              window.scrollTo({ top: 0, behavior: "smooth" })
             }
           }}
         >
