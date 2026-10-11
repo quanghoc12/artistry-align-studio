@@ -7,7 +7,8 @@ import { products } from "../data/products"
 export default function Heritage() {
   const { id } = useParams<{ id: string }>()
 
-  const product = products.find((p) => p.slug === id)
+  const currentSlug = id || products[0]?.slug || "chua-mot-cot"
+  const product = products.find((p) => p.slug === currentSlug) || products[0]
 
   if (!product) {
     return (
@@ -34,7 +35,7 @@ export default function Heritage() {
     )
   }
 
-  const otherHeritages = products.filter((p) => p.slug !== id)
+  const otherHeritages = products.filter((p) => p.slug !== product.slug)
 
   return (
     <div

@@ -17,7 +17,12 @@ function ArrowIcon() {
 function SoundIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-      <path d="M4 14v-4M8 17V7M12 20V4M16 17V7M20 14v-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path
+        d="M4 14v-4M8 17V7M12 20V4M16 17V7M20 14v-4"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }
@@ -44,8 +49,8 @@ export default function Home() {
             </h1>
 
             <p className="hero-description">
-              Kiến Tích Việt biến những dấu tích văn hóa Việt thành mô hình lắp ghép
-              để bạn tự tay kiến tạo, trưng bày và khám phá.
+              Kiến Tích Việt biến những dấu tích văn hóa Việt thành mô hình lắp
+              ghép để bạn tự tay kiến tạo, trưng bày và khám phá.
             </p>
 
             <div className="hero-actions">
@@ -221,7 +226,8 @@ export default function Home() {
                   </h3>
                   <div className="product-specs-summary">
                     <span>
-                      {product.specifications.pieces !== "[NỘI DUNG CHỜ CUNG CẤP]"
+                      {product.specifications.pieces !==
+                      "[NỘI DUNG CHỜ CUNG CẤP]"
                         ? `${product.specifications.pieces} mảnh`
                         : "120–180 mảnh"}
                     </span>
@@ -279,7 +285,7 @@ export default function Home() {
           </div>
         </div>
         <div className="tech-copy reveal">
-          <p className="kicker light">KTV — 03 · Chạm di sản</p>
+          <p className="kicker light">KTV — 03 · Khám phá kĩ thuật số</p>
           <h2>
             Một cú chạm.
             <br />
@@ -309,8 +315,11 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <LinkButton href="/#journal" dark>
-            Khám phá trải nghiệm
+          <LinkButton
+            href={`/heritage/${products[0]?.slug || "chua-mot-cot"}`}
+            dark
+          >
+            Khám phá trải nghiệm số
           </LinkButton>
         </div>
       </section>
@@ -327,24 +336,34 @@ export default function Home() {
             Đi qua lịch sử bằng những câu chuyện nhỏ, những chi tiết kiến trúc
             và ký ức được kể lại.
           </p>
-          <a className="text-link" href="/#journal">
+          <Link
+            className="text-link"
+            to={`/heritage/${products[0]?.slug || "chua-mot-cot"}`}
+          >
             Khám phá di sản <Icon name="arrow" />
-          </a>
+          </Link>
         </div>
         <div className="story-list">
-          {stories.map((story, index) => (
-            <article className="story-item reveal" key={story.title}>
-              <span className="story-index">0{index + 1}</span>
-              <img src={story.image} alt="" />
-              <div>
-                <p>{story.place}</p>
-                <h3>{story.title}</h3>
-              </div>
-              <span className="story-arrow">
-                <Icon name="arrow" />
-              </span>
-            </article>
-          ))}
+          {stories.map((story, index) => {
+            const productSlug = products[index]?.slug || "chua-mot-cot"
+            return (
+              <Link
+                to={`/heritage/${productSlug}`}
+                className="story-item reveal"
+                key={story.title}
+              >
+                <span className="story-index">0{index + 1}</span>
+                <img src={story.image} alt="" />
+                <div>
+                  <p>{story.place}</p>
+                  <h3>{story.title}</h3>
+                </div>
+                <span className="story-arrow">
+                  <Icon name="arrow" />
+                </span>
+              </Link>
+            )
+          })}
         </div>
       </section>
 

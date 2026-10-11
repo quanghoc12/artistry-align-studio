@@ -31,6 +31,7 @@ export default function App() {
             <Route path="our-story" element={<OurStory />} />
             <Route path="products" element={<Products />} />
             <Route path="products/:slug" element={<ProductDetail />} />
+            <Route path="heritage" element={<Heritage />} />
             <Route path="heritage/:id" element={<Heritage />} />
             <Route path="cart" element={<Cart />} />
             <Route path="*" element={<NotFound />} />
