@@ -55,9 +55,9 @@ export default function CartDrawer() {
             <Icon name="bag" size={42} />
             <h3>Giỏ hàng còn trống</h3>
             <p>Một dấu tích đang chờ bạn tự tay dựng nên.</p>
-            <button onClick={() => setCartOpen(false)}>
+            <Link to="/products" onClick={() => setCartOpen(false)}>
               Khám phá sản phẩm
-            </button>
+            </Link>
           </div>
         ) : (
           <>
@@ -68,13 +68,27 @@ export default function CartDrawer() {
                   key={item.product.id}
                   style={{ marginBottom: "20px" }}
                 >
-                  <img src={item.product.image} alt={item.product.name} />
+                  <Link
+                    to={`/products/${item.product.slug}`}
+                    onClick={() => setCartOpen(false)}
+                    style={{ display: "block" }}
+                  >
+                    <img src={item.product.image} alt={item.product.name} />
+                  </Link>
                   <div>
                     <small>
                       {item.product.eyebrow.split("·")[0].trim() ||
                         "Bộ sưu tập Thăng Long"}
                     </small>
-                    <h3>{item.product.name}</h3>
+                    <h3>
+                      <Link
+                        to={`/products/${item.product.slug}`}
+                        onClick={() => setCartOpen(false)}
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        {item.product.name}
+                      </Link>
+                    </h3>
                     <div
                       style={{
                         display: "flex",
