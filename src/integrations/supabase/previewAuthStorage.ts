@@ -83,7 +83,7 @@ export function brokeredPreviewStorage() {
 
       let timer: ReturnType<typeof setTimeout>
 
-      const finish = (r: { ok: boolean value?: string | null } | null) => {
+      const finish = (r: { ok: boolean; value?: string | null } | null) => {
         if (done) return
 
         done = true

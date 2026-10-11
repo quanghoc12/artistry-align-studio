@@ -1,19 +1,32 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Icon, Logo } from "../Shared"
 
 import { useCart } from "../../context/CartContext"
 
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-
+  const [scrolled, setScrolled] = useState(false)
   const { cartCount, setCartOpen } = useCart()
+  const location = useLocation()
+  const isHome = location.pathname === "/"
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40)
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const isHeroTheme = isHome && !scrolled
 
   return (
-    <header className="site-header">
-      <Logo />
+    <header className={`site-header ${isHeroTheme ? "is-hero-theme" : ""}`}>
+      <Logo light={isHeroTheme} />
       <nav
         className={`main-nav ${menuOpen ? "is-open" : ""}`}
         aria-label="Điều hướng chính"

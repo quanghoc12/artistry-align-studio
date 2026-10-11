@@ -66,7 +66,7 @@ export function ScrollReveal() {
   return null
 }
 
-type ToastItem = { id: number text: string leaving?: boolean }
+type ToastItem = { id: number; text: string; leaving?: boolean }
 
 export function toast(text: string) {
   window.dispatchEvent(new CustomEvent("ktv-toast", { detail: text }))

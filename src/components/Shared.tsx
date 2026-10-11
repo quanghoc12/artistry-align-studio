@@ -34,7 +34,7 @@ export const stories = [
   },
 ]
 
-export function Icon({ name, size = 20 }: { name: IconName size?: number }) {
+export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   const paths: Record<IconName, ReactNode> = {
     arrow: <path d="M5 12h14M14 7l5 5-5 5" />,
 

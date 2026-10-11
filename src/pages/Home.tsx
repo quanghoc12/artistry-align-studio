@@ -1,61 +1,123 @@
 import { useState } from "react"
-
 import { Icon, LinkButton, stories } from "../components/Shared"
-
 import { products } from "../data/products"
-
 import { Link } from "react-router-dom"
+
+const heritageImage =
+  "https://images.unsplash.com/photo-1618165220283-e85246c4171c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=88&w=1600"
+
+function ArrowIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
+      <path d="M4 10h11M11 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
+function SoundIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+      <path d="M4 14v-4M8 17V7M12 20V4M16 17V7M20 14v-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  )
+}
 
 export default function Home() {
   const [playing, setPlaying] = useState(false)
 
   return (
     <>
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-copy">
-          <p className="kicker">Mô hình lắp ghép di sản Việt Nam</p>
-          <h1 id="hero-title">
-            Dựng hình di sản,
-            <em>nối nhịp thời gian.</em>
-          </h1>
-          <p className="hero-description">
-            Kiến Tích Việt biến những dấu tích văn hóa Việt thành những mô hình
-            lắp ghép để bạn tự tay kiến tạo, trưng bày và khám phá.
-          </p>
-          <div className="hero-actions">
-            <LinkButton href="/products">Khám phá sản phẩm</LinkButton>
-            <a className="text-link" href="/#story">
-              Về Kiến Tích Việt <Icon name="arrow" />
-            </a>
-          </div>
-        </div>
-        <div className="hero-visual">
-          <div className="hero-image-wrap parallax-layer" data-speed="0.08">
-            <img
-              src="/images/one-pillar-pagoda.jpg"
-              alt="Chùa Một Cột giữa khuôn viên xanh"
-            />
-            <div className="image-frame" aria-hidden="true" />
-            <span className="image-note image-note-top">Di sản số 01</span>
-            <span className="image-note image-note-bottom">
-              Chùa Một Cột · Hà Nội
-            </span>
-          </div>
-          <div className="wood-card">
-            <span className="wood-card-label">Từ 120 mảnh gỗ</span>
-            <div className="model-mark" aria-hidden="true">
-              <span className="roof roof-one" />
-              <span className="roof roof-two" />
-              <span className="pillar" />
-              <span className="base" />
+      <section className="hero-shell" aria-labelledby="hero-title">
+        <div className="paper-grain" />
+        <div className="sun-orbit" />
+
+        <div className="hero-content">
+          <div className="hero-copy">
+            <div className="eyebrow">
+              <span />
+              Di sản Việt trong một hình hài mới
             </div>
-            <span className="wood-card-title">thành một dấu tích</span>
+
+            <h1 id="hero-title">
+              Dựng hình di sản,
+              <em>nối nhịp thời gian.</em>
+            </h1>
+
+            <p className="hero-description">
+              Kiến Tích Việt biến những dấu tích văn hóa Việt thành mô hình lắp ghép
+              để bạn tự tay kiến tạo, trưng bày và khám phá.
+            </p>
+
+            <div className="hero-actions">
+              <Link className="primary-button" to="/products">
+                Khám phá sản phẩm <ArrowIcon />
+              </Link>
+              <a className="text-button" href="/#story">
+                Về Kiến Tích Việt
+                <span aria-hidden="true" />
+              </a>
+            </div>
+
+            <div className="experience-note">
+              <div className="sound-chip">
+                <SoundIcon />
+              </div>
+              <p>
+                <strong>Chạm để đánh thức di sản</strong>
+                NFC · Audio · AR Experience
+              </p>
+            </div>
+          </div>
+
+          <div className="hero-visual" aria-label="Kiến trúc di sản Việt Nam">
+            <div className="visual-number">01</div>
+            <div className="visual-frame">
+              <img
+                src={heritageImage}
+                alt="Mái đình truyền thống Việt Nam giữa thiên nhiên"
+              />
+              <div className="visual-tint" />
+              <div className="corner corner-left" />
+              <div className="corner corner-right" />
+              <div className="visual-caption">
+                <span>Di sản nổi bật</span>
+                <strong>Kiến trúc đình Việt</strong>
+              </div>
+            </div>
+
+            <div className="nfc-orbit">
+              <div className="nfc-ripple ripple-one" />
+              <div className="nfc-ripple ripple-two" />
+              <div className="nfc-core">
+                <svg aria-hidden="true" viewBox="0 0 32 32" fill="none">
+                  <path
+                    d="M11 9c4 3 4 11 0 14M16 6c7 5 7 15 0 20M21 3c10 7 10 19 0 26"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span>NFC</span>
+              </div>
+            </div>
+
+            <div className="floating-card">
+              <span className="card-index">KTV — 01</span>
+              <div className="card-line" />
+              <strong>Chạm.</strong>
+              <strong>Nghe.</strong>
+              <strong>Khám phá.</strong>
+            </div>
           </div>
         </div>
-        <a className="scroll-cue" href="/#story">
-          <span>Cuộn để khám phá</span>
-          <span className="scroll-line" />
-        </a>
+
+        <div className="hero-footer">
+          <span>Thiết kế tại Việt Nam</span>
+          <a href="/#story">
+            Cuộn để khám phá <i>↓</i>
+          </a>
+          <span>kientichviet.com</span>
+        </div>
       </section>
 
       <section className="intro section-pad" id="story">

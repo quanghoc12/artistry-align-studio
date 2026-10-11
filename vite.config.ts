@@ -26,6 +26,10 @@ export default defineConfig(({ mode }) => {
       minify: !emitSourcemaps,
     },
 
+    esbuild: {
+      drop: mode === "development" ? [] : (["console", "debugger"] as ("console" | "debugger")[]),
+    },
+
     plugins: [
       react(),
 
