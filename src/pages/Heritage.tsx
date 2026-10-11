@@ -1,9 +1,8 @@
 import { useParams, Link } from "react-router-dom"
-
-import { Icon, Logo, LinkButton } from "../components/Shared"
+import { Icon, LinkButton } from "../components/Shared"
 import AudioGuidePlayer from "../components/AudioGuidePlayer"
-
 import { products } from "../data/products"
+import { Sparkles, Box, ArrowRight, BookOpen, Compass, Layers } from "lucide-react"
 
 export default function Heritage() {
   const { id } = useParams<{ id: string }>()
@@ -16,8 +15,8 @@ export default function Heritage() {
       <div
         className="site-shell"
         style={{
-          background: "#111",
-          color: "#fff",
+          background: "#150a0b",
+          color: "#fff7ec",
           height: "100vh",
           display: "flex",
           flexDirection: "column",
@@ -25,10 +24,10 @@ export default function Heritage() {
           justifyContent: "center",
         }}
       >
-        <h1 style={{ color: "var(--red)", marginBottom: "15px" }}>
+        <h1 style={{ color: "var(--red)", marginBottom: "15px", fontFamily: '"Vollkorn", serif' }}>
           Không tìm thấy nội dung di sản
         </h1>
-        <p style={{ color: "var(--muted)", marginBottom: "30px" }}>
+        <p style={{ color: "rgba(255, 235, 209, 0.7)", marginBottom: "30px" }}>
           Nội dung bạn đang tìm kiếm không tồn tại hoặc đã được di dời.
         </p>
         <LinkButton href="/">Trở về trang chủ</LinkButton>
@@ -40,68 +39,27 @@ export default function Heritage() {
 
   return (
     <div
-      className="site-shell"
+      className="heritage-page site-shell"
       style={{
-        background: "#111",
-        color: "#fff",
+        background: "#150a0b",
+        color: "#fff7ec",
         minHeight: "100vh",
         overflowX: "hidden",
       }}
     >
-      <header
-        className="site-header"
-        style={{
-          borderBottom: "1px solid rgba(255,255,255,0.1)",
-          position: "absolute",
-          width: "100%",
-          zIndex: 10,
-        }}
-      >
-        <Logo horizontal light />
-        <nav
-          className="main-nav"
-          style={{
-            opacity: 1,
-            position: "static",
-            background: "transparent",
-            flexDirection: "row",
-            padding: 0,
-            transform: "none",
-            pointerEvents: "auto",
-          }}
-        >
-          <Link to="/" style={{ color: "#fff" }}>
-            Trang chủ
-          </Link>
-          <Link to="/our-story" style={{ color: "#fff" }}>
-            Câu chuyện
-          </Link>
-        </nav>
-        <div className="header-actions">
-          <Link
-            to={`/products/${product.slug}`}
-            className="menu-button"
-            style={{ color: "#fff" }}
-          >
-            <Icon name="close" size={24} />
-          </Link>
-        </div>
-      </header>
-
-      <main
-        style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
-      >
+      <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         {/* Hero Section */}
         <div
           style={{
             position: "relative",
-            height: "70vh",
+            height: "clamp(480px, 62vh, 620px)",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
+            alignItems: "flex-end",
+            justifyContent: "flex-start",
+            overflow: "hidden",
           }}
         >
+          {/* Background Heritage Image with centered crop */}
           <img
             src={product.image}
             alt={product.name}
@@ -112,74 +70,135 @@ export default function Heritage() {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              opacity: 0.5,
+              objectPosition: "center 32%",
+              opacity: 0.62,
               zIndex: 0,
             }}
           />
+
+          {/* Multi-layered warm lacquer gradient overlay */}
           <div
             style={{
               position: "absolute",
-              bottom: "0",
-              left: "0",
+              inset: 0,
+              background:
+                "linear-gradient(to top, #150a0b 0%, rgba(21, 10, 11, 0.82) 32%, rgba(21, 10, 11, 0.3) 68%, rgba(0, 0, 0, 0.45) 100%)",
+              zIndex: 1,
+            }}
+          />
+
+          {/* Hero Typography & Kicker */}
+          <div
+            style={{
+              position: "relative",
               width: "100%",
-              background: "linear-gradient(transparent, rgba(0,0,0,0.9))",
-              padding: "60px 5vw 40px",
+              maxWidth: "1280px",
+              margin: "0 auto",
+              padding: "0 clamp(24px, 5vw, 80px) 48px",
               zIndex: 5,
             }}
           >
-            <p
-              className="kicker"
-              style={{ color: "var(--red)", marginBottom: "10px" }}
-            >
-              CHUYỆN DI SẢN
-            </p>
+            {/* Elegant Kicker Badge */}
+            <div style={{ marginBottom: "16px" }}>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "6px 14px",
+                  borderRadius: "99px",
+                  background: "rgba(143, 0, 25, 0.55)",
+                  border: "1px solid rgba(255, 209, 141, 0.32)",
+                  color: "var(--gold)",
+                  fontSize: "12px",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <Sparkles size={13} />
+                {product.slug === "chua-mot-cot"
+                  ? "HÀ NỘI · DI SẢN SỐ 01"
+                  : `${product.eyebrow.split("·")[0]?.trim() || "DI SẢN"} · SỐ ${product.number}`}
+              </span>
+            </div>
+
+            {/* Heritage Name */}
             <h1
               style={{
-                fontSize: "clamp(40px, 6vw, 64px)",
-                margin: "0 0 15px",
+                fontSize: "clamp(40px, 6vw, 68px)",
+                margin: "0 0 12px",
                 lineHeight: 1.1,
                 fontFamily: '"Vollkorn", serif',
-                color: "#fff",
+                color: "#fff7ec",
+                textShadow: "0 4px 20px rgba(0, 0, 0, 0.6)",
               }}
             >
               {product.name}
             </h1>
-          </div>
-        </div>
 
-        <div style={{ background: "#111", padding: "60px 5vw 100px" }}>
-          {/* Introduction */}
-          <section
-            className="reveal"
-            style={{
-              maxWidth: "800px",
-              margin: "0 auto 40px",
-              textAlign: "center",
-            }}
-          >
+            {/* Heritage Subtitle */}
             <p
               style={{
-                fontSize: "20px",
-                lineHeight: 1.6,
-                color: "rgba(255,255,255,0.85)",
+                fontSize: "clamp(16px, 2vw, 20px)",
+                color: "rgba(255, 235, 209, 0.85)",
+                margin: 0,
+                maxWidth: "700px",
+                lineHeight: 1.5,
                 fontFamily: '"Vollkorn", serif',
+                fontStyle: "italic",
               }}
             >
               {product.slug === "chua-mot-cot"
-                ? "Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh thời gian thực dưới đây."
-                : "[NỘI DUNG GIỚI THIỆU CHỜ CUNG CẤP]"}
+                ? "Diên Hựu Tự nghìn năm văn hiến · Đóa sen gỗ vươn mình giữa lòng hồ Linh Chiểu"
+                : product.eyebrow}
             </p>
-          </section>
+          </div>
+        </div>
 
+        {/* Main Content Area */}
+        <div style={{ background: "#150a0b", padding: "40px clamp(24px, 5vw, 80px) 100px" }}>
           {/* Audio Guide Section */}
           {product.audioUrl && (
             <section
               className="reveal"
               style={{
-                maxWidth: "860px",
-                margin: "0 auto 70px",
+                maxWidth: "920px",
+                margin: "0 auto 80px",
               }}
             >
+              <div
+                style={{
+                  textAlign: "center",
+                  marginBottom: "28px",
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: "clamp(22px, 3vw, 30px)",
+                    color: "var(--gold)",
+                    fontFamily: '"Vollkorn", serif',
+                    marginBottom: "10px",
+                  }}
+                >
+                  Không gian Thuyết minh Âm thanh
+                </h2>
+                <p
+                  style={{
+                    fontSize: "17px",
+                    lineHeight: 1.6,
+                    color: "rgba(255, 235, 209, 0.82)",
+                    maxWidth: "760px",
+                    margin: "0 auto",
+                  }}
+                >
+                  Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm
+                  vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện
+                  về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh thời gian thực dưới đây.
+                </p>
+              </div>
+
               <AudioGuidePlayer
                 audioUrl={product.audioUrl}
                 title={product.audioTitle || product.name}
@@ -190,311 +209,571 @@ export default function Heritage() {
             </section>
           )}
 
-          {/* Heritage Cards / Destinations */}
-          <section
-            id="destinations"
-            className="reveal"
-            style={{ marginBottom: "80px", scrollMarginTop: "120px" }}
-          >
-            <h3
-              style={{
-                fontSize: "24px",
-                color: "var(--gold)",
-                marginBottom: "30px",
-                fontFamily: '"Vollkorn", serif',
-                textAlign: "center",
-              }}
-            >
-              Khám phá các điểm đến di sản
-            </h3>
-            <div
-              className="reveal"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: "30px",
-                maxWidth: "1200px",
-                margin: "0 auto",
-              }}
-            >
-              {products.map((p) => (
-                <div
-                  key={p.id}
-                  style={{
-                    background: "rgba(255,255,255,0.05)",
-                    borderRadius: "8px",
-                    overflow: "hidden",
-                  }}
-                >
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    style={{
-                      width: "100%",
-                      height: "200px",
-                      objectFit: "cover",
-                    }}
-                  />
-                  <div style={{ padding: "20px" }}>
-                    <h4
-                      style={{
-                        fontSize: "20px",
-                        color: "#fff",
-                        marginBottom: "10px",
-                        fontFamily: '"Vollkorn", serif',
-                      }}
-                    >
-                      {p.name}
-                    </h4>
-                    <p
-                      style={{
-                        color: "rgba(255,255,255,0.6)",
-                        fontSize: "14px",
-                        marginBottom: "20px",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {p.description || "[NỘI DUNG LỊCH SỬ CHỜ CUNG CẤP]"}
-                    </p>
-                    <Link
-                      to={`/heritage/${p.slug}`}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        color: "var(--gold)",
-                        fontSize: "14px",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.1em",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Khám phá <Icon name="plus" />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
+          {/* Heritage Story & Cultural Architecture: Balanced 55/45 Two-Column Layout */}
           <div
             id="story"
             className="reveal"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
               gap: "60px",
               maxWidth: "1200px",
-              margin: "0 auto",
+              margin: "0 auto 90px",
               scrollMarginTop: "120px",
             }}
           >
-            {/* Individual Heritage Story */}
-            <div>
-              <h3
-                style={{
-                  fontSize: "28px",
-                  color: "var(--gold)",
-                  marginBottom: "25px",
-                  fontFamily: '"Vollkorn", serif',
-                }}
-              >
-                Câu chuyện di sản
-              </h3>
-              <p
-                style={{
-                  lineHeight: 1.7,
-                  color: "rgba(255,255,255,0.8)",
-                  marginBottom: "20px",
-                }}
-              >
-                [NỘI DUNG LỊCH SỬ CHỜ CUNG CẤP]
-              </p>
-
-              <h3
-                style={{
-                  fontSize: "28px",
-                  color: "var(--gold)",
-                  margin: "45px 0 25px",
-                  fontFamily: '"Vollkorn", serif',
-                }}
-              >
-                Kiến trúc & Văn hóa
-              </h3>
-              <p style={{ lineHeight: 1.7, color: "rgba(255,255,255,0.8)" }}>
-                [THÔNG TIN KIẾN TRÚC CHỜ CUNG CẤP]
-              </p>
-            </div>
-
-            <div>
-              {/* Product Connection */}
+            {/* Column Left (55%): Deep Narrative, Ancient Chronicles & Architecture */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+              {/* Ancient Chronicle Quote Block */}
               <div
                 style={{
-                  background: "var(--red)",
-                  padding: "35px",
-                  borderRadius: "8px",
-                  marginBottom: "40px",
+                  background: "linear-gradient(135deg, #241315 0%, #190c0e 100%)",
+                  borderLeft: "3px solid var(--gold)",
+                  borderTop: "1px solid rgba(255, 209, 141, 0.15)",
+                  borderRight: "1px solid rgba(255, 209, 141, 0.15)",
+                  borderBottom: "1px solid rgba(255, 209, 141, 0.15)",
+                  padding: "26px 28px",
+                  borderRadius: "0 12px 12px 0",
                 }}
               >
-                <p
-                  style={{
-                    color: "var(--cream)",
-                    fontSize: "14px",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    marginBottom: "10px",
-                  }}
-                >
-                  Khám phá mô hình
-                </p>
-                <h3
-                  style={{
-                    fontSize: "28px",
-                    color: "#fff",
-                    marginBottom: "20px",
-                    fontFamily: '"Vollkorn", serif',
-                  }}
-                >
-                  {product.name}
-                </h3>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  style={{
-                    width: "100%",
-                    height: "200px",
-                    objectFit: "cover",
-                    marginBottom: "25px",
-                    borderRadius: "4px",
-                  }}
-                />
-                <LinkButton href={`/products/${product.slug}`} dark>
-                  Xem chi tiết sản phẩm
-                </LinkButton>
-              </div>
-
-              {/* Audio */}
-              <div
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  padding: "35px",
-                  borderRadius: "8px",
-                  marginBottom: "40px",
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: "22px",
-                    color: "#fff",
-                    marginBottom: "15px",
-                    fontFamily: '"Vollkorn", serif',
-                  }}
-                >
-                  Nghe câu chuyện di sản
-                </h3>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "20px",
-                    marginTop: "20px",
-                    opacity: 0.5,
-                  }}
-                >
-                  <div
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                  <BookOpen size={16} color="var(--gold)" />
+                  <span
                     style={{
-                      background: "rgba(255,255,255,0.2)",
-                      borderRadius: "50%",
-                      width: "50px",
-                      height: "50px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      fontSize: "12px",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.15em",
+                      color: "var(--gold)",
+                      fontWeight: 600,
                     }}
                   >
-                    <Icon name="play" />
+                    Thư tịch cổ · Đại Việt Sử Ký Toàn Thư
+                  </span>
+                </div>
+                <blockquote
+                  style={{
+                    margin: 0,
+                    fontSize: "16.5px",
+                    lineHeight: 1.7,
+                    color: "rgba(255, 235, 209, 0.9)",
+                    fontFamily: '"Vollkorn", serif',
+                    fontStyle: "italic",
+                  }}
+                >
+                  "Mùa đông tháng 10 năm Kỷ Dậu (1049), dựng chùa Diên Hựu. Vua Lý Thái Tông chiêm bao thấy
+                  Phật Quan Âm dắt lên tòa sen, bèn sai dựng chùa, xây cột đá ở giữa hồ, làm tòa sen của Phật
+                  Quan Âm đặt trên cột như đã thấy trong mộng..."
+                </blockquote>
+              </div>
+
+              {/* Story Chapter 1 */}
+              <div>
+                <h3
+                  style={{
+                    fontSize: "26px",
+                    color: "var(--gold)",
+                    marginBottom: "16px",
+                    fontFamily: '"Vollkorn", serif',
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <Compass size={22} /> Huyền tích khởi lập (Năm 1049)
+                </h3>
+                <p
+                  style={{
+                    lineHeight: 1.75,
+                    color: "rgba(255, 235, 209, 0.85)",
+                    fontSize: "16px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Theo huyền sử, vua Lý Thái Tông tuổi cao chưa có hoàng tử nối dõi, thường đến cầu tự ở
+                  các chùa. Một đêm, ngài chiêm bao thấy Bồ Tát Quan Âm tọa thiền trên tòa sen tỏa ánh hào
+                  quang rực rỡ, đưa tay dắt nhà vua lên đài. Sau đó hoàng hậu hạ sinh hoàng tử.
+                </p>
+                <p
+                  style={{
+                    lineHeight: 1.75,
+                    color: "rgba(255, 235, 209, 0.85)",
+                    fontSize: "16px",
+                  }}
+                >
+                  Để tạ ơn hồng ân Tam Bảo, nhà vua cho dựng một ngôi chùa đặt tên là <strong>Diên Hựu</strong>
+                  (nghĩa là "Phước lành dài lâu") với dáng dấp một đóa hoa sen vươn lên giữa hồ nước Linh Chiểu,
+                  trở thành biểu tượng của tâm hồn thuần khiết và lòng từ bi của dân tộc.
+                </p>
+              </div>
+
+              {/* Story Chapter 2: Unique Architecture */}
+              <div>
+                <h3
+                  style={{
+                    fontSize: "26px",
+                    color: "var(--gold)",
+                    marginBottom: "16px",
+                    fontFamily: '"Vollkorn", serif',
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <Layers size={22} /> Triết lý kiến trúc: Trời tròn Đất vuông
+                </h3>
+                <p
+                  style={{
+                    lineHeight: 1.75,
+                    color: "rgba(255, 235, 209, 0.85)",
+                    fontSize: "16px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Khác với cấu trúc chùa chiền truyền thống nhiều gian, Chùa Một Cột sở hữu giải pháp kiến trúc
+                  độc nhất vô nhị trên thế giới: Toàn bộ ngôi chùa gỗ hình vuông (mỗi cạnh 3m) được nâng đỡ bởi
+                  <strong> một cột đá trụ tròn duy nhất</strong> có đường kính 1.2m, chôn sâu vững chãi giữa lòng hồ.
+                </p>
+                <p
+                  style={{
+                    lineHeight: 1.75,
+                    color: "rgba(255, 235, 209, 0.85)",
+                    fontSize: "16px",
+                  }}
+                >
+                  Cột đá tròn tượng trưng cho Trời (Dương), mái chùa vuông tượng trưng cho Đất (Âm), bốn góc mái
+                  đao cong mềm mại vút lên tựa những cánh sen xòe nở. Hệ thống giằng mộng gỗ đòn tay vươn ra từ
+                  cột đá là minh chứng đỉnh cao cho kỹ thuật ghép mộng mộc truyền thống của thợ tài hoa đất Thăng Long.
+                </p>
+              </div>
+            </div>
+
+            {/* Column Right (45%): Wooden Model Craft & AR Experience */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "35px" }}>
+              {/* Product Card: Royal Deep Lacquer Ruby (Refined, no harsh red) */}
+              <div
+                style={{
+                  background: "linear-gradient(145deg, #380e15 0%, #220a0e 100%)",
+                  padding: "36px",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 209, 141, 0.28)",
+                  boxShadow: "0 18px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(143, 0, 25, 0.2)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                <div style={{ position: "relative", zIndex: 2 }}>
+                  <p
+                    style={{
+                      color: "var(--gold)",
+                      fontSize: "12px",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.15em",
+                      fontWeight: 600,
+                      marginBottom: "8px",
+                    }}
+                  >
+                    MÔ HÌNH LẮP GHÉP GỖ NGUYÊN BẢN
+                  </p>
+                  <h3
+                    style={{
+                      fontSize: "26px",
+                      color: "#fff7ec",
+                      marginBottom: "16px",
+                      fontFamily: '"Vollkorn", serif',
+                    }}
+                  >
+                    Mô hình {product.name}
+                  </h3>
+
+                  <div
+                    style={{
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      marginBottom: "20px",
+                      border: "1px solid rgba(255, 209, 141, 0.2)",
+                    }}
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{
+                        width: "100%",
+                        height: "220px",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
                   </div>
-                  <div>
-                    <strong style={{ display: "block", fontSize: "15px" }}>
-                      [NỘI DUNG AUDIO CHỜ CUNG CẤP]
-                    </strong>
+
+                  <p
+                    style={{
+                      fontSize: "14.5px",
+                      lineHeight: 1.6,
+                      color: "rgba(255, 235, 209, 0.8)",
+                      marginBottom: "24px",
+                    }}
+                  >
+                    {product.description}
+                  </p>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      flexWrap: "wrap",
+                      gap: "15px",
+                      paddingTop: "15px",
+                      borderTop: "1px solid rgba(255, 209, 141, 0.15)",
+                    }}
+                  >
+                    <div>
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          display: "block",
+                          color: "rgba(255, 235, 209, 0.6)",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        Giá phát hành
+                      </span>
+                      <strong style={{ fontSize: "22px", color: "var(--gold)" }}>
+                        {product.price}
+                      </strong>
+                    </div>
+
+                    <Link
+                      to={`/products/${product.slug}`}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        padding: "12px 24px",
+                        borderRadius: "99px",
+                        background: "linear-gradient(135deg, var(--gold) 0%, #e8ba75 100%)",
+                        color: "#351b18",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
+                        transition: "transform 0.2s ease",
+                      }}
+                    >
+                      Khám phá chi tiết <ArrowRight size={16} />
+                    </Link>
                   </div>
                 </div>
               </div>
 
-              {/* AR */}
+              {/* AR 3D Experience Portal Card */}
               <div
                 style={{
-                  background: "rgba(255,255,255,0.05)",
-                  padding: "35px",
-                  borderRadius: "8px",
+                  background: "linear-gradient(145deg, #201215 0%, #15090b 100%)",
+                  padding: "32px",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 209, 141, 0.18)",
+                  boxShadow: "0 12px 35px rgba(0, 0, 0, 0.4)",
                 }}
               >
-                <h3
-                  style={{
-                    fontSize: "22px",
-                    color: "#fff",
-                    marginBottom: "15px",
-                    fontFamily: '"Vollkorn", serif',
-                  }}
-                >
-                  Trải nghiệm AR
-                </h3>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    padding: "40px 0",
-                    opacity: 0.5,
-                  }}
-                >
-                  <span
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
+                  <div
                     style={{
-                      color: "rgba(255,255,255,0.5)",
-                      marginBottom: "15px",
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                      background: "rgba(143, 0, 25, 0.6)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "var(--gold)",
+                      border: "1px solid rgba(255, 209, 141, 0.25)",
                     }}
                   >
-                    <Icon name="cube" size={48} />
-                  </span>
-                  <strong style={{ fontSize: "15px" }}>
-                    [MÔ HÌNH 3D CHỜ CUNG CẤP]
-                  </strong>
+                    <Box size={20} />
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: "20px",
+                        color: "#fff7ec",
+                        fontFamily: '"Vollkorn", serif',
+                        margin: 0,
+                      }}
+                    >
+                      Trải nghiệm Không gian AR & 3D
+                    </h3>
+                    <span style={{ fontSize: "12px", color: "var(--gold)" }}>
+                      Thực tế tăng cường trên điện thoại
+                    </span>
+                  </div>
+                </div>
+
+                <p
+                  style={{
+                    fontSize: "14.5px",
+                    lineHeight: 1.6,
+                    color: "rgba(255, 235, 209, 0.75)",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Chiêm ngưỡng từng chi tiết mộng gỗ Chùa Một Cột xoay 360 độ hoặc đặt trực tiếp mô hình vào
+                  không gian phòng của bạn thông qua camera và chip NFC gắn kèm sản phẩm.
+                </p>
+
+                <div
+                  style={{
+                    background: "rgba(0, 0, 0, 0.3)",
+                    borderRadius: "10px",
+                    padding: "16px",
+                    border: "1px dashed rgba(255, 209, 141, 0.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "15px",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <span
+                      style={{
+                        width: "8px",
+                        height: "8px",
+                        borderRadius: "50%",
+                        background: "#10b981",
+                        boxShadow: "0 0 10px #10b981",
+                      }}
+                    />
+                    <span style={{ fontSize: "13px", color: "rgba(255, 235, 209, 0.85)" }}>
+                      Hỗ trợ iOS (QuickLook) & Android (WebXR)
+                    </span>
+                  </div>
+
+                  <Link
+                    to={`/products/${product.slug}`}
+                    style={{
+                      padding: "8px 16px",
+                      borderRadius: "6px",
+                      background: "rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255, 209, 141, 0.3)",
+                      color: "var(--gold)",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Xem mẫu 3D
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Related heritage/product exploration */}
+          {/* Heritage Cards / Explore Destinations (High contrast, improved readability) */}
+          <section
+            id="destinations"
+            className="reveal"
+            style={{ marginBottom: "90px", scrollMarginTop: "120px" }}
+          >
+            <div style={{ textAlign: "center", marginBottom: "40px" }}>
+              <p
+                style={{
+                  color: "var(--gold)",
+                  fontSize: "13px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.15em",
+                  marginBottom: "8px",
+                  fontWeight: 600,
+                }}
+              >
+                KHO TÀNG KIẾN TRÚC VIỆT
+              </p>
+              <h3
+                style={{
+                  fontSize: "clamp(26px, 3.5vw, 36px)",
+                  color: "#fff7ec",
+                  fontFamily: '"Vollkorn", serif',
+                  margin: 0,
+                }}
+              >
+                Khám phá các điểm đến di sản
+              </h3>
+            </div>
+
+            <div
+              className="reveal"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                gap: "32px",
+                maxWidth: "1200px",
+                margin: "0 auto",
+              }}
+            >
+              {products.map((p) => {
+                const isCurrent = p.slug === product.slug
+                return (
+                  <div
+                    key={p.id}
+                    style={{
+                      background: isCurrent
+                        ? "linear-gradient(145deg, #2a1217 0%, #1a0b0e 100%)"
+                        : "linear-gradient(145deg, #201214 0%, #170a0c 100%)",
+                      borderRadius: "14px",
+                      border: isCurrent
+                        ? "1px solid rgba(255, 209, 141, 0.45)"
+                        : "1px solid rgba(255, 209, 141, 0.16)",
+                      overflow: "hidden",
+                      boxShadow: "0 12px 30px rgba(0, 0, 0, 0.4)",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      transition: "transform 0.3s ease, border-color 0.3s ease",
+                    }}
+                  >
+                    <div>
+                      {/* Image container with subtle zoom effect */}
+                      <div style={{ height: "210px", overflow: "hidden", position: "relative" }}>
+                        <img
+                          src={p.image}
+                          alt={p.name}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            transition: "transform 0.5s ease",
+                          }}
+                        />
+                        {isCurrent && (
+                          <span
+                            style={{
+                              position: "absolute",
+                              top: "14px",
+                              right: "14px",
+                              padding: "4px 10px",
+                              borderRadius: "99px",
+                              background: "rgba(143, 0, 25, 0.85)",
+                              border: "1px solid rgba(255, 209, 141, 0.4)",
+                              color: "var(--gold)",
+                              fontSize: "11px",
+                              fontWeight: 600,
+                              textTransform: "uppercase",
+                              letterSpacing: "0.1em",
+                            }}
+                          >
+                            Đang xem
+                          </span>
+                        )}
+                      </div>
+
+                      <div style={{ padding: "24px 24px 16px" }}>
+                        <p
+                          style={{
+                            color: "var(--gold)",
+                            fontSize: "12px",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.1em",
+                            marginBottom: "6px",
+                          }}
+                        >
+                          {p.eyebrow}
+                        </p>
+                        <h4
+                          style={{
+                            fontSize: "22px",
+                            color: "#fff7ec",
+                            marginBottom: "10px",
+                            fontFamily: '"Vollkorn", serif',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {p.name}
+                        </h4>
+                        <p
+                          style={{
+                            color: "rgba(255, 235, 209, 0.8)",
+                            fontSize: "14.5px",
+                            lineHeight: 1.6,
+                            marginBottom: "0",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                          }}
+                        >
+                          {p.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ padding: "0 24px 24px" }}>
+                      <Link
+                        to={`/heritage/${p.slug}`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          color: "var(--gold)",
+                          fontSize: "13.5px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
+                          fontWeight: "bold",
+                          paddingTop: "14px",
+                          borderTop: "1px solid rgba(255, 209, 141, 0.12)",
+                          width: "100%",
+                        }}
+                      >
+                        Khám phá di sản <ArrowRight size={15} />
+                      </Link>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+
+          {/* Section: Next Heritage Journey Destination Cards (High Polish) */}
           <section
             className="reveal"
             style={{
-              marginTop: "80px",
+              marginTop: "40px",
               paddingTop: "60px",
-              borderTop: "1px solid rgba(255,255,255,0.1)",
+              borderTop: "1px solid rgba(255, 209, 141, 0.16)",
+              maxWidth: "1200px",
+              margin: "0 auto",
             }}
           >
-            <h3
-              style={{
-                fontSize: "24px",
-                color: "#fff",
-                marginBottom: "30px",
-                fontFamily: '"Vollkorn", serif',
-                textAlign: "center",
-              }}
-            >
-              Hành trình tiếp theo
-            </h3>
+            <div style={{ textAlign: "center", marginBottom: "36px" }}>
+              <p
+                style={{
+                  color: "var(--gold)",
+                  fontSize: "12px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.15em",
+                  marginBottom: "8px",
+                  fontWeight: 600,
+                }}
+              >
+                TIẾP TỤC HÀNH TRÌNH
+              </p>
+              <h3
+                style={{
+                  fontSize: "28px",
+                  color: "#fff7ec",
+                  fontFamily: '"Vollkorn", serif',
+                  margin: 0,
+                }}
+              >
+                Hành trình di sản tiếp theo
+              </h3>
+            </div>
+
             <div
               style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "20px",
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: "28px",
               }}
             >
               {otherHeritages.map((p) => (
@@ -502,15 +781,98 @@ export default function Heritage() {
                   to={`/heritage/${p.slug}`}
                   key={p.id}
                   style={{
-                    padding: "15px 30px",
-                    background: "rgba(255,255,255,0.05)",
-                    borderRadius: "30px",
-                    color: "#fff",
+                    position: "relative",
+                    height: "170px",
+                    borderRadius: "14px",
+                    overflow: "hidden",
+                    border: "1px solid rgba(255, 209, 141, 0.2)",
+                    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.4)",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    padding: "24px",
                     textDecoration: "none",
-                    transition: "background 0.2s",
+                    transition: "transform 0.3s ease, border-color 0.3s ease",
                   }}
+                  className="group"
                 >
-                  Đến {p.name} →
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      opacity: 0.5,
+                      transition: "transform 0.5s ease",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(to top, rgba(16, 7, 8, 0.95) 0%, rgba(20, 8, 10, 0.55) 60%, rgba(0, 0, 0, 0.2) 100%)",
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      position: "relative",
+                      zIndex: 2,
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.15em",
+                          color: "var(--gold)",
+                          display: "block",
+                          marginBottom: "4px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        ĐIỂM DỪNG TIẾP THEO
+                      </span>
+                      <h4
+                        style={{
+                          fontSize: "22px",
+                          color: "#fff7ec",
+                          margin: 0,
+                          fontFamily: '"Vollkorn", serif',
+                        }}
+                      >
+                        {p.name}
+                      </h4>
+                      <span style={{ fontSize: "13px", color: "rgba(255, 235, 209, 0.7)" }}>
+                        {p.eyebrow}
+                      </span>
+                    </div>
+
+                    <span
+                      style={{
+                        width: "42px",
+                        height: "42px",
+                        borderRadius: "50%",
+                        background: "rgba(143, 0, 25, 0.7)",
+                        border: "1px solid rgba(255, 209, 141, 0.35)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "var(--gold)",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <ArrowRight size={18} />
+                    </span>
+                  </div>
                 </Link>
               ))}
             </div>

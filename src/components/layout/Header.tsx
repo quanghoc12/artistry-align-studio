@@ -12,6 +12,7 @@ export default function Header() {
   const { cartCount, setCartOpen } = useCart()
   const location = useLocation()
   const isHome = location.pathname === "/"
+  const isHeritage = location.pathname.startsWith("/heritage")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,11 +23,20 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const isHeroTheme = isHome && !scrolled
+  const isHeroTheme = (isHome || isHeritage) && !scrolled
+  const isDarkHeritageScrolled = isHeritage && scrolled
 
   return (
-    <header className={`site-header ${isHeroTheme ? "is-hero-theme" : ""}`}>
-      <Logo horizontal light={isHeroTheme} onClick={() => setMenuOpen(false)} />
+    <header
+      className={`site-header ${isHeroTheme ? "is-hero-theme" : ""} ${
+        isDarkHeritageScrolled ? "is-dark-theme" : ""
+      }`}
+    >
+      <Logo
+        horizontal
+        light={isHeroTheme || isDarkHeritageScrolled}
+        onClick={() => setMenuOpen(false)}
+      />
       <nav
         className={`main-nav ${menuOpen ? "is-open" : ""}`}
         aria-label="Điều hướng chính"

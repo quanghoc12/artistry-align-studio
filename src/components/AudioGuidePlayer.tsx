@@ -341,9 +341,9 @@ export default function AudioGuidePlayer({
     <div
       className={`relative overflow-hidden rounded-2xl ${className}`}
       style={{
-        background: "radial-gradient(ellipse at top, #261012 0%, #120808 65%, #080304 100%)",
-        border: "1px solid rgba(255, 209, 141, 0.22)",
-        boxShadow: "0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(143, 0, 25, 0.2)",
+        background: "linear-gradient(145deg, #2a1114 0%, #1c0c0f 50%, #14080a 100%)",
+        border: "1px solid rgba(255, 209, 141, 0.18)",
+        boxShadow: "0 24px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(143, 0, 25, 0.15)",
       }}
     >
       {/* Hidden audio element */}
@@ -466,15 +466,15 @@ export default function AudioGuidePlayer({
         <div
           className="relative w-full h-32 md:h-36 rounded-xl overflow-hidden mb-6 flex items-center justify-center"
           style={{
-            background: "linear-gradient(180deg, rgba(15, 8, 8, 0.9) 0%, rgba(20, 10, 10, 0.95) 100%)",
-            border: "1px solid rgba(255, 209, 141, 0.12)",
+            background: "linear-gradient(180deg, rgba(18, 8, 10, 0.95) 0%, rgba(26, 11, 14, 0.95) 100%)",
+            border: "1px solid rgba(255, 209, 141, 0.14)",
           }}
         >
-          {/* Subtle lotus water ripple caption */}
-          <div className="absolute top-2.5 left-4 z-10 flex items-center gap-1.5 pointer-events-none">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400/60" />
-            <span className="text-[11px] text-amber-200/40 uppercase tracking-widest font-mono">
-              Biên độ sóng âm hồ sen
+          {/* Subtle poetic caption */}
+          <div className="absolute top-2.5 left-4 z-10 flex items-center gap-1.5 pointer-events-none opacity-60">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span className="text-[11px] text-amber-100 uppercase tracking-widest font-serif">
+              Âm vang sen ngọc
             </span>
           </div>
 
@@ -489,19 +489,19 @@ export default function AudioGuidePlayer({
           {!isPlaying && (
             <div
               onClick={togglePlay}
-              className="absolute inset-0 flex items-center justify-center bg-black/25 backdrop-blur-[1px] hover:bg-black/15 transition-all cursor-pointer group"
+              className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[1px] hover:bg-black/20 transition-all cursor-pointer group"
             >
               <div
-                className="flex items-center gap-2.5 px-4 py-2 rounded-full shadow-lg transition-transform group-hover:scale-105"
+                className="flex items-center gap-2.5 px-5 py-2.5 rounded-full shadow-xl transition-transform group-hover:scale-105"
                 style={{
-                  background: "rgba(143, 0, 25, 0.85)",
-                  border: "1px solid rgba(255, 209, 141, 0.4)",
+                  background: "linear-gradient(135deg, #8f0019 0%, #5e0012 100%)",
+                  border: "1px solid rgba(255, 209, 141, 0.5)",
                   color: "#fff",
                 }}
               >
-                <Play size={16} fill="currentColor" style={{ color: "var(--gold)" }} />
-                <span className="text-xs font-semibold tracking-wider text-amber-100">
-                  Chạm để nghe thuyết minh
+                <Play size={18} fill="currentColor" style={{ color: "var(--gold)" }} />
+                <span className="text-sm font-semibold tracking-wider text-amber-100">
+                  Lắng nghe câu chuyện di sản
                 </span>
               </div>
             </div>
@@ -509,7 +509,7 @@ export default function AudioGuidePlayer({
         </div>
 
         {/* Progress Bar / Scrubber */}
-        <div className="mb-4">
+        <div className="mb-5">
           <div className="relative group">
             <input
               type="range"
@@ -522,54 +522,56 @@ export default function AudioGuidePlayer({
               style={{
                 background: `linear-gradient(to right, var(--gold) ${
                   duration ? (currentTime / duration) * 100 : 0
-                }%, rgba(255,255,255,0.15) ${
+                }%, rgba(255,255,255,0.12) ${
                   duration ? (currentTime / duration) * 100 : 0
                 }%)`,
               }}
             />
           </div>
-          <div className="flex justify-between items-center text-xs text-white/50 mt-2 font-mono">
+          <div className="flex justify-between items-center text-xs text-amber-100/60 mt-2 font-mono">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
 
-        {/* Control Bar: Buttons & Volume */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+        {/* Control Bar: Focus on Big Play button and storytelling */}
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
           {/* Main playback buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {/* Skip back 10s */}
             <button
               onClick={() => skip(-10)}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-amber-300 hover:bg-white/5 transition-colors cursor-pointer"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-amber-100/70 hover:text-amber-200 hover:bg-white/5 transition-colors cursor-pointer"
               title="Lùi 10 giây"
             >
               <RotateCcw size={18} />
             </button>
 
-            {/* Play / Pause Primary Button */}
+            {/* Play / Pause Primary Button (Enlarged +20% for cultural focus) */}
             <button
               onClick={togglePlay}
-              className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl cursor-pointer transition-transform hover:scale-105 active:scale-95"
+              className="w-16 h-16 md:w-[68px] md:h-[68px] rounded-full flex items-center justify-center shadow-2xl cursor-pointer transition-all hover:scale-105 active:scale-95"
               style={{
-                background: "linear-gradient(135deg, #a6122d 0%, #700013 100%)",
-                border: "2px solid rgba(255, 209, 141, 0.6)",
-                boxShadow: "0 0 24px rgba(143, 0, 25, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3)",
+                background: "linear-gradient(135deg, #a6122d 0%, #680014 100%)",
+                border: "2px solid rgba(255, 209, 141, 0.7)",
+                boxShadow: isPlaying
+                  ? "0 0 28px rgba(255, 209, 141, 0.45), 0 0 45px rgba(143, 0, 25, 0.7)"
+                  : "0 0 20px rgba(143, 0, 25, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.3)",
                 color: "var(--gold)",
               }}
               title={isPlaying ? "Tạm dừng" : "Phát âm thanh"}
             >
               {isPlaying ? (
-                <Pause size={24} fill="currentColor" />
+                <Pause size={28} fill="currentColor" />
               ) : (
-                <Play size={24} fill="currentColor" className="ml-0.5" />
+                <Play size={28} fill="currentColor" className="ml-1" />
               )}
             </button>
 
             {/* Skip forward 10s */}
             <button
               onClick={() => skip(10)}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-amber-300 hover:bg-white/5 transition-colors cursor-pointer"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-amber-100/70 hover:text-amber-200 hover:bg-white/5 transition-colors cursor-pointer"
               title="Tua tới 10 giây"
             >
               <RotateCw size={18} />
@@ -577,10 +579,10 @@ export default function AudioGuidePlayer({
           </div>
 
           {/* Volume Control */}
-          <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+          <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-amber-200/10">
             <button
               onClick={toggleMute}
-              className="text-white/70 hover:text-amber-300 transition-colors cursor-pointer"
+              className="text-amber-100/70 hover:text-amber-200 transition-colors cursor-pointer"
               title={isMuted ? "Bật âm" : "Tắt tiếng"}
             >
               {isMuted || volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
