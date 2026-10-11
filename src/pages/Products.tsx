@@ -6,24 +6,31 @@ import { products } from "../data/products"
 
 import { Link } from "react-router-dom"
 
+const THEME_CATEGORIES = [
+  { value: "Tất cả", shortLabel: "Tất cả", dropdownLabel: "Chủ đề: Tất cả" },
+  {
+    value: "Hà Nội · Bộ sưu tập Thăng Long",
+    shortLabel: "Thăng Long",
+    dropdownLabel: "Chủ đề: Thăng Long",
+  },
+  {
+    value: "Văn Miếu · Quốc Tử Giám",
+    shortLabel: "Văn Miếu",
+    dropdownLabel: "Chủ đề: Văn Miếu",
+  },
+  {
+    value: "Nam Định · Dấu ấn nhà Trần",
+    shortLabel: "Thời Trần",
+    dropdownLabel: "Chủ đề: Thời Trần",
+  },
+]
+
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState("")
 
   const [filterCategory, setFilterCategory] = useState("Tất cả")
 
   const [sortBy, setSortBy] = useState("Mặc định")
-
-  // Extract unique eyebrows for category filter
-
-  const categories = useMemo(() => {
-    const cats = new Set<string>()
-
-    products.forEach((p) => {
-      if (p.eyebrow) cats.add(p.eyebrow)
-    })
-
-    return ["Tất cả", ...Array.from(cats)]
-  }, [])
 
   const filteredAndSortedProducts = useMemo(() => {
     let result = [...products]
@@ -114,48 +121,54 @@ export default function Products() {
         id="products"
         style={{ paddingTop: 40 }}
       >
-        <div className="shop-controls reveal">
-          <div className="shop-search">
-            <input
-              type="text"
-              placeholder="Tìm kiếm tác phẩm di sản..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {searchTerm ? (
-              <button
-                onClick={() => setSearchTerm("")}
-                aria-label="Xóa tìm kiếm"
-              >
-                <Icon name="close" size={16} />
-              </button>
-            ) : null}
-          </div>
-          <div className="shop-chips" role="tablist" aria-label="Lọc theo địa danh">
-            {categories.map((c) => (
-              <button
-                key={c}
-                role="tab"
-                aria-selected={filterCategory === c}
-                className={`shop-chip-tab ${filterCategory === c ? "is-active" : ""}`}
-                onClick={() => setFilterCategory(c)}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-          <div className="shop-sort-wrap">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              aria-label="Sắp xếp"
-            >
-              <option value="Mặc định">Sắp xếp: Mặc định</option>
-              <option value="Tên A-Z">Tên A-Z</option>
-              <option value="Tên Z-A">Tên Z-A</option>
-              <option value="Giá thấp đến cao">Giá: Thấp đến cao</option>
-              <option value="Giá cao đến thấp">Giá: Cao đến thấp</option>
-            </select>
+        <div className="shop-controls-bar">
+          <div className="shop-controls-inner">
+            <div className="shop-search">
+              <input
+                type="text"
+                placeholder="Tìm kiếm tác phẩm di sản..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm ? (
+                <button
+                  onClick={() => setSearchTerm("")}
+                  aria-label="Xóa tìm kiếm"
+                >
+                  <Icon name="close" size={16} />
+                </button>
+              ) : null}
+            </div>
+
+            <div className="shop-selects-row">
+              <div className="shop-select-box">
+                <select
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                  aria-label="Lọc theo chủ đề"
+                >
+                  {THEME_CATEGORIES.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.dropdownLabel}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="shop-select-box">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Sắp xếp"
+                >
+                  <option value="Mặc định">Sắp xếp: Mặc định</option>
+                  <option value="Tên A-Z">Tên A-Z</option>
+                  <option value="Tên Z-A">Tên Z-A</option>
+                  <option value="Giá thấp đến cao">Giá: Thấp đến cao</option>
+                  <option value="Giá cao đến thấp">Giá: Cao đến thấp</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
