@@ -190,29 +190,29 @@ export default function Cart() {
             margin: "0 auto 20px",
           }}
         >
-          <Icon name="sparkle" size={60} />
+          <Icon name="sparkle" size={54} />
         </span>
         <h1
           style={{
             color: "var(--red)",
             marginBottom: "12px",
             fontFamily: '"Vollkorn", serif',
-            fontSize: "36px",
+            fontSize: "clamp(28px, 4vw, 36px)",
           }}
         >
-          Đặt hàng thành công
+          Ghi nhận thông tin thành công
         </h1>
         <p
           style={{
             color: "var(--muted)",
-            marginBottom: "30px",
-            fontSize: "17px",
+            marginBottom: "28px",
+            fontSize: "16px",
             lineHeight: 1.6,
           }}
         >
           Cảm ơn bạn đã lựa chọn Kiến Tích Việt.
           <br />
-          Thông tin đơn hàng đã được ghi nhận và gửi đến bộ phận chăm sóc khách hàng.
+          Thông tin đơn hàng đã được lưu lại. Chuyên viên của chúng tôi sẽ sớm liên hệ để xác nhận chi tiết và gửi ảnh thực tế trước khi gửi hàng.
         </p>
 
         {submittedOrder && (
@@ -222,7 +222,7 @@ export default function Cart() {
               borderRadius: "12px",
               padding: "24px",
               textAlign: "left",
-              marginBottom: "35px",
+              marginBottom: "24px",
               border: "1px solid rgba(143, 0, 25, 0.15)",
               boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
             }}
@@ -234,6 +234,8 @@ export default function Cart() {
                 borderBottom: "1px solid rgba(143, 0, 25, 0.1)",
                 paddingBottom: "12px",
                 marginBottom: "15px",
+                flexWrap: "wrap",
+                gap: "8px",
               }}
             >
               <span style={{ fontWeight: 600, color: "var(--red)" }}>
@@ -257,24 +259,31 @@ export default function Cart() {
                 {submittedOrder.customerPhone})
               </div>
               <div>
-                <strong>Địa chỉ:</strong> {submittedOrder.customerAddress}
+                <strong>Địa chỉ nhận:</strong> {submittedOrder.customerAddress}
               </div>
               <div>
                 <strong>Sản phẩm:</strong> {submittedOrder.products}
               </div>
+              <div>
+                <strong>Phương thức:</strong> Kiểm tra hàng & thanh toán khi nhận (COD)
+              </div>
               <div
                 style={{
                   marginTop: "8px",
-                  paddingTop: "8px",
+                  paddingTop: "10px",
                   borderTop: "1px dashed rgba(143, 0, 25, 0.15)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                <strong>Tổng thanh toán:</strong>{" "}
+                <strong>Tổng giá trị đơn hàng:</strong>
                 <span
                   style={{
                     color: "var(--red)",
                     fontWeight: 700,
-                    fontSize: "18px",
+                    fontSize: "20px",
+                    fontFamily: '"Vollkorn", serif',
                   }}
                 >
                   {submittedOrder.totalAmount}
@@ -284,15 +293,57 @@ export default function Cart() {
           </div>
         )}
 
+        {/* 3 bước quy trình an tâm */}
+        <div
+          style={{
+            background: "rgba(143, 0, 25, 0.04)",
+            border: "1px solid rgba(143, 0, 25, 0.12)",
+            borderRadius: "10px",
+            padding: "18px 20px",
+            textAlign: "left",
+            marginBottom: "32px",
+            fontSize: "14px",
+            lineHeight: 1.6,
+          }}
+        >
+          <strong
+            style={{
+              color: "var(--red)",
+              display: "block",
+              marginBottom: "8px",
+              fontSize: "15px",
+            }}
+          >
+            Quy trình tiếp theo tại Kiến Tích Việt:
+          </strong>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+              color: "#333",
+            }}
+          >
+            <div>
+              1. <strong>Xác nhận:</strong> Chuyên viên gọi điện xác nhận đơn và gửi ảnh thực tế qua Zalo/Điện thoại.
+            </div>
+            <div>
+              2. <strong>Đóng gói:</strong> Tác phẩm được bọc chống sốc cẩn thận kèm hộp quà và thiệp di sản.
+            </div>
+            <div>
+              3. <strong>Nhận hàng:</strong> Đồng kiểm tra sản phẩm ưng ý trước khi thanh toán tiền mặt (COD).
+            </div>
+          </div>
+        </div>
+
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "16px",
+            gap: "14px",
             flexWrap: "wrap",
           }}
         >
-          <LinkButton href="/">Trở về trang chủ</LinkButton>
           <a
             href="https://zalo.me/0982127964"
             target="_blank"
@@ -301,17 +352,37 @@ export default function Cart() {
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              padding: "14px 24px",
+              padding: "14px 22px",
               background: "#0068ff",
               color: "white",
-              borderRadius: "4px",
+              borderRadius: "6px",
+              fontWeight: 600,
+              fontSize: "15px",
+              textDecoration: "none",
+              boxShadow: "0 4px 14px rgba(0, 104, 255, 0.25)",
+            }}
+          >
+            Nhắn tin xác nhận qua Zalo
+          </a>
+          <a
+            href="tel:0982127964"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "14px 20px",
+              background: "white",
+              color: "var(--red)",
+              border: "1px solid rgba(143, 0, 25, 0.2)",
+              borderRadius: "6px",
               fontWeight: 600,
               fontSize: "15px",
               textDecoration: "none",
             }}
           >
-            Nhắn tin xác nhận qua Zalo
+            Gọi hotline: 0982 127 964
           </a>
+          <LinkButton href="/">Trở về trang chủ</LinkButton>
         </div>
       </div>
     )
@@ -408,7 +479,7 @@ export default function Cart() {
           </Link>
           <span style={{ opacity: 0.4 }}>/</span>
           <span style={{ color: "var(--red)", fontWeight: 600 }}>
-            Giỏ hàng & Thanh toán
+            Đặt hàng & Tư vấn
           </span>
         </nav>
 
@@ -422,7 +493,7 @@ export default function Cart() {
               lineHeight: 1.25,
             }}
           >
-            Thanh toán đơn hàng
+            Thông tin đặt hàng & Nhận tư vấn
           </h1>
           <p
             style={{
@@ -432,7 +503,7 @@ export default function Cart() {
               lineHeight: 1.5,
             }}
           >
-            Kiểm tra thông tin sản phẩm và địa chỉ nhận hàng để hoàn tất đơn đặt.
+            Kiểm tra sản phẩm và để lại thông tin nhận hàng. Chuyên viên Kiến Tích Việt sẽ gọi điện xác nhận chi tiết trước khi gửi.
           </p>
         </div>
 
@@ -675,6 +746,19 @@ export default function Cart() {
               </div>
               <div
                 style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "14px",
+                  color: "var(--muted)",
+                }}
+              >
+                <span>Hình thức</span>
+                <span style={{ color: "var(--dark)", fontWeight: 600 }}>
+                  Thanh toán khi nhận (COD)
+                </span>
+              </div>
+              <div
+                style={{
                   borderTop: "1px solid rgba(143, 0, 25, 0.12)",
                   paddingTop: "12px",
                   marginTop: "2px",
@@ -692,7 +776,7 @@ export default function Cart() {
                     color: "var(--dark)",
                   }}
                 >
-                  Tổng thanh toán
+                  Tổng giá trị đơn hàng
                 </span>
                 <strong
                   style={{
@@ -707,19 +791,35 @@ export default function Cart() {
             </div>
           </div>
 
-          {/* Cột phải: Form thông tin giao hàng */}
+          {/* Cột phải: Form thông tin giao hàng & Tư vấn */}
           <div className="checkout-form-card">
             <h2
               style={{
                 fontSize: "24px",
-                marginBottom: "25px",
+                marginBottom: "14px",
                 color: "var(--gold)",
                 fontFamily: '"Vollkorn", serif',
                 letterSpacing: "0.02em",
               }}
             >
-              Thông tin giao hàng
+              Thông tin nhận hàng & Tư vấn
             </h2>
+
+            {/* Banner an tâm: Chưa cần thanh toán ngay */}
+            <div
+              style={{
+                background: "rgba(255, 209, 141, 0.14)",
+                border: "1px solid rgba(255, 209, 141, 0.3)",
+                borderRadius: "8px",
+                padding: "10px 14px",
+                marginBottom: "20px",
+                fontSize: "13px",
+                color: "var(--cream)",
+                lineHeight: 1.5,
+              }}
+            >
+              🛡️ <strong>Chưa cần thanh toán ngay:</strong> Kiến Tích Việt sẽ gọi điện xác nhận và gửi ảnh thực tế tác phẩm trước khi giao hàng.
+            </div>
 
             {status === "error" && (
               <div
@@ -893,26 +993,28 @@ export default function Cart() {
               >
                 {status === "loading" ? (
                   <>
-                    <Spinner /> Đang ghi nhận đơn...
+                    <Spinner /> Đang gửi thông tin...
                   </>
                 ) : (
                   <>
-                    Hoàn tất đặt hàng <Icon name="arrow" />
+                    Gửi thông tin đặt hàng <Icon name="arrow" />
                   </>
                 )}
               </button>
 
-              <p
+              <div
                 style={{
-                  margin: "4px 0 0",
+                  marginTop: "8px",
                   textAlign: "center",
                   fontSize: "13px",
-                  color: "rgba(255, 235, 209, 0.7)",
-                  lineHeight: 1.5,
+                  color: "rgba(255, 235, 209, 0.8)",
+                  lineHeight: 1.6,
                 }}
               >
-                Kiểm tra hàng trước khi thanh toán · Hỗ trợ bảo hành & đổi trả
-              </p>
+                ✓ Kiểm tra tác phẩm trước khi nhận & thanh toán (COD)
+                <br />
+                ✓ Chuyên viên liên hệ lại trong vòng 15–30 phút
+              </div>
             </form>
           </div>
         </div>

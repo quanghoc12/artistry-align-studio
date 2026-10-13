@@ -16,10 +16,13 @@
    - Cột G: **Sản phẩm đặt mua**
    - Cột H: **Tổng tiền**
    - Cột I: **Ghi chú**
+   - Cột J: **Trạng thái liên hệ** *(Chưa gọi / Đã gọi / Đã chốt / Hủy)*
+   - Cột K: **Mã vận đơn**
+   - Cột L: **Ghi chú cuộc gọi**
 
 ---
 
-### Bước 2: Dán mã Google Apps Script
+### Bước 2: Dán mã Google Apps Script (Tự động ghi Sheet & Gửi Email thông báo)
 1. Trên thanh menu Google Sheet, chọn: **Tiện ích mở rộng (Extensions)** -> **Apps Script**.
 2. Xóa hết mã có sẵn trong cửa sổ soạn thảo, rồi copy & paste toàn bộ đoạn code dưới đây vào:
 
@@ -29,22 +32,102 @@ function doPost(e) {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
 
-    // Ghi một dòng mới vào Google Sheet
+    var orderId = data.orderId || ("DH-" + Math.floor(100000 + Math.random() * 900000));
+    var createdAt = data.createdAt || new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+    var customerName = data.customerName || "Chưa có tên";
+    var customerPhone = data.customerPhone || "";
+    var customerEmail = data.customerEmail || "Không có";
+    var customerAddress = data.customerAddress || "";
+    var products = data.products || "";
+    var totalAmount = data.totalAmount || "0₫";
+    var customerNote = data.customerNote || "Không có";
+
+    // 1. Ghi một dòng mới vào Google Sheet
     sheet.appendRow([
-      data.orderId || "",
-      data.createdAt || new Date().toLocaleString("vi-VN"),
-      data.customerName || "",
-      "'" + (data.customerPhone || ""), // Thêm dấu ' để giữ nguyên số 0 ở đầu SĐT
-      data.customerEmail || "",
-      data.customerAddress || "",
-      data.products || "",
-      data.totalAmount || "",
-      data.customerNote || ""
+      orderId,
+      createdAt,
+      customerName,
+      "'" + customerPhone, // Thêm dấu ' để giữ nguyên số 0 ở đầu SĐT
+      customerEmail,
+      customerAddress,
+      products,
+      totalAmount,
+      customerNote,
+      "Chưa liên hệ", // Mặc định cột Trạng thái liên hệ
+      "",             // Cột Mã vận đơn
+      ""              // Cột Ghi chú cuộc gọi
     ]);
+
+    // 2. Tự động gửi Email thông báo tức thì về Gmail của chủ shop
+    try {
+      // Tự động lấy email của người sở hữu Sheet (hoặc bạn có thể điền cố định email vào đây)
+      var recipientEmail = Session.getEffectiveUser().getEmail();
+
+      var emailSubject = "🔥 [ĐƠN MỚI] " + customerName + " - " + customerPhone + " (" + totalAmount + ")";
+      var htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #8F0019; border-radius: 10px; background-color: #fffefb;">
+          <div style="border-bottom: 2px solid #8F0019; padding-bottom: 12px; margin-bottom: 20px;">
+            <h2 style="color: #8F0019; margin: 0; font-size: 22px;">Kiến Tích Việt - Có Đơn Đặt Hàng Mới!</h2>
+            <p style="color: #666; margin: 5px 0 0; font-size: 14px;">Mã đơn: <strong>#${orderId}</strong> · Thời gian: ${createdAt}</p>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; font-size: 15px; margin-bottom: 20px;">
+            <tr>
+              <td style="padding: 8px 0; color: #555; width: 140px;"><strong>Khách hàng:</strong></td>
+              <td style="padding: 8px 0; color: #111; font-weight: bold;">${customerName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #555;"><strong>Số điện thoại:</strong></td>
+              <td style="padding: 8px 0;">
+                <a href="tel:${customerPhone}" style="color: #8F0019; font-weight: bold; font-size: 18px; text-decoration: none;">
+                  📞 ${customerPhone} (Bấm để gọi ngay)
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #555;"><strong>Địa chỉ giao:</strong></td>
+              <td style="padding: 8px 0; color: #111;">${customerAddress}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #555;"><strong>Email:</strong></td>
+              <td style="padding: 8px 0; color: #111;">${customerEmail}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #555;"><strong>Sản phẩm đặt:</strong></td>
+              <td style="padding: 8px 0; color: #8F0019; font-weight: bold;">${products}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #555;"><strong>Tổng tiền:</strong></td>
+              <td style="padding: 8px 0; color: #8F0019; font-weight: bold; font-size: 18px;">${totalAmount}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #555;"><strong>Hình thức:</strong></td>
+              <td style="padding: 8px 0; color: #1b7a3a; font-weight: bold;">Thanh toán khi nhận hàng (COD)</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #555;"><strong>Ghi chú của khách:</strong></td>
+              <td style="padding: 8px 0; color: #555; font-style: italic;">${customerNote}</td>
+            </tr>
+          </table>
+
+          <div style="background-color: #fdf5ea; border-left: 4px solid #d48b28; padding: 12px 16px; border-radius: 4px; font-size: 14px; color: #6d4208;">
+            ⏱️ <strong>Mẹo chốt đơn:</strong> Khách hàng có cảm xúc mua hàng cao nhất trong 15-30 phút đầu tiên. Hãy gọi điện xác nhận hoặc kết bạn Zalo để gửi ảnh thực tế tác phẩm cho khách nhé!
+          </div>
+        </div>
+      `;
+
+      MailApp.sendEmail({
+        to: recipientEmail,
+        subject: emailSubject,
+        htmlBody: htmlContent
+      });
+    } catch (mailError) {
+      console.warn("Không gửi được email thông báo: " + mailError.toString());
+    }
 
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
-      message: "Order recorded successfully"
+      message: "Order recorded and email sent successfully"
     })).setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
@@ -79,5 +162,15 @@ function doPost(e) {
 ```env
 VITE_ORDER_WEBHOOK_URL=https://script.google.com/macros/s/ĐOẠN_MÃ_URL_BẠN_VỪA_COPY/exec
 ```
-3. Lưu file lại. Từ lúc này, mỗi khi khách bấm **Hoàn tất đặt hàng**, đơn hàng sẽ ngay lập tức xuất hiện trên Google Sheet của bạn!
+3. Lưu file lại (và thêm biến này lên hosting nếu triển khai web thực tế). Từ lúc này, mỗi khi khách bấm **Gửi thông tin đặt hàng**, đơn hàng sẽ ngay lập tức xuất hiện trên Google Sheet của bạn!
+
+---
+
+### Bước 5: Bật chuông thông báo trên điện thoại cho chủ shop
+1. Nhắc chủ shop mở điện thoại (iPhone hoặc Android) -> Vào **Cài đặt (Settings)** của máy.
+2. Tìm ứng dụng **Gmail** -> Bật **Cho phép thông báo (Allow Notifications)** và bật **Âm thanh chuông (Sounds)**.
+3. Kể từ lúc này:
+   - Khách vừa bấm gửi thông tin trên website -> **Điện thoại chủ shop reo chuông ngay lập tức!**
+   - Tiêu đề email hiển thị rõ: `🔥 [ĐƠN MỚI] Tên khách hàng - Số điện thoại (Tổng tiền)`.
+   - Mở email ra là thấy nút gọi điện thoại nhanh để chủ shop tư vấn và chốt đơn trong "thời gian vàng".
 
