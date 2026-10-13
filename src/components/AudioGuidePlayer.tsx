@@ -535,9 +535,9 @@ export default function AudioGuidePlayer({
         </div>
 
         {/* Control Bar: Focus on Big Play button and storytelling */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1">
           {/* Main playback buttons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center gap-5 w-full sm:w-auto">
             {/* Skip back 10s */}
             <button
               onClick={() => skip(-10)}
@@ -547,7 +547,7 @@ export default function AudioGuidePlayer({
               <RotateCcw size={18} />
             </button>
 
-            {/* Play / Pause Primary Button (Enlarged +20% for cultural focus) */}
+            {/* Play / Pause Primary Button */}
             <button
               onClick={togglePlay}
               className="w-16 h-16 md:w-[68px] md:h-[68px] rounded-full flex items-center justify-center shadow-2xl cursor-pointer transition-all hover:scale-105 active:scale-95"
@@ -564,7 +564,7 @@ export default function AudioGuidePlayer({
               {isPlaying ? (
                 <Pause size={28} fill="currentColor" />
               ) : (
-                <Play size={28} fill="currentColor" className="ml-1" />
+                <Play size={28} fill="currentColor" />
               )}
             </button>
 
@@ -579,7 +579,7 @@ export default function AudioGuidePlayer({
           </div>
 
           {/* Volume Control */}
-          <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-amber-200/10">
+          <div className="flex items-center justify-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-amber-200/10 self-center sm:self-auto">
             <button
               onClick={toggleMute}
               className="text-amber-100/70 hover:text-amber-200 transition-colors cursor-pointer"

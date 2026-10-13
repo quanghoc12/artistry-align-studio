@@ -1,14 +1,29 @@
+import { useState, FormEvent } from "react"
 import { Icon, Logo } from "../Shared"
-
 import { Link } from "react-router-dom"
+import { toast } from "../Motion"
 
 export default function Footer() {
+  const [newsletterEmail, setNewsletterEmail] = useState("")
+  const [isSubscribed, setIsSubscribed] = useState(false)
+
+  const handleSubscribe = (event: FormEvent) => {
+    event.preventDefault()
+    if (!newsletterEmail.trim() || !newsletterEmail.includes("@")) {
+      toast("Vui lòng nhập địa chỉ email hợp lệ.")
+      return
+    }
+    setIsSubscribed(true)
+    toast("Cảm ơn bạn đã đăng ký nhận tin từ Kiến Tích Việt!")
+    setNewsletterEmail("")
+  }
+
   return (
     <footer>
       <div className="footer-top reveal">
         <div className="footer-brand">
           <Logo light />
-          <p>
+          <p className="footer-tagline">
             Dựng hình di sản,
             <br />
             nối nhịp thời gian.
@@ -20,12 +35,11 @@ export default function Footer() {
             <Link to="/our-story">Về chúng tôi</Link>
             <Link to="/products">Sản phẩm</Link>
             <Link to="/heritage">Khám phá di sản</Link>
-            <Link to="/heritage#story">Chuyện di sản</Link>
           </div>
           <div>
             <strong>Kết nối</strong>
             <a
-              href="https://www.facebook.com/share/1JRBKEJnSZ/?mibextid=wwXIfr"
+              href="https://www.facebook.com/kientichviet.official"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -38,22 +52,55 @@ export default function Footer() {
             >
               TikTok
             </a>
-            <a href="mailto:kientichviet.official@gmail.com">Email</a>
+          </div>
+          <div>
+            <strong>Liên hệ</strong>
+            <a href="tel:0982127964" className="footer-contact-link">
+              Hotline: 0982 127 964
+            </a>
+            <a
+              href="mailto:kientichviet.official@gmail.com"
+              className="footer-contact-link"
+            >
+              Email: kientichviet.official@gmail.com
+            </a>
+            <span>Địa chỉ: 68 Doãn Kế Thiện, Phú Diễn, Hà Nội</span>
           </div>
         </div>
         <div className="newsletter">
           <strong>Nhận những câu chuyện mới</strong>
           <p>Đăng ký để không bỏ lỡ sản phẩm và hành trình di sản tiếp theo.</p>
-          <form onSubmit={(event) => event.preventDefault()}>
-            <input
-              aria-label="Email của bạn"
-              placeholder="Email của bạn"
-              type="email"
-            />
-            <button aria-label="Đăng ký">
-              <Icon name="arrow" />
-            </button>
-          </form>
+          {isSubscribed ? (
+            <div
+              style={{
+                marginTop: "20px",
+                color: "var(--gold)",
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <Icon name="sparkle" size={16} /> Đã ghi nhận đăng ký của bạn.
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} autoComplete="off">
+              <input
+                aria-label="Email của bạn"
+                placeholder="Email của bạn"
+                type="email"
+                name="ktv_newsletter_email"
+                id="ktv_newsletter_email"
+                autoComplete="off"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                required
+              />
+              <button aria-label="Đăng ký" type="submit">
+                <Icon name="arrow" />
+              </button>
+            </form>
+          )}
         </div>
       </div>
       <div className="footer-bottom reveal">
@@ -64,3 +111,4 @@ export default function Footer() {
     </footer>
   )
 }
+

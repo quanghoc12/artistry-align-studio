@@ -107,7 +107,7 @@ export default function Home() {
             </div>
 
             <div className="floating-card">
-              <span className="card-index">KTV — 01</span>
+              <span className="card-index">01</span>
               <div className="card-line" />
               <strong>Chạm.</strong>
               <strong>Nghe.</strong>
@@ -127,7 +127,7 @@ export default function Home() {
 
       <section className="intro section-pad" id="story">
         <div className="section-heading reveal">
-          <p className="kicker">KTV — 01 · Triết lý</p>
+          <p className="kicker">01 · Triết lý</p>
           <h2>
             Không chỉ là một mô hình.
             <br />
@@ -192,7 +192,7 @@ export default function Home() {
       <section className="products section-pad" id="products">
         <div className="products-head reveal">
           <div className="section-heading reveal">
-            <p className="kicker">KTV — 02 · Tác phẩm</p>
+            <p className="kicker">02 · Tác phẩm</p>
             <h2>
               Những dấu tích
               <br />
@@ -212,7 +212,7 @@ export default function Home() {
                 aria-label={`Xem ${product.name}`}
               >
                 <img src={product.image} alt={product.name} />
-                <span className="product-number">KTV — {product.number}</span>
+                <span className="product-number">#{product.number}</span>
                 <span className="product-accent">{product.accent}</span>
                 <span className="product-view">
                   <Icon name="plus" /> Xem chi tiết
@@ -285,7 +285,7 @@ export default function Home() {
           </div>
         </div>
         <div className="tech-copy reveal">
-          <p className="kicker light">KTV — 03 · Khám phá kĩ thuật số</p>
+          <p className="kicker light">03 · Khám phá kĩ thuật số</p>
           <h2>
             Một cú chạm.
             <br />
@@ -326,7 +326,7 @@ export default function Home() {
 
       <section className="journal section-pad" id="journal">
         <div className="journal-intro reveal">
-          <p className="kicker">KTV — 04 · Ký ức</p>
+          <p className="kicker">04 · Ký ức</p>
           <h2>
             Mỗi công trình
             <br />

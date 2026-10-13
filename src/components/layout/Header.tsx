@@ -43,6 +43,7 @@ export default function Header() {
       >
         <Link
           to="/"
+          className={location.pathname === "/" ? "active" : ""}
           onClick={(e) => {
             setMenuOpen(false)
             if (location.pathname === "/") {
@@ -56,14 +57,23 @@ export default function Header() {
         >
           Trang chủ
         </Link>
-        <Link to="/our-story" onClick={() => setMenuOpen(false)}>
-          Câu chuyện
+        <Link
+          to="/our-story"
+          className={location.pathname.startsWith("/our-story") ? "active" : ""}
+          onClick={() => setMenuOpen(false)}
+        >
+          Về chúng tôi
         </Link>
-        <Link to="/products" onClick={() => setMenuOpen(false)}>
+        <Link
+          to="/products"
+          className={location.pathname.startsWith("/products") ? "active" : ""}
+          onClick={() => setMenuOpen(false)}
+        >
           Sản phẩm
         </Link>
         <Link
           to="/heritage"
+          className={location.pathname.startsWith("/heritage") ? "active" : ""}
           onClick={(e) => {
             setMenuOpen(false)
             if (location.pathname.startsWith("/heritage")) {
@@ -75,22 +85,6 @@ export default function Header() {
           }}
         >
           Khám phá di sản
-        </Link>
-        <Link
-          to="/heritage#story"
-          onClick={() => {
-            setMenuOpen(false)
-            if (
-              location.pathname === "/heritage" &&
-              location.hash === "#story"
-            ) {
-              document
-                .getElementById("story")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-          }}
-        >
-          Chuyện di sản
         </Link>
       </nav>
       <div className="header-actions">

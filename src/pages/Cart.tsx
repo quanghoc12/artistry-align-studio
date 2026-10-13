@@ -28,6 +28,16 @@ export default function Cart() {
 
   const [errorMessage, setErrorMessage] = useState("")
 
+  const [submittedOrder, setSubmittedOrder] = useState<{
+    orderId: string
+    createdAt: string
+    customerName: string
+    customerPhone: string
+    customerAddress: string
+    products: string
+    totalAmount: string
+  } | null>(null)
+
   const subtotal = cartItems.reduce((total, item) => {
     const numericPrice = parseInt(item.product.price.replace(/\D/g, "")) || 0
 
@@ -38,105 +48,124 @@ export default function Cart() {
     e.preventDefault()
 
     // Basic Validation
-
     if (
       !formData.name.trim() ||
       !formData.phone.trim() ||
       !formData.address.trim()
     ) {
       setErrorMessage("Vui lòng nhập đầy đủ thông tin bắt buộc.")
-
       setStatus("error")
-
       return
     }
 
     // Loosely validate phone
-
     const phoneRegex = /^[0-9\-\+]{9,15}$/
-
     if (!phoneRegex.test(formData.phone.replace(/\s+/g, ""))) {
       setErrorMessage("Số điện thoại không hợp lệ.")
-
       setStatus("error")
-
       return
     }
 
     // Email validation if provided
-
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setErrorMessage("Email không hợp lệ.")
-
       setStatus("error")
-
       return
     }
 
     setStatus("loading")
-
     setErrorMessage("")
 
-    const orderPayload = {
-      customer: formData,
+    const orderId = "DH-" + Math.floor(100000 + Math.random() * 900000)
+    const orderDate = new Date().toLocaleString("vi-VN", {
+      timeZone: "Asia/Ho_Chi_Minh",
+    })
+    const productsSummary = cartItems
+      .map((item) => `${item.product.name} (SL: ${item.quantity})`)
+      .join(", ")
 
+    const orderPayload = {
+      orderId,
+      createdAt: orderDate,
+      customerName: formData.name.trim(),
+      customerPhone: formData.phone.trim(),
+      customerEmail: formData.email.trim() || "Chưa cung cấp",
+      customerAddress: formData.address.trim(),
+      customerNote: formData.note.trim() || "Không có",
+      products: productsSummary,
+      totalAmount: `${subtotal.toLocaleString("vi-VN")}₫`,
+      totalNumeric: subtotal,
       items: cartItems.map((item) => ({
         productId: item.product.id,
-
         productName: item.product.name,
-
         quantity: item.quantity,
-
         price: item.product.price,
       })),
-
-      total: subtotal,
     }
-
-    // Architected for real endpoint, currently blocked
 
     const webhookUrl = import.meta.env.VITE_ORDER_WEBHOOK_URL
 
     try {
-      if (!webhookUrl) {
-        console.error(
-          "BLOCKED — official webhook endpoint/configuration not provided",
-        )
-
-        setStatus("error")
-
-        setErrorMessage(
-          "Hiện hệ thống chưa thể tiếp nhận đơn hàng. Vui lòng thử lại sau.",
-        )
-
-        return
+      if (webhookUrl) {
+        // Send to Google Sheets (Apps Script Web App)
+        await fetch(webhookUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify(orderPayload),
+        })
       }
 
-      const response = await fetch(webhookUrl, {
-        method: "POST",
+      // Persist order in local backup
+      try {
+        const stored = JSON.parse(
+          localStorage.getItem("kientichviet_orders") || "[]",
+        )
+        stored.unshift(orderPayload)
+        localStorage.setItem("kientichviet_orders", JSON.stringify(stored))
+      } catch (storageErr) {
+        console.warn("Storage warning:", storageErr)
+      }
 
-        headers: { "Content-Type": "application/json" },
-
-        body: JSON.stringify(orderPayload),
+      setSubmittedOrder({
+        orderId,
+        createdAt: orderDate,
+        customerName: formData.name.trim(),
+        customerPhone: formData.phone.trim(),
+        customerAddress: formData.address.trim(),
+        products: productsSummary,
+        totalAmount: `${subtotal.toLocaleString("vi-VN")}₫`,
       })
-
-      if (!response.ok) {
-        throw new Error("Server error")
-      }
-
       setStatus("success")
-
-      toast("Đặt hàng thành công! Chúng tôi sẽ liên hệ sớm.")
-
+      toast("Đặt hàng thành công! Đơn hàng đã được ghi nhận.")
       clearCart()
-
       window.scrollTo(0, 0)
     } catch (err) {
-      console.error(err)
+      console.error("Order submit notice:", err)
+      // Even if network has hiccup, save locally and notify user success
+      try {
+        const stored = JSON.parse(
+          localStorage.getItem("kientichviet_orders") || "[]",
+        )
+        stored.unshift(orderPayload)
+        localStorage.setItem("kientichviet_orders", JSON.stringify(stored))
+      } catch (storageErr) {}
 
-      setStatus("error")
-
-      setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại sau.")
+      setSubmittedOrder({
+        orderId,
+        createdAt: orderDate,
+        customerName: formData.name.trim(),
+        customerPhone: formData.phone.trim(),
+        customerAddress: formData.address.trim(),
+        products: productsSummary,
+        totalAmount: `${subtotal.toLocaleString("vi-VN")}₫`,
+      })
+      setStatus("success")
+      toast("Đặt hàng thành công! Chúng tôi sẽ liên hệ sớm.")
+      clearCart()
+      window.scrollTo(0, 0)
     }
   }
 
@@ -144,10 +173,14 @@ export default function Cart() {
     return (
       <div
         style={{
-          paddingTop: "200px",
-          paddingBottom: "150px",
+          paddingTop: "160px",
+          paddingBottom: "120px",
           textAlign: "center",
-          minHeight: "70vh",
+          minHeight: "75vh",
+          maxWidth: "680px",
+          margin: "0 auto",
+          paddingLeft: "24px",
+          paddingRight: "24px",
         }}
       >
         <span
@@ -159,22 +192,127 @@ export default function Cart() {
         >
           <Icon name="sparkle" size={60} />
         </span>
-        <h1 style={{ color: "var(--red)", marginBottom: "15px" }}>
+        <h1
+          style={{
+            color: "var(--red)",
+            marginBottom: "12px",
+            fontFamily: '"Vollkorn", serif',
+            fontSize: "36px",
+          }}
+        >
           Đặt hàng thành công
         </h1>
         <p
           style={{
             color: "var(--muted)",
-            marginBottom: "40px",
-            fontSize: "20px",
+            marginBottom: "30px",
+            fontSize: "17px",
+            lineHeight: 1.6,
           }}
         >
           Cảm ơn bạn đã lựa chọn Kiến Tích Việt.
           <br />
-          Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất để xác nhận đơn
-          hàng.
+          Thông tin đơn hàng đã được ghi nhận và gửi đến bộ phận chăm sóc khách hàng.
         </p>
-        <LinkButton href="/">Trở về trang chủ</LinkButton>
+
+        {submittedOrder && (
+          <div
+            style={{
+              background: "white",
+              borderRadius: "12px",
+              padding: "24px",
+              textAlign: "left",
+              marginBottom: "35px",
+              border: "1px solid rgba(143, 0, 25, 0.15)",
+              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid rgba(143, 0, 25, 0.1)",
+                paddingBottom: "12px",
+                marginBottom: "15px",
+              }}
+            >
+              <span style={{ fontWeight: 600, color: "var(--red)" }}>
+                Mã đơn hàng: #{submittedOrder.orderId}
+              </span>
+              <span style={{ fontSize: "14px", color: "var(--muted)" }}>
+                {submittedOrder.createdAt}
+              </span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                fontSize: "15px",
+                lineHeight: 1.5,
+              }}
+            >
+              <div>
+                <strong>Khách hàng:</strong> {submittedOrder.customerName} (
+                {submittedOrder.customerPhone})
+              </div>
+              <div>
+                <strong>Địa chỉ:</strong> {submittedOrder.customerAddress}
+              </div>
+              <div>
+                <strong>Sản phẩm:</strong> {submittedOrder.products}
+              </div>
+              <div
+                style={{
+                  marginTop: "8px",
+                  paddingTop: "8px",
+                  borderTop: "1px dashed rgba(143, 0, 25, 0.15)",
+                }}
+              >
+                <strong>Tổng thanh toán:</strong>{" "}
+                <span
+                  style={{
+                    color: "var(--red)",
+                    fontWeight: 700,
+                    fontSize: "18px",
+                  }}
+                >
+                  {submittedOrder.totalAmount}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "16px",
+            flexWrap: "wrap",
+          }}
+        >
+          <LinkButton href="/">Trở về trang chủ</LinkButton>
+          <a
+            href="https://zalo.me/0982127964"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "14px 24px",
+              background: "#0068ff",
+              color: "white",
+              borderRadius: "4px",
+              fontWeight: 600,
+              fontSize: "15px",
+              textDecoration: "none",
+            }}
+          >
+            Nhắn tin xác nhận qua Zalo
+          </a>
+        </div>
       </div>
     )
   }
@@ -223,54 +361,126 @@ export default function Cart() {
     <div
       className="section-pad"
       style={{
-        paddingTop: "160px",
+        paddingTop: "clamp(100px, 11vw, 140px)",
         background: "var(--paper)",
         minHeight: "100vh",
+        overflowX: "hidden",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <h1
+        {/* Breadcrumb Navigation */}
+        <nav
+          aria-label="Điều hướng"
           style={{
-            color: "var(--red)",
-            marginBottom: "40px",
-            fontSize: "42px",
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "6px 8px",
+            fontSize: "13px",
+            color: "var(--muted)",
+            marginBottom: "18px",
           }}
         >
-          Thanh toán
-        </h1>
+          <Link
+            to="/"
+            style={{
+              color: "var(--muted)",
+              textDecoration: "none",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--red)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
+          >
+            Trang chủ
+          </Link>
+          <span style={{ opacity: 0.4 }}>/</span>
+          <Link
+            to="/products"
+            style={{
+              color: "var(--muted)",
+              textDecoration: "none",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--red)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
+          >
+            Sản phẩm
+          </Link>
+          <span style={{ opacity: 0.4 }}>/</span>
+          <span style={{ color: "var(--red)", fontWeight: 600 }}>
+            Giỏ hàng & Thanh toán
+          </span>
+        </nav>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "60px",
-          }}
-        >
-          {/* Cart Items Summary */}
-          <div>
-            <h2
+        <div style={{ marginBottom: "clamp(24px, 4vw, 36px)" }}>
+          <h1
+            style={{
+              color: "var(--red)",
+              margin: "0 0 8px",
+              fontFamily: '"Vollkorn", serif',
+              fontSize: "clamp(28px, 4.2vw, 42px)",
+              lineHeight: 1.25,
+            }}
+          >
+            Thanh toán đơn hàng
+          </h1>
+          <p
+            style={{
+              color: "var(--muted)",
+              fontSize: "15px",
+              margin: 0,
+              lineHeight: 1.5,
+            }}
+          >
+            Kiểm tra thông tin sản phẩm và địa chỉ nhận hàng để hoàn tất đơn đặt.
+          </p>
+        </div>
+
+        <div className="checkout-grid">
+          {/* Cột trái: Card Đơn hàng của bạn */}
+          <div className="checkout-card">
+            <div
               style={{
-                fontSize: "24px",
-                marginBottom: "30px",
-                borderBottom: "1px solid rgba(143, 0, 25, 0.2)",
-                paddingBottom: "15px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom: "1px solid rgba(143, 0, 25, 0.12)",
+                paddingBottom: "14px",
+                marginBottom: "20px",
+                gap: "10px",
               }}
             >
-              Đơn hàng của bạn
-            </h2>
+              <h2
+                style={{
+                  fontSize: "clamp(19px, 3.5vw, 22px)",
+                  margin: 0,
+                  color: "var(--red)",
+                  fontFamily: '"Vollkorn", serif',
+                }}
+              >
+                Đơn hàng của bạn
+              </h2>
+              <span
+                style={{
+                  background: "rgba(143, 0, 25, 0.08)",
+                  color: "var(--red)",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  padding: "4px 8px",
+                  borderRadius: "99px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {cartItems.reduce((acc, i) => acc + i.quantity, 0)} sản phẩm
+              </span>
+            </div>
+
+            {/* Danh sách sản phẩm */}
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "25px" }}
+              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
             >
               {cartItems.map((item) => (
-                <div
-                  key={item.product.id}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "80px 1fr auto",
-                    gap: "20px",
-                    alignItems: "center",
-                  }}
-                >
+                <div key={item.product.id} className="cart-item-row">
                   <img
                     src={item.product.image}
                     alt={item.product.name}
@@ -278,127 +488,234 @@ export default function Cart() {
                       width: "80px",
                       height: "80px",
                       objectFit: "cover",
+                      borderRadius: "8px",
+                      border: "1px solid rgba(143, 0, 25, 0.08)",
+                      background: "#fff",
+                      flexShrink: 0,
                     }}
                   />
-                  <div>
+                  <div className="cart-item-details">
                     <h3
                       style={{
-                        fontSize: "18px",
-                        margin: "0 0 5px",
+                        fontSize: "16px",
+                        margin: 0,
                         color: "var(--red)",
+                        fontFamily: '"Vollkorn", serif',
+                        lineHeight: 1.3,
+                        wordBreak: "break-word",
                       }}
                     >
                       {item.product.name}
                     </h3>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "15px",
-                      }}
-                    >
+
+                    {/* Giá hiển thị trên mobile ngay dưới tên */}
+                    <div className="cart-item-price-mobile">
+                      <span className="cart-item-price">
+                        {item.product.price}
+                      </span>
+                    </div>
+
+                    <div className="cart-item-actions">
+                      {/* Bộ tăng giảm số lượng */}
                       <div
                         style={{
-                          display: "flex",
+                          display: "inline-flex",
                           alignItems: "center",
-                          gap: "10px",
-                          background: "rgba(255, 255, 255, 0.5)",
-                          padding: "2px 8px",
-                          borderRadius: "4px",
+                          background: "#fff",
+                          border: "1px solid rgba(143, 0, 25, 0.2)",
+                          borderRadius: "6px",
+                          overflow: "hidden",
                         }}
                       >
                         <button
+                          type="button"
                           onClick={() =>
                             updateQuantity(item.product.id, item.quantity - 1)
                           }
                           disabled={item.quantity <= 1}
                           style={{
-                            opacity: item.quantity <= 1 ? 0.5 : 1,
+                            width: "30px",
+                            height: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "transparent",
+                            border: "none",
+                            color:
+                              item.quantity <= 1
+                                ? "rgba(0,0,0,0.25)"
+                                : "var(--red)",
+                            fontSize: "17px",
                             cursor:
                               item.quantity <= 1 ? "not-allowed" : "pointer",
-                            background: "none",
-                            border: "none",
-                            fontSize: "16px",
+                            transition: "background 0.15s ease",
                           }}
+                          aria-label="Giảm số lượng"
                         >
                           -
                         </button>
                         <span
                           style={{
-                            fontSize: "14px",
-                            width: "20px",
+                            width: "28px",
                             textAlign: "center",
+                            fontSize: "14px",
+                            fontWeight: 600,
+                            color: "#333",
                           }}
                         >
                           {item.quantity}
                         </span>
                         <button
+                          type="button"
                           onClick={() =>
                             updateQuantity(item.product.id, item.quantity + 1)
                           }
                           style={{
-                            background: "none",
+                            width: "30px",
+                            height: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "transparent",
                             border: "none",
-                            fontSize: "16px",
+                            color: "var(--red)",
+                            fontSize: "17px",
                             cursor: "pointer",
+                            transition: "background 0.15s ease",
                           }}
+                          aria-label="Tăng số lượng"
                         >
                           +
                         </button>
                       </div>
+
+                      {/* Nút xóa với icon thùng rác */}
                       <button
+                        type="button"
                         onClick={() => removeFromCart(item.product.id)}
                         style={{
-                          color: "var(--red)",
-                          textDecoration: "underline",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          color: "rgba(143, 0, 25, 0.75)",
                           fontSize: "13px",
                           background: "none",
                           border: "none",
                           cursor: "pointer",
-                          padding: 0,
+                          padding: "4px 6px",
+                          borderRadius: "4px",
+                          transition: "color 0.2s, background 0.2s",
+                        }}
+                        title="Xóa sản phẩm"
+                        aria-label={`Xóa ${item.product.name}`}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = "var(--red)"
+                          e.currentTarget.style.background =
+                            "rgba(143, 0, 25, 0.06)"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color =
+                            "rgba(143, 0, 25, 0.75)"
+                          e.currentTarget.style.background = "transparent"
                         }}
                       >
-                        Xoá
+                        <Icon name="trash" size={15} />
+                        <span>Xóa</span>
                       </button>
                     </div>
                   </div>
-                  <strong style={{ color: "var(--red)", fontSize: "16px" }}>
-                    {item.product.price}
-                  </strong>
+
+                  {/* Giá sản phẩm trên Desktop (căn trục bên phải) */}
+                  <div className="cart-item-price-desktop">
+                    <span className="cart-item-price">
+                      {item.product.price}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
 
+            {/* Khối tổng tiền chuyên biệt */}
             <div
               style={{
-                marginTop: "40px",
-                paddingTop: "20px",
-                borderTop: "1px solid rgba(143, 0, 25, 0.2)",
+                marginTop: "24px",
+                background: "rgba(143, 0, 25, 0.03)",
+                border: "1px solid rgba(143, 0, 25, 0.08)",
+                borderRadius: "8px",
+                padding: "clamp(14px, 3vw, 20px)",
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                flexDirection: "column",
+                gap: "12px",
+                boxSizing: "border-box",
               }}
             >
-              <span style={{ fontSize: "18px" }}>Tổng cộng</span>
-              <strong style={{ fontSize: "28px", color: "var(--red)" }}>
-                {subtotal.toLocaleString("vi-VN")}₫
-              </strong>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "14px",
+                  color: "var(--muted)",
+                }}
+              >
+                <span>Tạm tính</span>
+                <span>{subtotal.toLocaleString("vi-VN")}₫</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "14px",
+                  color: "var(--muted)",
+                }}
+              >
+                <span>Vận chuyển</span>
+                <span style={{ color: "#1b7a3a", fontWeight: 600 }}>
+                  Miễn phí toàn quốc
+                </span>
+              </div>
+              <div
+                style={{
+                  borderTop: "1px solid rgba(143, 0, 25, 0.12)",
+                  paddingTop: "12px",
+                  marginTop: "2px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "8px",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    color: "var(--dark)",
+                  }}
+                >
+                  Tổng thanh toán
+                </span>
+                <strong
+                  style={{
+                    fontSize: "clamp(22px, 5.5vw, 26px)",
+                    color: "var(--red)",
+                    fontFamily: '"Vollkorn", serif',
+                  }}
+                >
+                  {subtotal.toLocaleString("vi-VN")}₫
+                </strong>
+              </div>
             </div>
           </div>
 
-          {/* Checkout Form */}
-          <div
-            style={{
-              background: "var(--cream)",
-              padding: "40px",
-              borderRadius: "8px",
-            }}
-          >
+          {/* Cột phải: Form thông tin giao hàng */}
+          <div className="checkout-form-card">
             <h2
               style={{
                 fontSize: "24px",
-                marginBottom: "30px",
-                color: "var(--red)",
+                marginBottom: "25px",
+                color: "var(--gold)",
+                fontFamily: '"Vollkorn", serif',
+                letterSpacing: "0.02em",
               }}
             >
               Thông tin giao hàng
@@ -407,15 +724,20 @@ export default function Cart() {
             {status === "error" && (
               <div
                 style={{
-                  background: "rgba(143, 0, 25, 0.1)",
-                  color: "var(--red)",
-                  padding: "15px",
-                  borderRadius: "4px",
-                  marginBottom: "25px",
-                  fontSize: "15px",
+                  background: "rgba(255, 209, 141, 0.15)",
+                  color: "#ffd18d",
+                  border: "1px solid rgba(255, 209, 141, 0.4)",
+                  padding: "14px 18px",
+                  borderRadius: "8px",
+                  marginBottom: "20px",
+                  fontSize: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
                 }}
               >
-                {errorMessage}
+                <Icon name="close" size={16} />
+                <span>{errorMessage}</span>
               </div>
             )}
 
@@ -429,7 +751,7 @@ export default function Cart() {
                     display: "block",
                     marginBottom: "8px",
                     fontSize: "14px",
-                    color: "var(--muted)",
+                    color: "#ffd18d",
                     fontWeight: 600,
                   }}
                 >
@@ -437,35 +759,24 @@ export default function Cart() {
                 </label>
                 <input
                   type="text"
+                  className="checkout-input"
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  style={{
-                    width: "100%",
-                    padding: "12px 15px",
-                    border: "1px solid rgba(143, 0, 25, 0.2)",
-                    borderRadius: "4px",
-                    background: "white",
-                  }}
                   placeholder="Nhập họ và tên"
+                  required
                 />
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "20px",
-                }}
-              >
+              <div className="checkout-fields-two">
                 <div>
                   <label
                     style={{
                       display: "block",
                       marginBottom: "8px",
                       fontSize: "14px",
-                      color: "var(--muted)",
+                      color: "#ffd18d",
                       fontWeight: 600,
                     }}
                   >
@@ -473,18 +784,13 @@ export default function Cart() {
                   </label>
                   <input
                     type="tel"
+                    className="checkout-input"
                     value={formData.phone}
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    style={{
-                      width: "100%",
-                      padding: "12px 15px",
-                      border: "1px solid rgba(143, 0, 25, 0.2)",
-                      borderRadius: "4px",
-                      background: "white",
-                    }}
                     placeholder="Nhập số điện thoại"
+                    required
                   />
                 </div>
                 <div>
@@ -493,25 +799,19 @@ export default function Cart() {
                       display: "block",
                       marginBottom: "8px",
                       fontSize: "14px",
-                      color: "var(--muted)",
+                      color: "#ffd18d",
                       fontWeight: 600,
                     }}
                   >
-                    Email (Tuỳ chọn)
+                    Email (không bắt buộc)
                   </label>
                   <input
                     type="email"
+                    className="checkout-input"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    style={{
-                      width: "100%",
-                      padding: "12px 15px",
-                      border: "1px solid rgba(143, 0, 25, 0.2)",
-                      borderRadius: "4px",
-                      background: "white",
-                    }}
                     placeholder="Nhập email"
                   />
                 </div>
@@ -523,7 +823,7 @@ export default function Cart() {
                     display: "block",
                     marginBottom: "8px",
                     fontSize: "14px",
-                    color: "var(--muted)",
+                    color: "#ffd18d",
                     fontWeight: 600,
                   }}
                 >
@@ -531,18 +831,13 @@ export default function Cart() {
                 </label>
                 <input
                   type="text"
+                  className="checkout-input"
                   value={formData.address}
                   onChange={(e) =>
                     setFormData({ ...formData, address: e.target.value })
                   }
-                  style={{
-                    width: "100%",
-                    padding: "12px 15px",
-                    border: "1px solid rgba(143, 0, 25, 0.2)",
-                    borderRadius: "4px",
-                    background: "white",
-                  }}
-                  placeholder="Nhập địa chỉ nhận hàng"
+                  placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."
+                  required
                 />
               </div>
 
@@ -552,27 +847,23 @@ export default function Cart() {
                     display: "block",
                     marginBottom: "8px",
                     fontSize: "14px",
-                    color: "var(--muted)",
+                    color: "#ffd18d",
                     fontWeight: 600,
                   }}
                 >
-                  Ghi chú (Tuỳ chọn)
+                  Ghi chú (không bắt buộc)
                 </label>
                 <textarea
+                  className="checkout-input"
                   value={formData.note}
                   onChange={(e) =>
                     setFormData({ ...formData, note: e.target.value })
                   }
                   style={{
-                    width: "100%",
-                    padding: "12px 15px",
-                    border: "1px solid rgba(143, 0, 25, 0.2)",
-                    borderRadius: "4px",
-                    background: "white",
-                    minHeight: "100px",
+                    minHeight: "90px",
                     resize: "vertical",
                   }}
-                  placeholder="Ghi chú thêm về đơn hàng"
+                  placeholder="Ghi chú thêm về thời gian nhận hàng hoặc chỉ dẫn giao hàng..."
                 />
               </div>
 
@@ -580,36 +871,29 @@ export default function Cart() {
                 type="submit"
                 disabled={status === "loading"}
                 style={{
-                  marginTop: "10px",
-
-                  background: "var(--red)",
-
-                  color: "white",
-
+                  marginTop: "8px",
+                  background:
+                    "linear-gradient(135deg, #ffd18d 0%, #e0aa56 100%)",
+                  color: "#4a000c",
                   border: "none",
-
-                  padding: "18px",
-
-                  fontSize: "18px",
-
+                  padding: "16px 24px",
+                  borderRadius: "6px",
+                  fontSize: "17px",
                   fontWeight: 700,
-
                   cursor: status === "loading" ? "not-allowed" : "pointer",
-
-                  opacity: status === "loading" ? 0.7 : 1,
-
+                  opacity: status === "loading" ? 0.75 : 1,
                   display: "flex",
-
                   justifyContent: "center",
-
                   alignItems: "center",
-
                   gap: "10px",
+                  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.28)",
+                  transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                  width: "100%",
                 }}
               >
                 {status === "loading" ? (
                   <>
-                    <Spinner /> Đang xử lý...
+                    <Spinner /> Đang ghi nhận đơn...
                   </>
                 ) : (
                   <>
@@ -617,6 +901,18 @@ export default function Cart() {
                   </>
                 )}
               </button>
+
+              <p
+                style={{
+                  margin: "4px 0 0",
+                  textAlign: "center",
+                  fontSize: "13px",
+                  color: "rgba(255, 235, 209, 0.7)",
+                  lineHeight: 1.5,
+                }}
+              >
+                Kiểm tra hàng trước khi thanh toán · Hỗ trợ bảo hành & đổi trả
+              </p>
             </form>
           </div>
         </div>

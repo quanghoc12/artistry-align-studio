@@ -61,7 +61,7 @@ export default function OurStory() {
     <>
       <section className="story-hero">
         <div className="reveal">
-          <p className="kicker">Câu chuyện thương hiệu</p>
+          <p className="kicker">Về chúng tôi · Thương hiệu</p>
           <h1>
             Có những công trình được xây bằng đá.
             <br />
