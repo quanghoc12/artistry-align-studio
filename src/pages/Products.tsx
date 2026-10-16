@@ -79,9 +79,9 @@ export default function Products() {
     <>
       <section className="shop-hero">
         <div className="reveal">
-          <p className="kicker">Mang dáng hình di sản về không gian của bạn.</p>
+          <p className="kicker">Bộ sưu tập Kiến Tích Việt</p>
           <h1>
-            Những dấu tích <em>trong lòng bàn tay.</em>
+            Mang dáng hình di sản <em>về không gian của bạn.</em>
           </h1>
           <p className="hero-description">
             Mỗi mô hình tái hiện dáng hình một công trình di sản Việt Nam, để bạn
