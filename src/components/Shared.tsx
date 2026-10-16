@@ -4,33 +4,28 @@ import { Link, useLocation } from "react-router-dom"
 
 export type IconName = "arrow" | "bag" | "box" | "close" | "cube" | "headphones" | "menu" | "nfc" | "phone" | "play" | "plus" | "sparkle" | "trash"
 
-export { products } from "../data/products"
+export { products, findProduct } from "../data/products"
 
 export type { Product } from "../data/products"
 
 export const stories = [
   {
-    title: "Một đóa sen giữa lòng Thăng Long",
-
-    place: "Chùa Một Cột · Hà Nội",
-
+    title: "Biểu tượng trầm mặc giữa lòng Hồ Gươm",
+    place: "Tháp Rùa Hồ Gươm · Hà Nội",
     image: "/images/one-pillar-pagoda.jpg",
+    slug: "thap-rua",
   },
-
   {
-    title: "Nơi tinh hoa đất học được lưu truyền",
-
-    place: "Văn Miếu · Hà Nội",
-
-    image: "/images/heritage-door.jpg",
-  },
-
-  {
-    title: "Dấu son kiến trúc từ triều Trần",
-
-    place: "Tháp Phổ Minh · Nam Định",
-
+    title: "Một đóa sen giữa lòng Thăng Long",
+    place: "Chùa Một Cột · Hà Nội",
     image: "/images/heritage-pagoda.jpg",
+    slug: "chua-mot-cot",
+  },
+  {
+    title: "Nơi lưu giữ sắc màu tranh dân gian",
+    place: "Phố Hàng Trống · Hà Nội",
+    image: "/images/heritage-door.jpg",
+    slug: "pho-hang-trong",
   },
 ]
 

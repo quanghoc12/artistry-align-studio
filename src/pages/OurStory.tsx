@@ -2,55 +2,50 @@ import { LinkButton } from "../components/Shared"
 
 const chapters = [
   {
-    id: "tich",
-    no: "Chương 01",
-    word: "Tích",
-    meaning: "Dấu tích · Ký ức",
-    title: "Dấu Tích Của Thời Gian",
-    img: "/images/heritage-door.jpg",
-    seal: "TÍCH",
-    flip: false,
-    alt: false,
-
-    body: [
-      "Thời gian có thể đi qua một công trình, nhưng không thể xóa đi những dấu tích mà nó để lại. Một ngôi đình, một mái chùa không chỉ là gạch ngói hay những cây cột gỗ — chúng mang theo bóng dáng người xưa và bản sắc dân tộc.",
-
-      "Trân trọng những mảnh ghép ấy là cách giữ cho nhịp đập của quá khứ tiếp tục vang vọng trong hiện tại.",
-    ],
-  },
-
-  {
     id: "kien",
-    no: "Chương 02",
+    no: "Chương 01",
     word: "Kiến",
-    meaning: "Kiến tạo · Lắp ráp",
+    meaning: "Kiến tạo · Lắp ráp · Xây dựng",
     title: "Tự Tay Kiến Tạo",
     img: "/images/heritage-pagoda.jpg",
     seal: "KIẾN",
-    flip: true,
-    alt: true,
-
+    flip: false,
+    alt: false,
     body: [
-      "Kiến Tích Việt bắt đầu từ chữ “Kiến” – kiến tạo, lắp ráp, xây dựng. Một mảnh gỗ, một khớp nối, một cấu trúc dần hình thành đưa bạn vào hành trình của những người thợ mộc tài hoa thuở trước.",
-
-      "Lịch sử không còn khô khan trên trang giấy, mà sống lại ngay dưới đôi tay bạn.",
+      "Gợi đến kiến tạo, lắp ghép, xây dựng.",
+      "Liên tưởng trực tiếp đến trải nghiệm khách hàng: từ những mảnh gỗ nhỏ, người dùng tự tay tạo nên một công trình hoàn chỉnh.",
+      "Thể hiện tinh thần tự tay làm - tự mình khám phá, thay vì chỉ đứng nhìn một di sản.",
     ],
   },
-
+  {
+    id: "tich",
+    no: "Chương 02",
+    word: "Tích",
+    meaning: "Dấu tích · Ký ức thời gian",
+    title: "Dấu Tích Của Thời Gian",
+    img: "/images/heritage-door.jpg",
+    seal: "TÍCH",
+    flip: true,
+    alt: true,
+    body: [
+      "Gợi đến dấu tích, di tích, những giá trị vật chất và câu chuyện được lưu giữ qua thời gian.",
+      "Mỗi mô hình không chỉ tái hiện một công trình mà còn đại diện cho một “dấu tích Việt Nam” được kể lại bằng một hình thức mới.",
+      "Trân trọng những mảnh ghép ấy là cách giữ cho nhịp đập của quá khứ tiếp tục vang vọng trong hiện tại.",
+    ],
+  },
   {
     id: "viet",
     no: "Chương 03",
     word: "Việt",
-    meaning: "Văn hóa · Con người",
+    meaning: "Văn hóa · Lịch sử · Di sản",
     title: "Một Câu Chuyện Mang Tên Việt Nam",
     img: "/images/one-pillar-pagoda.jpg",
     seal: "VIỆT",
     flip: false,
     alt: false,
-
     body: [
+      "Khẳng định nguồn cảm hứng và giá trị cốt lõi đến từ văn hóa, lịch sử và di sản Việt Nam.",
       "Cảm hứng của chúng tôi khởi nguồn từ dòng chảy văn hóa, kiến trúc và con người Việt Nam — tìm một ngôn ngữ đương đại để đưa di sản đến gần cuộc sống hôm nay.",
-
       "Kiến tạo những dấu tích Việt bằng đôi tay và khối óc của thế hệ hôm nay.",
     ],
   },
@@ -83,7 +78,40 @@ export default function OurStory() {
         </div>
       </section>
 
-      <nav className="name-strip" aria-label="Ý nghĩa tên thương hiệu">
+      {/* Mission & Vision trước khi nói về Kiến Tích Việt */}
+      <section className="story-mission-vision reveal" aria-label="Sứ mệnh và Tầm nhìn">
+        <div className="mission-vision-grid">
+          <div className="mission-card">
+            <span className="mv-kicker">Sứ Mệnh · Mission</span>
+            <h3>
+              Biến những dấu tích của quá khứ thành trải nghiệm của thế hệ hôm nay.
+            </h3>
+          </div>
+          <div className="vision-card">
+            <span className="mv-kicker">Tầm Nhìn · Vision</span>
+            <p>
+              Kiến Tích Việt xây dựng hệ sinh thái sản phẩm và nền tảng số về di sản,
+              góp phần số hóa, bảo tồn và lan tỏa những giá trị kiến trúc, văn hóa
+              Việt Nam đến các thế hệ tương lai và bạn bè quốc tế.
+            </p>
+          </div>
+        </div>
+
+        <div className="about-ktv-card">
+          <p className="about-ktv-intro">
+            <strong>Kiến Tích Việt</strong> là công ty nghiên cứu, sản xuất mô hình lắp ráp 3D
+            tái hiện những công trình kiến trúc và di sản Việt Nam kết hợp trải nghiệm công nghệ.
+          </p>
+          <p className="about-ktv-philosophy">
+            Với triết lí <em>“Lấy di sản làm gốc, lấy sáng tạo làm cầu nối”</em>, Kiến Tích Việt
+            phát triển mô hình lắp ghép kết hợp công nghệ, mang đến trải nghiệm khám phá kiến
+            trúc và văn hóa Việt Nam trực quan, sáng tạo và gần gũi hơn đến người dân Việt Nam
+            và bạn bè quốc tế.
+          </p>
+        </div>
+      </section>
+
+      <nav className="name-strip" aria-label="Ý nghĩa tên thương hiệu Kiến - Tích - Việt">
         {chapters.map((c) => (
           <a href={`#${c.id}`} key={c.id}>
             <b>{c.word}</b>
@@ -133,7 +161,7 @@ export default function OurStory() {
             khứ — biến quan sát thụ động thành trải nghiệm văn hóa trọn vẹn.
           </p>
           <div className="journey-steps">
-            {["Nhìn", "Lắp ghép", "Khám phá", "Hiểu", "Ghi nhớ"].map((s, i) => (
+            {["Nhìn", "Lắp ghép", "Khám phá", "Cảm nhận", "Hiểu"].map((s, i) => (
               <div key={s}>
                 <small>0{i + 1}</small>
                 <b>{s}</b>
@@ -145,8 +173,8 @@ export default function OurStory() {
 
       <section className="statement reveal">
         <div className="statement-mark">“</div>
-        <p>Một mảnh ghép nhỏ. Một công trình lớn.</p>
-        <h2>Một dấu tích Việt Nam.</h2>
+        <p>Mỗi mảnh ghép một dấu ấn,</p>
+        <h2>mỗi mô hình một câu chuyện.</h2>
         <LinkButton href="/products">Khám phá bộ sưu tập</LinkButton>
         <span className="statement-outline">DI SẢN</span>
       </section>

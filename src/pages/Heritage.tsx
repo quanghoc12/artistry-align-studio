@@ -1,14 +1,14 @@
 import { useParams, Link } from "react-router-dom"
 import { Icon, LinkButton } from "../components/Shared"
 import AudioGuidePlayer from "../components/AudioGuidePlayer"
-import { products } from "../data/products"
+import { products, findProduct } from "../data/products"
 import { Sparkles, Box, ArrowRight, BookOpen, Compass, Layers } from "lucide-react"
 
 export default function Heritage() {
   const { id } = useParams<{ id: string }>()
 
-  const currentSlug = id || products[0]?.slug || "chua-mot-cot"
-  const product = products.find((p) => p.slug === currentSlug) || products[0]
+  const currentSlug = id || products[0]?.slug || "thap-rua"
+  const product = findProduct(currentSlug) || products[0]
 
   if (!product) {
     return (
@@ -36,6 +36,9 @@ export default function Heritage() {
   }
 
   const otherHeritages = products.filter((p) => p.slug !== product.slug)
+
+  const isThapRua = product.slug === "thap-rua"
+  const isChuaMotCot = product.slug === "chua-mot-cot"
 
   return (
     <div
@@ -118,9 +121,11 @@ export default function Heritage() {
                 }}
               >
                 <Sparkles size={13} />
-                {product.slug === "chua-mot-cot"
-                  ? "HÀ NỘI · DI SẢN SỐ 01"
-                  : `${product.eyebrow.split("·")[0]?.trim() || "DI SẢN"} · SỐ ${product.number}`}
+                {isThapRua
+                  ? "HÀ NỘI · KIẾN TRÚC DI SẢN"
+                  : isChuaMotCot
+                    ? "HÀ NỘI · DI SẢN SỐ 02"
+                    : `${product.eyebrow.split("·")[0]?.trim() || "DI SẢN"} · SỐ ${product.number}`}
               </span>
             </div>
 
@@ -150,9 +155,11 @@ export default function Heritage() {
                 fontStyle: "italic",
               }}
             >
-              {product.slug === "chua-mot-cot"
-                ? "Diên Hựu Tự nghìn năm văn hiến · Đóa sen gỗ vươn mình giữa lòng hồ Linh Chiểu"
-                : product.eyebrow}
+              {isThapRua
+                ? "Dấu ấn kiến trúc bên Hồ Hoàn Kiếm · Chứng nhân những đổi thay của Hà Nội"
+                : isChuaMotCot
+                  ? "Diên Hựu Tự nghìn năm văn hiến · Đóa sen gỗ vươn mình giữa lòng hồ Linh Chiểu"
+                  : "Nơi lưu giữ sắc màu tranh dân gian và nét đẹp tinh hoa văn hóa phố cổ Hà Nội"}
             </p>
           </div>
         </div>
@@ -182,7 +189,7 @@ export default function Heritage() {
                     marginBottom: "10px",
                   }}
                 >
-                  Không gian Thuyết minh Âm thanh
+                  {isThapRua ? "LẮNG NGHE CÂU CHUYỆN" : "Không gian Thuyết minh Âm thanh"}
                 </h2>
                 <p
                   style={{
@@ -193,16 +200,16 @@ export default function Heritage() {
                     margin: "0 auto",
                   }}
                 >
-                  Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm
-                  vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện
-                  về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh thời gian thực dưới đây.
+                  {isThapRua
+                    ? "Nằm trên gò đảo nhỏ giữa Hồ Hoàn Kiếm, Tháp Rùa là một trong những biểu tượng quen thuộc của Hà Nội. Với nét kiến trúc giao thoa Đông - Tây cùng những dấu ấn lịch sử gắn liền với Hồ Gươm, công trình đã trở thành một phần trong ký ức và đời sống văn hóa Thủ đô. Hãy cùng Kiến Tích Việt lắng nghe câu chuyện về ngọn tháp giữa lòng hồ xanh."
+                    : "Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh thời gian thực dưới đây."}
                 </p>
               </div>
 
               <AudioGuidePlayer
                 audioUrl={product.audioUrl}
-                title={product.audioTitle || product.name}
-                subtitle={product.audioAuthor || "Thuyết minh Di sản · Kiến Tích Việt"}
+                title={isThapRua ? "Tháp Rùa" : (product.audioTitle || product.name)}
+                subtitle={isThapRua ? "Chuyện kể giữa lòng Hồ Gươm" : (product.audioAuthor || "Thuyết minh Di sản · Kiến Tích Việt")}
                 heritageName={product.name}
                 coverImage={product.image}
               />
@@ -247,7 +254,9 @@ export default function Heritage() {
                       fontWeight: 600,
                     }}
                   >
-                    Thư tịch cổ · Đại Việt Sử Ký Toàn Thư
+                    {isThapRua
+                      ? "Ký ức Thăng Long · Huyền tích Hồ Gươm"
+                      : "Thư tịch cổ · Đại Việt Sử Ký Toàn Thư"}
                   </span>
                 </div>
                 <blockquote
@@ -260,9 +269,9 @@ export default function Heritage() {
                     fontStyle: "italic",
                   }}
                 >
-                  "Mùa đông tháng 10 năm Kỷ Dậu (1049), dựng chùa Diên Hựu. Vua Lý Thái Tông chiêm bao thấy
-                  Phật Quan Âm dắt lên tòa sen, bèn sai dựng chùa, xây cột đá ở giữa hồ, làm tòa sen của Phật
-                  Quan Âm đặt trên cột như đã thấy trong mộng..."
+                  {isThapRua
+                    ? "“Hồ Gươm soi bóng tháp thiêng, nơi gắn liền với huyền tích vua Lê Lợi trao trả gươm thần cho Rùa Vàng sau ngày toàn thắng giặc Minh — biểu tượng bất diệt cho ước vọng thái bình của muôn dân nước Việt...”"
+                    : "“Mùa đông tháng 10 năm Kỷ Dậu (1049), dựng chùa Diên Hựu. Vua Lý Thái Tông chiêm bao thấy Phật Quan Âm dắt lên tòa sen, bèn sai dựng chùa, xây cột đá ở giữa hồ, làm tòa sen của Phật Quan Âm đặt trên cột như đã thấy trong mộng...”"}
                 </blockquote>
               </div>
 
@@ -279,31 +288,64 @@ export default function Heritage() {
                     gap: "10px",
                   }}
                 >
-                  <Compass size={22} /> Huyền tích khởi lập (Năm 1049)
+                  <Compass size={22} />{" "}
+                  {isThapRua
+                    ? "Huyền tích Hồ Hoàn Kiếm & Rùa Vàng"
+                    : "Huyền tích khởi lập (Năm 1049)"}
                 </h3>
-                <p
-                  style={{
-                    lineHeight: 1.75,
-                    color: "rgba(255, 235, 209, 0.85)",
-                    fontSize: "16px",
-                    marginBottom: "16px",
-                  }}
-                >
-                  Theo huyền sử, vua Lý Thái Tông tuổi cao chưa có hoàng tử nối dõi, thường đến cầu tự ở
-                  các chùa. Một đêm, ngài chiêm bao thấy Bồ Tát Quan Âm tọa thiền trên tòa sen tỏa ánh hào
-                  quang rực rỡ, đưa tay dắt nhà vua lên đài. Sau đó hoàng hậu hạ sinh hoàng tử.
-                </p>
-                <p
-                  style={{
-                    lineHeight: 1.75,
-                    color: "rgba(255, 235, 209, 0.85)",
-                    fontSize: "16px",
-                  }}
-                >
-                  Để tạ ơn hồng ân Tam Bảo, nhà vua cho dựng một ngôi chùa đặt tên là <strong>Diên Hựu</strong>
-                  (nghĩa là "Phước lành dài lâu") với dáng dấp một đóa hoa sen vươn lên giữa hồ nước Linh Chiểu,
-                  trở thành biểu tượng của tâm hồn thuần khiết và lòng từ bi của dân tộc.
-                </p>
+                {isThapRua ? (
+                  <>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Nằm trên gò đảo nhỏ giữa làn nước xanh biếc của Hồ Hoàn Kiếm, Tháp Rùa gắn liền với
+                      truyền thuyết trả gươm thần của vua Lê Thái Tổ sau cuộc kháng chiến Lam Sơn toàn thắng.
+                      Nơi đây được xem là chốn hội tụ linh khí của đất trời Thăng Long, biểu trưng cho tinh
+                      thần thượng võ và khát vọng hòa bình muôn thuở của dân tộc.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Mỗi buổi sớm sương mờ hay chiều hoàng hôn buông xuống, bóng tháp nghiêng mình soi mặt
+                      nước biếc, tạo nên nét chấm phá thi vị đầy chất thơ giữa lòng đô thị phồn hoa.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Theo huyền sử, vua Lý Thái Tông tuổi cao chưa có hoàng tử nối dõi, thường đến cầu tự ở
+                      các chùa. Một đêm, ngài chiêm bao thấy Bồ Tát Quan Âm tọa thiền trên tòa sen tỏa ánh hào
+                      quang rực rỡ, đưa tay dắt nhà vua lên đài. Sau đó hoàng hậu hạ sinh hoàng tử.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Để tạ ơn hồng ân Tam Bảo, nhà vua cho dựng một ngôi chùa đặt tên là <strong>Diên Hựu</strong>
+                      (nghĩa là "Phước lành dài lâu") với dáng dấp một đóa hoa sen vươn lên giữa hồ nước Linh Chiểu,
+                      trở thành biểu tượng của tâm hồn thuần khiết và lòng từ bi của dân tộc.
+                    </p>
+                  </>
+                )}
               </div>
 
               {/* Story Chapter 2: Unique Architecture */}
@@ -319,31 +361,64 @@ export default function Heritage() {
                     gap: "10px",
                   }}
                 >
-                  <Layers size={22} /> Triết lý kiến trúc: Trời tròn Đất vuông
+                  <Layers size={22} />{" "}
+                  {isThapRua
+                    ? "Dấu ấn kiến trúc giao thoa Đông - Tây"
+                    : "Triết lý kiến trúc: Trời tròn Đất vuông"}
                 </h3>
-                <p
-                  style={{
-                    lineHeight: 1.75,
-                    color: "rgba(255, 235, 209, 0.85)",
-                    fontSize: "16px",
-                    marginBottom: "16px",
-                  }}
-                >
-                  Khác với cấu trúc chùa chiền truyền thống nhiều gian, Chùa Một Cột sở hữu giải pháp kiến trúc
-                  độc nhất vô nhị trên thế giới: Toàn bộ ngôi chùa gỗ hình vuông (mỗi cạnh 3m) được nâng đỡ bởi
-                  <strong> một cột đá trụ tròn duy nhất</strong> có đường kính 1.2m, chôn sâu vững chãi giữa lòng hồ.
-                </p>
-                <p
-                  style={{
-                    lineHeight: 1.75,
-                    color: "rgba(255, 235, 209, 0.85)",
-                    fontSize: "16px",
-                  }}
-                >
-                  Cột đá tròn tượng trưng cho Trời (Dương), mái chùa vuông tượng trưng cho Đất (Âm), bốn góc mái
-                  đao cong mềm mại vút lên tựa những cánh sen xòe nở. Hệ thống giằng mộng gỗ đòn tay vươn ra từ
-                  cột đá là minh chứng đỉnh cao cho kỹ thuật ghép mộng mộc truyền thống của thợ tài hoa đất Thăng Long.
-                </p>
+                {isThapRua ? (
+                  <>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Khác với các công trình kiến trúc thuần Việt, Tháp Rùa mang vẻ đẹp giao thoa độc đáo
+                      giữa nét vòm cửa Gothic châu Âu và phần mái đao uốn cong thanh thoát của kiến trúc đền
+                      chùa Á Đông. Công trình gồm ba tầng tháp nhỏ dần lên cao, bốn mặt trổ cửa vòm cân xứng.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Trải qua hơn một thế kỷ dãi dầu mưa nắng, Tháp Rùa đã trở thành chứng nhân lặng lẽ chứng
+                      kiến biết bao thăng trầm và đổi thay của Thủ đô Hà Nội, lắng đọng lại thành một phần máu
+                      thịt trong tâm thức mỗi người Việt.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Khác với cấu trúc chùa chiền truyền thống nhiều gian, Chùa Một Cột sở hữu giải pháp kiến trúc
+                      độc nhất vô nhị trên thế giới: Toàn bộ ngôi chùa gỗ hình vuông (mỗi cạnh 3m) được nâng đỡ bởi
+                      <strong> một cột đá trụ tròn duy nhất</strong> có đường kính 1.2m, chôn sâu vững chãi giữa lòng hồ.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+                        color: "rgba(255, 235, 209, 0.85)",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Cột đá tròn tượng trưng cho Trời (Dương), mái chùa vuông tượng trưng cho Đất (Âm), bốn góc mái
+                      đao cong mềm mại vút lên tựa những cánh sen xòe nở. Hệ thống giằng mộng gỗ đòn tay vươn ra từ
+                      cột đá là minh chứng đỉnh cao cho kỹ thuật ghép mộng mộc truyền thống của thợ tài hoa đất Thăng Long.
+                    </p>
+                  </>
+                )}
               </div>
             </div>
 
@@ -436,7 +511,7 @@ export default function Heritage() {
                           textTransform: "uppercase",
                         }}
                       >
-                        Giá phát hành
+                        {product.accent === "Sắp ra mắt" ? "Giá dự kiến" : "Giá phát hành"}
                       </span>
                       <strong style={{ fontSize: "22px", color: "var(--gold)" }}>
                         {product.price}
@@ -518,8 +593,9 @@ export default function Heritage() {
                     marginBottom: "20px",
                   }}
                 >
-                  Chiêm ngưỡng từng chi tiết mộng gỗ Chùa Một Cột xoay 360 độ hoặc đặt trực tiếp mô hình vào
-                  không gian phòng của bạn thông qua camera và chip NFC gắn kèm sản phẩm.
+                  {isThapRua
+                    ? "Quan sát mô hình Tháp Rùa 3D từ nhiều góc nhìn, phóng to để khám phá từng chi tiết thiết kế. Với thiết bị hỗ trợ AR, bạn còn có thể đặt mô hình ảo vào không gian thực thông qua camera điện thoại."
+                    : "Chiêm ngưỡng từng chi tiết mộng gỗ di sản xoay 360 độ hoặc đặt trực tiếp mô hình vào không gian phòng của bạn thông qua camera và chip NFC gắn kèm sản phẩm."}
                 </p>
 
                 <div

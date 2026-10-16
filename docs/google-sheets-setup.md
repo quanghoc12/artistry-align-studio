@@ -27,6 +27,11 @@
 2. Xóa hết mã có sẵn trong cửa sổ soạn thảo, rồi copy & paste toàn bộ đoạn code dưới đây vào:
 
 ```javascript
+// ==============================================================
+// 1. CẤU HÌNH: Điền địa chỉ Gmail bạn muốn nhận thông báo đơn hàng vào đây:
+var NOTIFY_EMAIL = "kientichviet.official@gmail.com"; // <-- Hãy đổi thành Gmail của bạn/chủ shop nếu cần
+// ==============================================================
+
 function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -58,71 +63,70 @@ function doPost(e) {
       ""              // Cột Ghi chú cuộc gọi
     ]);
 
-    // 2. Tự động gửi Email thông báo tức thì về Gmail của chủ shop
+    // 2. Tự động gửi Email thông báo tức thì về Gmail
     try {
-      // Tự động lấy email của người sở hữu Sheet (hoặc bạn có thể điền cố định email vào đây)
-      var recipientEmail = Session.getEffectiveUser().getEmail();
+      if (NOTIFY_EMAIL && NOTIFY_EMAIL.trim() !== "") {
+        var emailSubject = "🔥 [ĐƠN MỚI] " + customerName + " - " + customerPhone + " (" + totalAmount + ")";
+        var htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #8F0019; border-radius: 10px; background-color: #fffefb;">
+            <div style="border-bottom: 2px solid #8F0019; padding-bottom: 12px; margin-bottom: 20px;">
+              <h2 style="color: #8F0019; margin: 0; font-size: 22px;">Kiến Tích Việt - Có Đơn Đặt Hàng Mới!</h2>
+              <p style="color: #666; margin: 5px 0 0; font-size: 14px;">Mã đơn: <strong>#${orderId}</strong> · Thời gian: ${createdAt}</p>
+            </div>
 
-      var emailSubject = "🔥 [ĐƠN MỚI] " + customerName + " - " + customerPhone + " (" + totalAmount + ")";
-      var htmlContent = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #8F0019; border-radius: 10px; background-color: #fffefb;">
-          <div style="border-bottom: 2px solid #8F0019; padding-bottom: 12px; margin-bottom: 20px;">
-            <h2 style="color: #8F0019; margin: 0; font-size: 22px;">Kiến Tích Việt - Có Đơn Đặt Hàng Mới!</h2>
-            <p style="color: #666; margin: 5px 0 0; font-size: 14px;">Mã đơn: <strong>#${orderId}</strong> · Thời gian: ${createdAt}</p>
+            <table style="width: 100%; border-collapse: collapse; font-size: 15px; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 8px 0; color: #555; width: 140px;"><strong>Khách hàng:</strong></td>
+                <td style="padding: 8px 0; color: #111; font-weight: bold;">${customerName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #555;"><strong>Số điện thoại:</strong></td>
+                <td style="padding: 8px 0;">
+                  <a href="tel:${customerPhone}" style="color: #8F0019; font-weight: bold; font-size: 18px; text-decoration: none;">
+                    📞 ${customerPhone} (Bấm để gọi ngay)
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #555;"><strong>Địa chỉ giao:</strong></td>
+                <td style="padding: 8px 0; color: #111;">${customerAddress}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #555;"><strong>Email:</strong></td>
+                <td style="padding: 8px 0; color: #111;">${customerEmail}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #555;"><strong>Sản phẩm đặt:</strong></td>
+                <td style="padding: 8px 0; color: #8F0019; font-weight: bold;">${products}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #555;"><strong>Tổng tiền:</strong></td>
+                <td style="padding: 8px 0; color: #8F0019; font-weight: bold; font-size: 18px;">${totalAmount}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #555;"><strong>Hình thức:</strong></td>
+                <td style="padding: 8px 0; color: #1b7a3a; font-weight: bold;">Thanh toán khi nhận hàng (COD)</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #555;"><strong>Ghi chú:</strong></td>
+                <td style="padding: 8px 0; color: #555; font-style: italic;">${customerNote}</td>
+              </tr>
+            </table>
+
+            <div style="background-color: #fdf5ea; border-left: 4px solid #d48b28; padding: 12px 16px; border-radius: 4px; font-size: 14px; color: #6d4208;">
+              ⏱️ <strong>Mẹo chốt đơn:</strong> Khách hàng có cảm xúc mua hàng cao nhất trong 15-30 phút đầu tiên. Hãy gọi điện xác nhận hoặc kết bạn Zalo để gửi ảnh thực tế tác phẩm cho khách nhé!
+            </div>
           </div>
+        `;
 
-          <table style="width: 100%; border-collapse: collapse; font-size: 15px; margin-bottom: 20px;">
-            <tr>
-              <td style="padding: 8px 0; color: #555; width: 140px;"><strong>Khách hàng:</strong></td>
-              <td style="padding: 8px 0; color: #111; font-weight: bold;">${customerName}</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #555;"><strong>Số điện thoại:</strong></td>
-              <td style="padding: 8px 0;">
-                <a href="tel:${customerPhone}" style="color: #8F0019; font-weight: bold; font-size: 18px; text-decoration: none;">
-                  📞 ${customerPhone} (Bấm để gọi ngay)
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #555;"><strong>Địa chỉ giao:</strong></td>
-              <td style="padding: 8px 0; color: #111;">${customerAddress}</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #555;"><strong>Email:</strong></td>
-              <td style="padding: 8px 0; color: #111;">${customerEmail}</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #555;"><strong>Sản phẩm đặt:</strong></td>
-              <td style="padding: 8px 0; color: #8F0019; font-weight: bold;">${products}</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #555;"><strong>Tổng tiền:</strong></td>
-              <td style="padding: 8px 0; color: #8F0019; font-weight: bold; font-size: 18px;">${totalAmount}</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #555;"><strong>Hình thức:</strong></td>
-              <td style="padding: 8px 0; color: #1b7a3a; font-weight: bold;">Thanh toán khi nhận hàng (COD)</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #555;"><strong>Ghi chú của khách:</strong></td>
-              <td style="padding: 8px 0; color: #555; font-style: italic;">${customerNote}</td>
-            </tr>
-          </table>
-
-          <div style="background-color: #fdf5ea; border-left: 4px solid #d48b28; padding: 12px 16px; border-radius: 4px; font-size: 14px; color: #6d4208;">
-            ⏱️ <strong>Mẹo chốt đơn:</strong> Khách hàng có cảm xúc mua hàng cao nhất trong 15-30 phút đầu tiên. Hãy gọi điện xác nhận hoặc kết bạn Zalo để gửi ảnh thực tế tác phẩm cho khách nhé!
-          </div>
-        </div>
-      `;
-
-      MailApp.sendEmail({
-        to: recipientEmail,
-        subject: emailSubject,
-        htmlBody: htmlContent
-      });
+        MailApp.sendEmail({
+          to: NOTIFY_EMAIL,
+          subject: emailSubject,
+          htmlBody: htmlContent
+        });
+      }
     } catch (mailError) {
-      console.warn("Không gửi được email thông báo: " + mailError.toString());
+      console.warn("Lỗi gửi mail: " + mailError.toString());
     }
 
     return ContentService.createTextOutput(JSON.stringify({
@@ -137,9 +141,31 @@ function doPost(e) {
     })).setMimeType(ContentService.MimeType.JSON);
   }
 }
+
+// ==============================================================
+// HÀM TEST & CẤP QUYỀN GỬI MAIL (BẮT BUỘC CHẠY 1 LẦN TRÊN APPS SCRIPT):
+// Chọn hàm "testSendEmail" ở thanh menu trên và bấm "Chạy" (Run) để Google cấp quyền gửi mail!
+// ==============================================================
+function testSendEmail() {
+  MailApp.sendEmail({
+    to: NOTIFY_EMAIL,
+    subject: "🔔 [TEST] Kiểm tra gửi thông báo đơn hàng Kiến Tích Việt",
+    htmlBody: "<h3 style='color:#8F0019'>Chúc mừng! Hệ thống gửi email thông báo đã hoạt động hoàn hảo.</h3><p>Từ giờ, mỗi khi có khách đặt hàng trên website, email chi tiết sẽ tự động bay về đây!</p>"
+  });
+  Logger.log("Đã gửi email test thành công tới: " + NOTIFY_EMAIL);
+}
 ```
 
 3. Bấm biểu tượng **Lưu (Save / Ctrl+S)**.
+4. **CỰC KỲ QUAN TRỌNG - CẤP QUYỀN GỬI MAIL:**
+   - Ở thanh công cụ trên cùng (cạnh nút Gỡ lỗi/Chạy), bấm vào ô chọn hàm đang ghi là `doPost` ➔ chọn hàm **`testSendEmail`**.
+   - Bấm nút **Chạy (Run)**.
+   - Google sẽ hiện popup **Cần được ủy quyền (Authorization required)**:
+     - Bấm **Xem lại quyền truy cập (Review permissions)** ➔ Chọn tài khoản Gmail của bạn.
+     - Bấm **Nâng cao (Advanced)** ➔ Bấm **Đi tới... (không an toàn)** ➔ Bấm **Cho phép (Allow)**.
+   - Ngay lập tức mở hộp thư Gmail của bạn sẽ thấy email test bay về! Lần đầu chạy hàm này chính là để Google cấp quyền gửi mail cho script.
+
+---
 
 ---
 

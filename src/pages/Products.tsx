@@ -9,19 +9,19 @@ import { Link } from "react-router-dom"
 const THEME_CATEGORIES = [
   { value: "Tất cả", shortLabel: "Tất cả", dropdownLabel: "Chủ đề: Tất cả" },
   {
-    value: "Hà Nội · Bộ sưu tập Thăng Long",
+    value: "Hà Nội · Hồ Gươm",
+    shortLabel: "Hồ Gươm",
+    dropdownLabel: "Chủ đề: Hồ Gươm",
+  },
+  {
+    value: "Di sản Thăng Long",
     shortLabel: "Thăng Long",
     dropdownLabel: "Chủ đề: Thăng Long",
   },
   {
-    value: "Văn Miếu · Quốc Tử Giám",
-    shortLabel: "Văn Miếu",
-    dropdownLabel: "Chủ đề: Văn Miếu",
-  },
-  {
-    value: "Nam Định · Dấu ấn nhà Trần",
-    shortLabel: "Thời Trần",
-    dropdownLabel: "Chủ đề: Thời Trần",
+    value: "Hà Nội · Phố cổ Hà Nội",
+    shortLabel: "Phố cổ",
+    dropdownLabel: "Chủ đề: Phố cổ",
   },
 ]
 
@@ -36,13 +36,11 @@ export default function Products() {
     let result = [...products]
 
     // Filter by category (eyebrow)
-
     if (filterCategory !== "Tất cả") {
       result = result.filter((p) => p.eyebrow === filterCategory)
     }
 
     // Filter by search
-
     if (searchTerm.trim() !== "") {
       const lowerSearch = searchTerm.toLowerCase()
 
@@ -56,7 +54,6 @@ export default function Products() {
     }
 
     // Sort
-
     if (sortBy !== "Mặc định") {
       result.sort((a, b) => {
         if (sortBy === "Tên A-Z") return a.name.localeCompare(b.name)
@@ -82,13 +79,13 @@ export default function Products() {
     <>
       <section className="shop-hero">
         <div className="reveal">
-          <p className="kicker">Bộ sưu tập Kiến Tích Việt</p>
+          <p className="kicker">Mang dáng hình di sản về không gian của bạn.</p>
           <h1>
             Những dấu tích <em>trong lòng bàn tay.</em>
           </h1>
           <p className="hero-description">
-            Mỗi bộ mô hình là một công trình di sản thu nhỏ — tự tay lắp ghép,
-            trưng bày và chạm NFC để nghe câu chuyện phía sau.
+            Mỗi mô hình tái hiện dáng hình một công trình di sản Việt Nam, để bạn
+            tự tay lắp ghép, trưng bày và khám phá những câu chuyện văn hóa qua NFC.
           </p>
         </div>
         <div className="shop-hero-stats reveal">
@@ -103,14 +100,14 @@ export default function Products() {
             <span className="stat-index">02</span>
             <div className="stat-info">
               <strong>Trưng bày nghệ thuật</strong>
-              <span>Tỉ lệ chuẩn di sản · Điểm nhấn không gian</span>
+              <span>Dáng hình di sản · Điểm nhấn không gian</span>
             </div>
           </div>
           <div className="hero-stat-card">
             <span className="stat-index">03</span>
             <div className="stat-info">
-              <strong>Chạm NFC khám phá</strong>
-              <span>Lắng nghe tích xưa & trải nghiệm văn hóa</span>
+              <strong>Chạm để khám phá</strong>
+              <span>Kết nối NFC để nghe và tìm hiểu câu chuyện di sản.</span>
             </div>
           </div>
         </div>
@@ -211,9 +208,17 @@ export default function Products() {
                       </p>
                     )}
                     <div className="product-card-meta">
-                      <span>{product.specifications?.pieces || "100+"} mảnh</span>
-                      <i>·</i>
-                      <span>{product.specifications?.time || "3–4 giờ"}</span>
+                      {product.specifications?.pieces ? (
+                        <span>{product.specifications.pieces} mảnh</span>
+                      ) : (
+                        <span>Đang cập nhật</span>
+                      )}
+                      {product.specifications?.time && (
+                        <>
+                          <i>·</i>
+                          <span>{product.specifications.time}</span>
+                        </>
+                      )}
                       <i>·</i>
                       <span>Chạm NFC</span>
                     </div>

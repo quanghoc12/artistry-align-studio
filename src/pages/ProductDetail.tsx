@@ -1,6 +1,6 @@
-import { useParams, Navigate, Link } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 
-import { products } from "../data/products"
+import { products, findProduct } from "../data/products"
 
 import { Icon, LinkButton } from "../components/Shared"
 
@@ -15,7 +15,7 @@ export default function ProductDetail() {
 
   const [playing, setPlaying] = useState(false)
 
-  const product = products.find((p) => p.slug === slug)
+  const product = findProduct(slug)
 
   if (!product) {
     return (
@@ -68,11 +68,17 @@ export default function ProductDetail() {
             <div className="specs">
               <span>
                 <small>Số mảnh</small>
-                <strong>{product.specifications.pieces}</strong>
+                <strong>
+                  {product.specifications.pieces
+                    ? `${product.specifications.pieces} mảnh`
+                    : "Đang cập nhật"}
+                </strong>
               </span>
               <span>
                 <small>Thời gian</small>
-                <strong>{product.specifications.time}</strong>
+                <strong>
+                  {product.specifications.time || "Đang cập nhật"}
+                </strong>
               </span>
               <span>
                 <small>Độ khó</small>

@@ -40,7 +40,7 @@ export default function Home() {
           <div className="hero-copy">
             <div className="eyebrow">
               <span />
-              Di sản Việt trong một hình hài mới
+              Từ di sản Việt đến mô hình lắp ghép gỗ 3D
             </div>
 
             <h1 id="hero-title">
@@ -49,8 +49,8 @@ export default function Home() {
             </h1>
 
             <p className="hero-description">
-              Kiến Tích Việt biến những dấu tích văn hóa Việt thành mô hình lắp
-              ghép để bạn tự tay kiến tạo, trưng bày và khám phá.
+              Tái hiện di sản Việt Nam qua mô hình lắp ghép gỗ 3D, để bạn tự tay lắp
+              ráp, trưng bày và khám phá những câu chuyện phía sau mỗi công trình.
             </p>
 
             <div className="hero-actions">
@@ -68,7 +68,7 @@ export default function Home() {
                 <SoundIcon />
               </div>
               <p>
-                <strong>Chạm để đánh thức di sản</strong>
+                <strong>Chạm để khám phá câu chuyện di sản</strong>
                 NFC · Audio · AR Experience
               </p>
             </div>
@@ -79,14 +79,14 @@ export default function Home() {
             <div className="visual-frame">
               <img
                 src={heritageImage}
-                alt="Mái đình truyền thống Việt Nam giữa thiên nhiên"
+                alt="Tháp Rùa Hồ Gươm cổ kính giữa lòng Hà Nội"
               />
               <div className="visual-tint" />
               <div className="corner corner-left" />
               <div className="corner corner-right" />
               <div className="visual-caption">
                 <span>Di sản nổi bật</span>
-                <strong>Kiến trúc đình Việt</strong>
+                <strong>Tháp Rùa Hồ Gươm</strong>
               </div>
             </div>
 
@@ -127,47 +127,36 @@ export default function Home() {
 
       <section className="intro section-pad" id="story">
         <div className="section-heading reveal">
-          <p className="kicker">01 · Triết lý</p>
+          <p className="kicker">01. Triết lý sản phẩm</p>
           <h2>
-            Không chỉ là một mô hình.
+            Không chỉ lắp ghép một mô hình,
             <br />
-            Đó là một hành trình.
+            mà còn khám phá một di sản.
           </h2>
         </div>
         <p className="intro-copy reveal">
-          Từ đôi tay người trẻ đến những ký ức trăm năm, mỗi bộ mô hình là một
-          cách mới để di sản hiện diện gần gũi hơn trong cuộc sống hôm nay.
+          Qua từng mảnh ghép gỗ, những công trình và câu chuyện di sản Việt Nam
+          được tái hiện theo cách gần gũi hơn với cuộc sống hôm nay.
         </p>
         <div className="steps">
           {[
             [
               "01",
-
-              "Build",
-
+              "Trải nghiệm",
               "Lắp ghép",
-
-              "Tự tay ghép từng mảnh gỗ, cảm nhận cấu trúc và dáng hình của công trình.",
+              "Khách hàng tự tay lắp ráp và hoàn thiện mô hình.",
             ],
-
             [
               "02",
-
-              "Display",
-
+              "Giá trị sử dụng",
               "Trưng bày",
-
-              "Biến di sản thành một vật phẩm trang trí có chiều sâu và câu chuyện.",
+              "Thành quả là một mô hình có tính thẩm mỹ, có thể đặt trong không gian sống hoặc sưu tầm.",
             ],
-
             [
               "03",
-
-              "Discover",
-
+              "Giá trị văn hóa",
               "Khám phá",
-
-              "Chạm NFC để lắng nghe, tương tác AR và mở ra thế giới phía sau mô hình.",
+              "Khách tìm hiểu thêm về công trình và câu chuyện di sản thông qua nội dung số.",
             ],
           ].map(([number, en, title, text]) => (
             <article className="step-card reveal" key={number}>
@@ -192,11 +181,11 @@ export default function Home() {
       <section className="products section-pad" id="products">
         <div className="products-head reveal">
           <div className="section-heading reveal">
-            <p className="kicker">02 · Tác phẩm</p>
+            <p className="kicker">02. Sản phẩm</p>
             <h2>
-              Những dấu tích
+              Di sản Việt
               <br />
-              trong lòng bàn tay
+              qua từng mảnh ghép
             </h2>
           </div>
           <Link className="text-link" to="/products">
@@ -205,43 +194,80 @@ export default function Home() {
         </div>
         <div className="product-grid">
           {products.map((product) => (
-            <article className="product-card reveal" key={product.id}>
+            <article
+              className={`product-card reveal ${product.accent === "Sắp ra mắt" ? "is-upcoming" : ""}`}
+              key={product.id}
+              data-slug={product.slug}
+            >
               <Link
                 className="product-image"
                 to={`/products/${product.slug}`}
                 aria-label={`Xem ${product.name}`}
               >
                 <img src={product.image} alt={product.name} />
-                <span className="product-number">#{product.number}</span>
-                <span className="product-accent">{product.accent}</span>
+                <span className="product-number">{product.number}</span>
+                <span
+                  className={`product-accent badge-${
+                    product.accent === "Mới"
+                      ? "new"
+                      : product.accent === "Bán chạy"
+                        ? "bestseller"
+                        : "upcoming"
+                  }`}
+                >
+                  {product.accent}
+                </span>
                 <span className="product-view">
                   <Icon name="plus" /> Xem chi tiết
                 </span>
               </Link>
               <div className="product-info">
-                <div className="product-info-main">
-                  <p>{product.eyebrow}</p>
-                  <h3>
-                    <Link to={`/products/${product.slug}`}>{product.name}</Link>
+                <div className="product-info-top">
+                  <p className="product-eyebrow">{product.eyebrow}</p>
+                  <h3 className="product-title">
+                    <Link to={`/products/${product.slug}`}>
+                      {product.name}
+                      <span className="title-arrow" aria-hidden="true"> →</span>
+                    </Link>
                   </h3>
-                  <div className="product-specs-summary">
-                    <span>
-                      {product.specifications.pieces !==
-                      "[NỘI DUNG CHỜ CUNG CẤP]"
-                        ? `${product.specifications.pieces} mảnh`
-                        : "120–180 mảnh"}
-                    </span>
+                  {product.description && (
+                    <p className="shop-desc">{product.description}</p>
+                  )}
+                  <div className="product-card-meta">
+                    {product.specifications?.pieces ? (
+                      <span>{product.specifications.pieces} mảnh</span>
+                    ) : (
+                      <span>Đang cập nhật</span>
+                    )}
+                    {product.specifications?.time && (
+                      <>
+                        <i>·</i>
+                        <span>{product.specifications.time}</span>
+                      </>
+                    )}
                     <i>·</i>
-                    <span>
-                      {product.specifications.time !== "[NỘI DUNG CHỜ CUNG CẤP]"
-                        ? product.specifications.time
-                        : "3–4 giờ"}
-                    </span>
-                    <i>·</i>
-                    <span>Gỗ tự nhiên</span>
+                    <span>Chạm NFC</span>
                   </div>
                 </div>
-                <strong className="product-price">{product.price}</strong>
+                <div className="product-price-row">
+                  <div className="price-block">
+                    {product.accent === "Sắp ra mắt" ? (
+                      <>
+                        <span className="price-label">Dự kiến</span>
+                        <strong className="product-price">{product.price}</strong>
+                      </>
+                    ) : (
+                      <strong className="product-price">{product.price}</strong>
+                    )}
+                  </div>
+                  <Link
+                    to={`/products/${product.slug}`}
+                    className="product-inline-cta"
+                    aria-label={`Xem chi tiết ${product.name}`}
+                  >
+                    {product.accent === "Sắp ra mắt" ? "Xem chi tiết" : "Khám phá"}
+                  </Link>
+                </div>
               </div>
             </article>
           ))}
@@ -268,7 +294,7 @@ export default function Home() {
               </button>
               <div className="audio-copy">
                 <small>Đang nghe</small>
-                <strong>Sự tích Chùa Một Cột</strong>
+                <strong>Tháp Rùa — Chuyện kể giữa lòng Hồ Gươm</strong>
                 <span className="audio-wave">
                   {Array.from({ length: 17 }).map((_, index) => (
                     <i key={index} />
@@ -285,15 +311,15 @@ export default function Home() {
           </div>
         </div>
         <div className="tech-copy reveal">
-          <p className="kicker light">03 · Khám phá kĩ thuật số</p>
+          <p className="kicker light">03 – Trải nghiệm số</p>
           <h2>
             Một cú chạm.
             <br />
             Cả ngàn câu chuyện.
           </h2>
           <p>
-            Một mô hình không chỉ dừng lại ở những mảnh gỗ. Chạm NFC để mở ra
-            câu chuyện phía sau di sản.
+            Mỗi mô hình không chỉ để lắp ráp và trưng bày. Chạm NFC để khám phá
+            thêm những câu chuyện về di sản Việt Nam.
           </p>
           <div className="tech-features">
             <div>
@@ -305,18 +331,18 @@ export default function Home() {
             <div>
               <Icon name="headphones" />
               <span>
-                <strong>Audio</strong> Nghe những chuyện xưa
+                <strong>Audio</strong> Lắng nghe câu chuyện di sản.
               </span>
             </div>
             <div>
               <Icon name="phone" />
               <span>
-                <strong>AR</strong> Đưa di sản vào không gian
+                <strong>AR</strong> Đưa mô hình 3D vào không gian thực.
               </span>
             </div>
           </div>
           <LinkButton
-            href={`/heritage/${products[0]?.slug || "chua-mot-cot"}`}
+            href={`/heritage/${products[0]?.slug || "thap-rua"}`}
             dark
           >
             Khám phá trải nghiệm số
@@ -326,26 +352,26 @@ export default function Home() {
 
       <section className="journal section-pad" id="journal">
         <div className="journal-intro reveal">
-          <p className="kicker">04 · Ký ức</p>
+          <p className="kicker">04 – Câu chuyện di sản</p>
           <h2>
             Mỗi công trình
             <br />
             đều có một câu chuyện.
           </h2>
           <p>
-            Đi qua lịch sử bằng những câu chuyện nhỏ, những chi tiết kiến trúc
-            và ký ức được kể lại.
+            Khám phá lịch sử, kiến trúc và những câu chuyện văn hóa phía sau mỗi
+            công trình di sản Việt Nam.
           </p>
           <Link
             className="text-link"
-            to={`/heritage/${products[0]?.slug || "chua-mot-cot"}`}
+            to={`/heritage/${products[0]?.slug || "thap-rua"}`}
           >
             Khám phá di sản <Icon name="arrow" />
           </Link>
         </div>
         <div className="story-list">
           {stories.map((story, index) => {
-            const productSlug = products[index]?.slug || "chua-mot-cot"
+            const productSlug = story.slug || products[index]?.slug || "thap-rua"
             return (
               <Link
                 to={`/heritage/${productSlug}`}
@@ -369,8 +395,8 @@ export default function Home() {
 
       <section className="statement reveal">
         <div className="statement-mark">“</div>
-        <p>Từ những mảnh ghép nhỏ,</p>
-        <h2>dựng nên những dấu tích lớn.</h2>
+        <p>Mỗi mảnh ghép một dấu ấn,</p>
+        <h2>mỗi mô hình một câu chuyện.</h2>
         <LinkButton href="/products">Bắt đầu hành trình</LinkButton>
         <span className="statement-outline">KIẾN TÍCH VIỆT</span>
       </section>
