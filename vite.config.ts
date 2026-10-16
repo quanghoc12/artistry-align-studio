@@ -26,9 +26,9 @@ export default defineConfig(({ mode }) => {
       minify: !emitSourcemaps,
     },
 
-    esbuild: {
-      drop: mode === "development" ? [] : (["console", "debugger"] as ("console" | "debugger")[]),
-    },
+    esbuild: (mode === "development"
+      ? {}
+      : { drop: ["console", "debugger"] }) as any,
 
     plugins: [
       react(),
@@ -48,6 +48,10 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
+    },
+
+    optimizeDeps: {
+      exclude: ["@google/model-viewer"],
     },
 
     server: {
@@ -117,21 +121,25 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
 
   function escapeHtmlText(value: string): string {
     return value
+
       .replace(/&/g, "&amp;")
+
       .replace(/</g, "&lt;")
+
       .replace(/>/g, "&gt;")
   }
 
   function replaceHtmlCommentSlot(
     html: string,
+
     slotName: string,
+
     content: string,
   ): string {
     return html.replace(`<!-- ${slotName} -->`, content)
   }
 
-  const title =
-    config.title ?? "Kiến Tích Việt — Mô hình lắp ghép di sản Việt"
+  const title = config.title ?? "Kiến Tích Việt — Mô hình lắp ghép di sản Việt"
 
   const description =
     config.description ??
@@ -196,7 +204,9 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
 
         result = replaceHtmlCommentSlot(
           result,
+
           "figma:title",
+
           escapeHtmlText(title),
         )
 
@@ -213,7 +223,9 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
         if (description) {
           tags.push({
             tag: "meta",
+
             attrs: { name: "description", content: description },
+
             injectTo: "head",
           })
         }
@@ -221,7 +233,9 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
         if (config.robots?.index === false) {
           tags.push({
             tag: "meta",
+
             attrs: { name: "robots", content: "noindex, nofollow" },
+
             injectTo: "head",
           })
         }
@@ -229,7 +243,9 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
         if (favicon) {
           tags.push({
             tag: "link",
+
             attrs: { rel: "icon", href: favicon },
+
             injectTo: "head",
           })
         }
@@ -238,17 +254,25 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
           tags.push(
             {
               tag: "meta",
+
               attrs: { property: "og:title", content: title },
+
               injectTo: "head",
             },
+
             {
               tag: "meta",
+
               attrs: { property: "og:site_name", content: "Kiến Tích Việt" },
+
               injectTo: "head",
             },
+
             {
               tag: "meta",
+
               attrs: { name: "twitter:title", content: title },
+
               injectTo: "head",
             },
           )
@@ -258,12 +282,17 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
           tags.push(
             {
               tag: "meta",
+
               attrs: { property: "og:description", content: description },
+
               injectTo: "head",
             },
+
             {
               tag: "meta",
+
               attrs: { name: "twitter:description", content: description },
+
               injectTo: "head",
             },
           )
@@ -273,19 +302,25 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
           tags.push(
             {
               tag: "meta",
+
               attrs: { property: "og:image", content: socialImage },
+
               injectTo: "head",
             },
 
             {
               tag: "meta",
+
               attrs: { name: "twitter:card", content: "summary_large_image" },
+
               injectTo: "head",
             },
 
             {
               tag: "meta",
+
               attrs: { name: "twitter:image", content: socialImage },
+
               injectTo: "head",
             },
           )

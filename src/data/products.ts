@@ -9,6 +9,8 @@ export interface Product {
   number: string
   accent: string
   description: string
+  modelUrl?: string
+  usdzUrl?: string
   specifications: {
     pieces: string
     time: string
@@ -36,6 +38,8 @@ export const products: Product[] = [
     accent: "Sắp ra mắt",
     description:
       "Mô hình lắp ghép gỗ 3D tái hiện Tháp Rùa, biểu tượng quen thuộc giữa lòng Hồ Gươm.",
+    modelUrl: "/models/Thap-rua-model.glb",
+    usdzUrl: "/models/Thap-rua-model.usdz",
     audioUrl:
       "/audio/chuyen_ve_doa_sen_go_cua_ngan_nam_van_hienco_270f3316-cf23-4e17-8255-8693ab8597a5.mp3",
     audioTitle: "Tháp Rùa — Chuyện kể giữa lòng Hồ Gươm",
