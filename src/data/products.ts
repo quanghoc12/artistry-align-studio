@@ -33,7 +33,7 @@ export const products: Product[] = [
     name: "Tháp Rùa",
     eyebrow: "Hà Nội · Hồ Gươm",
     price: "820.000 ₫",
-    image: "/images/one-pillar-pagoda.jpg",
+    image: "/images/thap-rua.jpg",
     number: "01",
     accent: "Sắp ra mắt",
     description:
@@ -42,11 +42,11 @@ export const products: Product[] = [
     usdzUrl: "/models/Thap-rua-model.usdz",
     audioUrl:
       "/audio/chuyen_ve_doa_sen_go_cua_ngan_nam_van_hienco_270f3316-cf23-4e17-8255-8693ab8597a5.mp3",
-    audioTitle: "Tháp Rùa — Chuyện kể giữa lòng Hồ Gươm",
+    audioTitle: "Tháp Rùa — Biểu tượng giữa lòng Hồ Hoàn Kiếm",
     audioAuthor: "Thuyết minh Di sản · Kiến Tích Việt",
     specifications: {
       pieces: "148",
-      time: "", // Bỏ thông tin thời gian lắp ghép theo ghi chú PDF
+      time: "", // Bỏ thông tin thời gian lắp ghép theo feedback
       difficulty: "Nâng cao",
       material: "Gỗ sồi & bồ đề",
       size: "15 × 15 × 38 cm",
@@ -60,7 +60,7 @@ export const products: Product[] = [
     name: "Chùa Một Cột",
     eyebrow: "Di sản Thăng Long",
     price: "890.000 ₫",
-    image: "/images/heritage-pagoda.jpg",
+    image: "/images/chua-mot-cot.jpg",
     number: "02",
     accent: "Mới",
     description:
@@ -70,8 +70,8 @@ export const products: Product[] = [
     audioTitle: "Chuyện về đóa sen gỗ của ngàn năm văn hiến",
     audioAuthor: "Thuyết minh Di sản · Kiến Tích Việt",
     specifications: {
-      pieces: "", // Không tự bịa số lượng mảnh ghép khi chưa có dữ liệu xác thực
-      time: "3–4 giờ",
+      pieces: "xxx", // Cập nhật thành xxx mảnh theo feedback
+      time: "", // Bỏ số giờ lắp ghép theo feedback
       difficulty: "Trung bình",
       material: "Gỗ bồ đề tự nhiên",
       size: "20 × 20 × 25 cm",
@@ -86,14 +86,14 @@ export const products: Product[] = [
     name: "Phố Hàng Trống",
     eyebrow: "Hà Nội · Phố cổ Hà Nội",
     price: "790.000 ₫",
-    image: "/images/heritage-door.jpg",
+    image: "/images/pho-hang-trong.jpg",
     number: "03",
     accent: "Bán chạy",
     description:
       "Mô hình lắp ghép gỗ 3D lấy cảm hứng từ kiến trúc phố Hàng Trống, tái hiện một góc phố nghề mang dấu ấn tranh dân gian Hà Nội xưa.",
     specifications: {
-      pieces: "", // Không tự bịa số lượng mảnh ghép khi chưa có dữ liệu xác thực
-      time: "2–3 giờ",
+      pieces: "xxx", // Cập nhật thành xxx mảnh theo feedback
+      time: "", // Bỏ số giờ lắp ghép theo feedback
       difficulty: "Trung bình",
       material: "Gỗ bồ đề tự nhiên",
       size: "18 × 18 × 22 cm",

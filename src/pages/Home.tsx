@@ -129,9 +129,9 @@ export default function Home() {
         <div className="section-heading reveal">
           <p className="kicker">01. Triết lý sản phẩm</p>
           <h2>
-            Không chỉ lắp ghép một mô hình,
+            Không chỉ lắp ghép một&nbsp;mô&nbsp;hình,
             <br />
-            mà còn khám phá một di sản.
+            mà còn khám phá một&nbsp;di&nbsp;sản.
           </h2>
         </div>
         <p className="intro-copy reveal">
@@ -156,7 +156,7 @@ export default function Home() {
               "03",
               "Giá trị văn hóa",
               "Khám phá",
-              "Khách tìm hiểu thêm về công trình và câu chuyện di sản thông qua nội dung số.",
+              "Khách hàng tìm hiểu thêm về công trình và câu chuyện di sản thông qua nội dung số.",
             ],
           ].map(([number, en, title, text]) => (
             <article className="step-card reveal" key={number}>
@@ -284,7 +284,7 @@ export default function Home() {
           <div className="phone">
             <div className="phone-screen">
               <span className="phone-label">Kiến Tích Việt</span>
-              <img src="/images/one-pillar-pagoda.jpg" alt="" />
+              <img src="/images/thap-rua.jpg" alt="Mô hình Tháp Rùa" />
               <button
                 className={`play-button ${playing ? "is-playing" : ""}`}
                 onClick={() => setPlaying(!playing)}
@@ -294,7 +294,7 @@ export default function Home() {
               </button>
               <div className="audio-copy">
                 <small>Đang nghe</small>
-                <strong>Tháp Rùa — Chuyện kể giữa lòng Hồ Gươm</strong>
+                <strong>Tháp Rùa — Biểu tượng giữa lòng Hồ Hoàn Kiếm</strong>
                 <span className="audio-wave">
                   {Array.from({ length: 17 }).map((_, index) => (
                     <i key={index} />

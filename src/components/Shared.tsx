@@ -12,19 +12,19 @@ export const stories = [
   {
     title: "Biểu tượng trầm mặc giữa lòng Hồ Gươm",
     place: "Tháp Rùa Hồ Gươm · Hà Nội",
-    image: "/images/one-pillar-pagoda.jpg",
+    image: "/images/thap-rua.jpg",
     slug: "thap-rua",
   },
   {
     title: "Một đóa sen giữa lòng Thăng Long",
     place: "Chùa Một Cột · Hà Nội",
-    image: "/images/heritage-pagoda.jpg",
+    image: "/images/chua-mot-cot.jpg",
     slug: "chua-mot-cot",
   },
   {
     title: "Nơi lưu giữ sắc màu tranh dân gian",
     place: "Phố Hàng Trống · Hà Nội",
-    image: "/images/heritage-door.jpg",
+    image: "/images/pho-hang-trong.jpg",
     slug: "pho-hang-trong",
   },
 ]

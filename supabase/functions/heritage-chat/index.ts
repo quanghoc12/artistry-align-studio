@@ -6,12 +6,12 @@ const cors = {
 }
 
 const OFFICIAL_DATA = `
-Thương hiệu: Kiến Tích Việt — mô hình lắp ghép gỗ di sản Việt Nam. Slogan: "Dựng hình di sản, nối nhịp thời gian". Mỗi bộ: tự lắp ghép → trưng bày → chạm NFC để nghe câu chuyện (audio), AR đang phát triển.
+Thương hiệu: Kiến Tích Việt — mô hình lắp ghép gỗ di sản Việt Nam. Slogan: "Dựng hình di sản, nối nhịp thời gian". Mỗi bộ: tự lắp ghép → trưng bày → chạm NFC để nghe câu chuyện (audio), trải nghiệm AR trên điện thoại.
 Sản phẩm:
-1. Chùa Một Cột (Hà Nội · Bộ sưu tập Thăng Long) — 890.000₫ — 120 mảnh, 3–4 giờ, độ khó Trung bình. Nhãn: Mới.
-2. Khuê Văn Các (Văn Miếu · Quốc Tử Giám) — 790.000₫. Nhãn: Bán chạy.
-3. Tháp Phổ Minh (Nam Định · Dấu ấn nhà Trần) — 820.000₫. Nhãn: Sắp ra mắt.
-Chưa được cung cấp: chất liệu chi tiết, kích thước, cân nặng, độ tuổi, tồn kho, chính sách đổi trả/vận chuyển/bảo hành.`
+1. Tháp Rùa (Hà Nội · Hồ Gươm) — Giá dự kiến: 820.000₫ — 148 mảnh. Nhãn: Sắp ra mắt. (Lưu ý: Không dùng truyền thuyết trả gươm thần, Tháp Rùa tọa lạc trên Gò Rùa, từng có Điếu Đài thời Lê Thánh Tông, đình Tả Vọng thời chúa Trịnh, xây dựng 1884-1886 gắn với Bá hộ Kim / thế hậu chẩm chùa Báo Ân, kiến trúc giao thoa Đông - Tây, chiến sĩ Nguyễn Trọng Quang treo cờ đỏ sao vàng năm 1948).
+2. Chùa Một Cột (Di sản Thăng Long) — 890.000₫ — Số mảnh: xxx mảnh (đang cập nhật). Nhãn: Mới.
+3. Phố Hàng Trống (Hà Nội · Phố cổ Hà Nội) — 790.000₫ — Số mảnh: xxx mảnh (đang cập nhật). Nhãn: Bán chạy. (Phố nghề thủ công truyền thống, nổi tiếng với tranh dân gian Hàng Trống, kỹ thuật vờn màu độc đáo).
+Chưa được cung cấp: tồn kho, chính sách đổi trả/vận chuyển/bảo hành.`
 
 const SYSTEM = `Bạn là "Trợ lý Kiến Tích Việt", trả lời bằng tiếng Việt, thân thiện, ngắn gọn (≤150 từ).
 Tuân thủ 3 tầng:

@@ -70,6 +70,8 @@ export default function Heritage() {
 
   const isChuaMotCot = product.slug === "chua-mot-cot"
 
+  const isHangTrong = product.slug === "pho-hang-trong"
+
   const [is3DModalOpen, setIs3DModalOpen] = useState(false)
 
   const open3DButtonRef = useRef<HTMLButtonElement>(null)
@@ -295,10 +297,10 @@ export default function Heritage() {
               }}
             >
               {isThapRua
-                ? "Dấu ấn kiến trúc bên Hồ Hoàn Kiếm · Chứng nhân những đổi thay của Hà Nội"
+                ? "Biểu tượng giữa lòng Hồ Hoàn Kiếm · Dấu ấn lịch sử và kiến trúc Thủ đô"
                 : isChuaMotCot
                   ? "Diên Hựu Tự nghìn năm văn hiến · Đóa sen gỗ vươn mình giữa lòng hồ Linh Chiểu"
-                  : "Nơi lưu giữ sắc màu tranh dân gian và nét đẹp tinh hoa văn hóa phố cổ Hà Nội"}
+                  : "Nơi sắc màu dân gian lưu dấu giữa lòng Hà Nội · Ký ức tinh hoa phố nghề xưa"}
             </p>
           </div>
         </div>
@@ -340,7 +342,9 @@ export default function Heritage() {
                 >
                   {isThapRua
                     ? "LẮNG NGHE CÂU CHUYỆN"
-                    : "Không gian Thuyết minh Âm thanh"}
+                    : isHangTrong
+                      ? "LẮNG NGHE CÂU CHUYỆN"
+                      : "Không gian Thuyết minh Âm thanh"}
                 </h2>
                 <p
                   style={{
@@ -356,21 +360,29 @@ export default function Heritage() {
                   }}
                 >
                   {isThapRua
-                    ? "Nằm trên gò đảo nhỏ giữa Hồ Hoàn Kiếm, Tháp Rùa là một trong những biểu tượng quen thuộc của Hà Nội. Với nét kiến trúc giao thoa Đông - Tây cùng những dấu ấn lịch sử gắn liền với Hồ Gươm, công trình đã trở thành một phần trong ký ức và đời sống văn hóa Thủ đô. Hãy cùng Kiến Tích Việt lắng nghe câu chuyện về ngọn tháp giữa lòng hồ xanh."
-                    : "Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh thời gian thực dưới đây."}
+                    ? "Giữa lòng Hồ Hoàn Kiếm, trên gò đất nhỏ mang tên Gò Rùa, Tháp Rùa nổi bật như một biểu tượng gắn liền với hình ảnh Hà Nội. Không chỉ gây ấn tượng bởi dáng vẻ cổ kính giữa mặt hồ, công trình còn lưu giữ những dấu ấn lịch sử, nét kiến trúc độc đáo cùng những câu chuyện văn hóa gắn với Hồ Gươm qua nhiều thế hệ. Hãy cùng Kiến Tích Việt lắng nghe câu chuyện về ngọn tháp giữa lòng hồ xanh."
+                    : isHangTrong
+                      ? "Giữa lòng Hà Nội, gần hồ Hoàn Kiếm, có một con phố mang tên Hàng Trống. Nơi đây từng là một không gian phố nghề nhộn nhịp, nơi hội tụ những người thợ thủ công tài hoa và lưu giữ dòng tranh dân gian độc đáo. Hãy cùng Kiến Tích Việt lắng nghe câu chuyện về sắc màu dân gian lưu dấu giữa lòng Thủ đô."
+                      : "Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh dưới đây."}
                 </p>
               </div>
 
               <AudioGuidePlayer
                 audioUrl={product.audioUrl}
                 title={
-                  isThapRua ? "Tháp Rùa" : product.audioTitle || product.name
+                  isThapRua
+                    ? "Tháp Rùa"
+                    : isHangTrong
+                      ? "Phố Hàng Trống"
+                      : product.audioTitle || product.name
                 }
                 subtitle={
                   isThapRua
-                    ? "Chuyện kể giữa lòng Hồ Gươm"
-                    : product.audioAuthor ||
-                      "Thuyết minh Di sản · Kiến Tích Việt"
+                    ? "Biểu tượng giữa lòng Hồ Hoàn Kiếm"
+                    : isHangTrong
+                      ? "Nơi sắc màu dân gian lưu dấu giữa lòng Hà Nội"
+                      : product.audioAuthor ||
+                        "Thuyết minh Di sản · Kiến Tích Việt"
                 }
                 heritageName={product.name}
                 coverImage={product.image}
@@ -442,8 +454,10 @@ export default function Heritage() {
                     }}
                   >
                     {isThapRua
-                      ? "Ký ức Thăng Long · Huyền tích Hồ Gươm"
-                      : "Thư tịch cổ · Đại Việt Sử Ký Toàn Thư"}
+                      ? "Ký ức Thăng Long · Dấu ấn Gò Rùa"
+                      : isHangTrong
+                        ? "Di sản Phố Nghề · Sắc Màu Dân Gian"
+                        : "Thư tịch cổ · Đại Việt Sử Ký Toàn Thư"}
                   </span>
                 </div>
                 <blockquote
@@ -462,8 +476,10 @@ export default function Heritage() {
                   }}
                 >
                   {isThapRua
-                    ? "“Hồ Gươm soi bóng tháp thiêng, nơi gắn liền với huyền tích vua Lê Lợi trao trả gươm thần cho Rùa Vàng sau ngày toàn thắng giặc Minh — biểu tượng bất diệt cho ước vọng thái bình của muôn dân nước Việt...”"
-                    : "“Mùa đông tháng 10 năm Kỷ Dậu (1049), dựng chùa Diên Hựu. Vua Lý Thái Tông chiêm bao thấy Phật Quan Âm dắt lên tòa sen, bèn sai dựng chùa, xây cột đá ở giữa hồ, làm tòa sen của Phật Quan Âm đặt trên cột như đã thấy trong mộng...”"}
+                    ? "“Giữa lòng Hồ Hoàn Kiếm, trên gò đất nhỏ mang tên Gò Rùa, Tháp Rùa nổi bật như một biểu tượng gắn liền với hình ảnh Hà Nội — lưu giữ những dấu ấn lịch sử, nét kiến trúc độc đáo cùng những câu chuyện văn hóa qua nhiều thế hệ.”"
+                    : isHangTrong
+                      ? "“Dẫu những cửa hàng xưa đã thưa vắng, những nét khắc trên gỗ và sắc màu trên giấy dó vẫn tiếp tục kể câu chuyện về người Hà Nội, về nghệ thuật dân gian và về những giá trị văn hóa cần được trao truyền cho các thế hệ mai sau.”"
+                      : "“Mùa đông tháng 10 năm Kỷ Dậu (1049), dựng chùa Diên Hựu. Vua Lý Thái Tông chiêm bao thấy Phật Quan Âm dắt lên tòa sen, bèn sai dựng chùa, xây cột đá ở giữa hồ, làm tòa sen của Phật Quan Âm đặt trên cột như đã thấy trong mộng...”"}
                 </blockquote>
               </div>
 
@@ -488,8 +504,10 @@ export default function Heritage() {
                 >
                   <Compass size={22} />{" "}
                   {isThapRua
-                    ? "Huyền tích Hồ Hoàn Kiếm & Rùa Vàng"
-                    : "Huyền tích khởi lập (Năm 1049)"}
+                    ? "Nguồn gốc lịch sử & Dấu ấn Gò Rùa"
+                    : isHangTrong
+                      ? "Ký ức phố nghề xưa & Nơi hội tụ trăm thợ"
+                      : "Huyền tích khởi lập (Năm 1049)"}
                 </h3>
                 {isThapRua ? (
                   <>
@@ -504,12 +522,37 @@ export default function Heritage() {
                         marginBottom: "16px",
                       }}
                     >
-                      Nằm trên gò đảo nhỏ giữa làn nước xanh biếc của Hồ Hoàn
-                      Kiếm, Tháp Rùa gắn liền với truyền thuyết trả gươm thần
-                      của vua Lê Thái Tổ sau cuộc kháng chiến Lam Sơn toàn
-                      thắng. Nơi đây được xem là chốn hội tụ linh khí của đất
-                      trời Thăng Long, biểu trưng cho tinh thần thượng võ và
-                      khát vọng hòa bình muôn thuở của dân tộc.
+                      Về nguồn gốc lịch sử, trước khi có Tháp Rùa ngày nay, Gò
+                      Rùa từng là nơi tọa lạc của những công trình gắn với các
+                      triều đại trước. Theo các tư liệu được ghi lại, dưới thời
+                      vua Lê Thánh Tông, nơi đây có Điếu Đài, là nơi nhà vua câu
+                      cá và ngâm vịnh thơ ca. Đến thời Lê Trung Hưng, chúa Trịnh
+                      cho xây dựng đình Tả Vọng trên gò. Về sau, những công trình
+                      này bị phá bỏ và không còn tồn tại.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+
+                        color: "rgba(255, 235, 209, 0.85)",
+
+                        fontSize: "16px",
+
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Tháp Rùa ngày nay được xây dựng trong khoảng từ giữa năm
+                      1884 đến tháng 4/1886, gắn với một nhân vật thường được
+                      gọi là Bá hộ Kim. Theo một câu chuyện được lưu truyền, ông
+                      nhận thấy Gò Rùa có vị trí đẹp về phong thủy nên muốn xây
+                      tháp để an táng hài cốt cha mình. Tuy nhiên, việc an táng
+                      được cho là đã không thành công. Công trình vẫn được hoàn
+                      thành và ban đầu được gọi là Tháp Bá hộ Kim. Bên cạnh đó,
+                      một cách lý giải khác cho rằng Tháp Rùa được xây dựng nhằm
+                      tạo thế hậu chẩm cho chùa Báo Ân, một ngôi chùa lớn từng
+                      tồn tại gần Hồ Hoàn Kiếm. Những cách lý giải khác nhau cho
+                      thấy nguồn gốc và mục đích xây dựng Tháp Rùa vẫn còn những
+                      điểm chưa hoàn toàn thống nhất.
                     </p>
                     <p
                       style={{
@@ -520,9 +563,73 @@ export default function Heritage() {
                         fontSize: "16px",
                       }}
                     >
-                      Mỗi buổi sớm sương mờ hay chiều hoàng hôn buông xuống,
-                      bóng tháp nghiêng mình soi mặt nước biếc, tạo nên nét chấm
-                      phá thi vị đầy chất thơ giữa lòng đô thị phồn hoa.
+                      Tháp Rùa còn gắn với những dấu ấn lịch sử đáng nhớ. Theo
+                      các tư liệu ghi lại, ngày 19/5/1948, chiến sĩ trẻ Nguyễn
+                      Trọng Quang cùng đồng đội đã bơi ra Tháp Rùa để treo lá cờ
+                      đỏ sao vàng trên đỉnh tháp, ngay trong thời kỳ Hà Nội bị
+                      thực dân Pháp chiếm đóng. Sự kiện này trở thành một câu
+                      chuyện đặc biệt về tinh thần yêu nước và ý chí đấu tranh
+                      của người dân Thủ đô.
+                    </p>
+                  </>
+                ) : isHangTrong ? (
+                  <>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+
+                        color: "rgba(255, 235, 209, 0.85)",
+
+                        fontSize: "16px",
+
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Ngược dòng thời gian, khu vực phố Hàng Trống ngày nay vốn
+                      được hình thành từ đất của nhiều thôn xóm cũ, trong đó có
+                      Cổ Vũ, Khánh Thụy Hữu và Tự Tháp. Những cộng đồng dân cư
+                      với nghề nghiệp và tập quán riêng đã góp phần tạo nên diện
+                      mạo đặc trưng của khu phố. Khi người thợ từ các làng nghề
+                      lân cận tìm đến đây sinh sống và buôn bán, con phố dần trở
+                      thành nơi hội tụ của nhiều nghề thủ công truyền thống.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+
+                        color: "rgba(255, 235, 209, 0.85)",
+
+                        fontSize: "16px",
+
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Ngày ấy, Hàng Trống không chỉ có một nghề. Người dân từ
+                      làng Liên Thượng mang nghề làm trống đến đây, tạo ra nhiều
+                      loại trống phục vụ đời sống và các hoạt động văn hóa. Những
+                      người thợ từ Đào Xá lại nổi tiếng với nghề làm lọng, làm
+                      tàn, tán dùng trong các nghi lễ và tại đình, đền, chùa,
+                      miếu. Ở một đoạn khác của phố, những người thợ thêu từ vùng
+                      Quất Động, Hướng Dương cũng góp mặt, khiến nơi đây từng có
+                      đoạn được gọi là phố Hàng Thêu.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+
+                        color: "rgba(255, 235, 209, 0.85)",
+
+                        fontSize: "16px",
+                      }}
+                    >
+                      Thế nhưng, giữa những âm thanh của nghề thủ công và nhịp
+                      buôn bán ấy, có một nghề đã tạo nên dấu ấn đặc biệt cho
+                      Hàng Trống: nghề làm tranh dân gian. Tranh Hàng Trống phát
+                      triển mạnh vào cuối thế kỷ XIX, đầu thế kỷ XX, khi người
+                      dân Hà Nội vẫn có nhu cầu lớn về tranh để thờ cúng, trang
+                      trí nhà cửa và đón Tết. Những bức tranh không đơn thuần
+                      dùng để làm đẹp không gian sống, mà còn gửi gắm niềm tin,
+                      mong ước bình an, may mắn và cuộc sống sung túc.
                     </p>
                   </>
                 ) : (
@@ -584,8 +691,10 @@ export default function Heritage() {
                 >
                   <Layers size={22} />{" "}
                   {isThapRua
-                    ? "Dấu ấn kiến trúc giao thoa Đông - Tây"
-                    : "Triết lý kiến trúc: Trời tròn Đất vuông"}
+                    ? "Kiến trúc giao thoa Đông – Tây & Biểu tượng văn hóa"
+                    : isHangTrong
+                      ? "Kỹ thuật vờn màu độc bản & Giá trị văn hóa"
+                      : "Triết lý kiến trúc: Trời tròn Đất vuông"}
                 </h3>
                 {isThapRua ? (
                   <>
@@ -600,11 +709,15 @@ export default function Heritage() {
                         marginBottom: "16px",
                       }}
                     >
-                      Khác với các công trình kiến trúc thuần Việt, Tháp Rùa
-                      mang vẻ đẹp giao thoa độc đáo giữa nét vòm cửa Gothic châu
-                      Âu và phần mái đao uốn cong thanh thoát của kiến trúc đền
-                      chùa Á Đông. Công trình gồm ba tầng tháp nhỏ dần lên cao,
-                      bốn mặt trổ cửa vòm cân xứng.
+                      Về kiến trúc, Tháp Rùa cao khoảng 8,8 m, gồm ba tầng chính
+                      và một tầng đỉnh dạng vọng lâu, với quy mô thu nhỏ dần từ
+                      dưới lên trên. Công trình mang nét giao thoa giữa kiến
+                      trúc phương Tây và kiến trúc truyền thống Việt Nam. Hai
+                      tầng dưới nổi bật với hệ thống cửa vòm nhọn, trong khi các
+                      tầng phía trên có những chi tiết mái cong mang dáng dấp
+                      kiến trúc Á Đông. Trên mặt phía đông của tầng ba có ba chữ
+                      “Quy Sơn Tháp”, nghĩa là Tháp Núi Rùa. Sự kết hợp này tạo
+                      nên diện mạo riêng của công trình giữa không gian Hồ Gươm.
                     </p>
                     <p
                       style={{
@@ -615,10 +728,79 @@ export default function Heritage() {
                         fontSize: "16px",
                       }}
                     >
-                      Trải qua hơn một thế kỷ dãi dầu mưa nắng, Tháp Rùa đã trở
-                      thành chứng nhân lặng lẽ chứng kiến biết bao thăng trầm và
-                      đổi thay của Thủ đô Hà Nội, lắng đọng lại thành một phần
-                      máu thịt trong tâm thức mỗi người Việt.
+                      Trải qua thời gian, Tháp Rùa không chỉ là một công trình
+                      kiến trúc giữa hồ mà còn trở thành biểu tượng gắn liền với
+                      Hồ Gươm và Hà Nội. Hình ảnh ngọn tháp xuất hiện trong thơ
+                      ca, hội họa, âm nhạc và ký ức của nhiều thế hệ. Giá trị của
+                      Tháp Rùa vì thế không chỉ nằm ở tuổi đời hay hình dáng
+                      kiến trúc, mà còn ở những câu chuyện lịch sử, văn hóa và
+                      tình cảm mà cộng đồng đã gửi gắm vào công trình qua nhiều
+                      thế hệ.
+                    </p>
+                  </>
+                ) : isHangTrong ? (
+                  <>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+
+                        color: "rgba(255, 235, 209, 0.85)",
+
+                        fontSize: "16px",
+
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Điều làm nên nét riêng của tranh Hàng Trống nằm ở cách
+                      người nghệ nhân tạo ra từng tác phẩm. Họ dùng ván khắc gỗ
+                      để in những đường nét chính lên giấy dó, sau đó tự tay tô
+                      màu bằng bút lông. Đặc biệt, kỹ thuật vờn màu tạo nên
+                      những mảng đậm nhạt mềm mại, khiến bức tranh vừa có đường
+                      nét rõ ràng, vừa mang vẻ uyển chuyển và giàu sức sống. Nếu
+                      tranh Đông Hồ thường in màu bằng các bản khắc riêng, thì
+                      với tranh Hàng Trống, bàn tay và cảm quan màu sắc của
+                      người nghệ nhân đóng vai trò đặc biệt quan trọng trong công
+                      đoạn hoàn thiện.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+
+                        color: "rgba(255, 235, 209, 0.85)",
+
+                        fontSize: "16px",
+
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Mỗi bức tranh lại kể một câu chuyện khác nhau. Tranh Ngũ Hổ
+                      gắn với tín ngưỡng dân gian; tranh Tố Nữ và Tứ Quý thể hiện
+                      vẻ đẹp thanh nhã, hài hòa; còn tranh Lý Ngư Vọng Nguyệt
+                      mang đến hình ảnh giàu tính biểu tượng. Có cả những bức
+                      tranh tái hiện các nhân vật lịch sử như Hai Bà Trưng, Bà
+                      Triệu và Trần Hưng Đạo. Qua từng nét khắc, từng lớp màu,
+                      người xưa gửi gắm vào tranh niềm tin, quan niệm thẩm mỹ và
+                      những giá trị được truyền từ thế hệ này sang thế hệ khác.
+                    </p>
+                    <p
+                      style={{
+                        lineHeight: 1.75,
+
+                        color: "rgba(255, 235, 209, 0.85)",
+
+                        fontSize: "16px",
+                      }}
+                    >
+                      Ngày nay, phố Hàng Trống không còn giữ nguyên không khí của
+                      một phố nghề xưa, nhưng tên gọi của nó vẫn gợi nhắc về một
+                      thời kỳ mà những người thợ làm trống, làm lọng, thêu thùa
+                      và vẽ tranh cùng góp phần tạo nên bản sắc của Hà Nội. Đặc
+                      biệt, tranh Hàng Trống vẫn là minh chứng cho sự khéo léo,
+                      óc sáng tạo và đời sống tinh thần phong phú của người Việt.
+                      Dẫu những cửa hàng xưa đã thưa vắng, những nét khắc trên gỗ
+                      và sắc màu trên giấy dó vẫn tiếp tục kể câu chuyện về người
+                      Hà Nội, về nghệ thuật dân gian và về những giá trị văn hóa
+                      cần được trao truyền cho các thế hệ mai sau.
                     </p>
                   </>
                 ) : (
@@ -635,9 +817,9 @@ export default function Heritage() {
                       }}
                     >
                       Khác với cấu trúc chùa chiền truyền thống nhiều gian, Chùa
-                      Một Cột sở hữu giải pháp kiến trúc độc nhất vô nhị trên
-                      thế giới: Toàn bộ ngôi chùa gỗ hình vuông (mỗi cạnh 3m)
-                      được nâng đỡ bởi
+                      Một Cột sở hữu giải pháp kiến trúc độc nhất vô nhị trên thế
+                      giới: Toàn bộ ngôi chùa gỗ hình vuông (mỗi cạnh 3m) được
+                      nâng đỡ bởi
                       <strong> một cột đá trụ tròn duy nhất</strong> có đường
                       kính 1.2m, chôn sâu vững chãi giữa lòng hồ.
                     </p>
@@ -913,7 +1095,9 @@ export default function Heritage() {
                 >
                   {isThapRua
                     ? "Quan sát mô hình Tháp Rùa 3D từ nhiều góc nhìn, phóng to để khám phá từng chi tiết thiết kế. Với thiết bị hỗ trợ AR, bạn còn có thể đặt mô hình ảo vào không gian thực thông qua camera điện thoại."
-                    : "Chiêm ngưỡng từng chi tiết mộng gỗ di sản xoay 360 độ hoặc đặt trực tiếp mô hình vào không gian phòng của bạn thông qua camera và chip NFC gắn kèm sản phẩm."}
+                    : isHangTrong
+                      ? "Khám phá không gian kiến trúc phố Hàng Trống và tranh dân gian qua góc nhìn 3D trực quan cùng công nghệ thực tế tăng cường AR trên điện thoại."
+                      : "Chiêm ngưỡng từng chi tiết mộng gỗ di sản xoay 360 độ hoặc đặt trực tiếp mô hình vào không gian phòng của bạn thông qua camera và chip NFC gắn kèm sản phẩm."}
                 </p>
 
                 <div

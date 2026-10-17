@@ -272,8 +272,8 @@ export default function Products() {
 
       <section className="statement reveal">
         <div className="statement-mark">“</div>
-        <p>Từ những mảnh ghép nhỏ,</p>
-        <h2>dựng nên những dấu tích lớn.</h2>
+        <p>Mỗi mảnh ghép một dấu ấn,</p>
+        <h2>mỗi mô hình một câu chuyện.</h2>
         <LinkButton href="/our-story">Câu chuyện thương hiệu</LinkButton>
         <span className="statement-outline">KIẾN TÍCH VIỆT</span>
       </section>
