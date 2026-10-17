@@ -141,7 +141,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
     return html.replace(`<!-- ${slotName} -->`, content)
   }
 
-  const title = config.title ?? "Kiến Tích Việt — Mô hình lắp ghép di sản Việt"
+  const title = config.title ?? "Kiến Tích Việt - Mô hình lắp ghép di sản Việt"
 
   const description =
     config.description ??
