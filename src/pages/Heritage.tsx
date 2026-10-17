@@ -110,6 +110,26 @@ export default function Heritage() {
     }
   }, [is3DModalOpen])
 
+  // Prefetch 3D model files in background to eliminate load wait time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const glbLink = document.createElement("link")
+      glbLink.rel = "prefetch"
+      glbLink.href = "/models/Thap-rua-model.glb"
+      glbLink.as = "fetch"
+      glbLink.crossOrigin = "anonymous"
+      document.head.appendChild(glbLink)
+
+      const usdzLink = document.createElement("link")
+      usdzLink.rel = "prefetch"
+      usdzLink.href = "/models/Thap-rua-model.usdz"
+      usdzLink.as = "fetch"
+      document.head.appendChild(usdzLink)
+    }, 1200)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <div
       className="heritage-page site-shell"
@@ -1439,8 +1459,7 @@ export default function Heritage() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="heritage-3d-modal-title"
-          aria-describedby="heritage-3d-modal-desc"
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-0 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-0 sm:p-4 md:p-6 bg-black/90"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setIs3DModalOpen(false)
@@ -1448,7 +1467,7 @@ export default function Heritage() {
           }}
         >
           <div
-            className="w-full h-full sm:h-[88vh] sm:max-h-[800px] max-w-[1040px] flex flex-col sm:rounded-2xl overflow-hidden shadow-2xl relative"
+            className="w-full h-full sm:h-[90vh] sm:max-h-[820px] max-w-[1080px] flex flex-col sm:rounded-2xl overflow-hidden shadow-2xl relative"
             style={{
               background: "linear-gradient(145deg, #250f13 0%, #16080a 100%)",
               border: "1px solid rgba(255, 209, 141, 0.35)",
@@ -1456,43 +1475,7 @@ export default function Heritage() {
                 "0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(143, 0, 25, 0.25)",
             }}
           >
-            {/* Modal Header */}
-            <div
-              className="flex items-center justify-between px-3.5 sm:px-6 py-2.5 sm:py-3.5 border-b border-[var(--gold)]/20 bg-[#15080a]/90 backdrop-blur-md gap-3 shrink-0"
-              style={{
-                paddingTop: "calc(10px + env(safe-area-inset-top, 0px))",
-              }}
-            >
-              <div className="min-w-0 flex-1">
-                <h3
-                  id="heritage-3d-modal-title"
-                  className="m-0 text-base sm:text-xl font-medium text-[#fff7ec] leading-snug truncate"
-                  style={{
-                    fontFamily: '"Vollkorn", serif',
-                  }}
-                >
-                  Mô hình 3D {product.name}
-                </h3>
-                <p
-                  id="heritage-3d-modal-desc"
-                  className="m-0 text-[11px] sm:text-xs text-[var(--gold)] tracking-wide truncate mt-0.5"
-                >
-                  Khám phá di sản · Tương tác 360° & Thực tế tăng cường (AR)
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setIs3DModalOpen(false)}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white/10 hover:bg-[#8f0019]/80 text-[#fff7ec] border border-[var(--gold)]/30 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 shrink-0"
-                aria-label="Đóng khung nhìn 3D"
-                title="Đóng khung nhìn 3D (Esc)"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Modal Body: 3D Viewer */}
+            {/* Modal Body: 3D Viewer with unified, integrated header and single close button */}
             <div className="flex-1 relative min-h-0 w-full flex">
               <ModelViewer3D
                 src={product.modelUrl || "/models/Thap-rua-model.glb"}

@@ -190,6 +190,45 @@ export default function ModelViewer3D({
     }
   }, [src, loadKey, checkArSupport])
 
+  // Instant recovery hook for iOS Cancel / Quick Look exit
+  useEffect(() => {
+    const handleViewerRecovery = () => {
+      // Remove any stuck focus or active state from button/link
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur()
+      }
+
+      // Invalidate layout to force Safari WebKit to repaint canvas
+      window.dispatchEvent(new Event("resize"))
+
+      const el = viewerRef.current
+      if (el) {
+        if (typeof el.dismissPoster === "function") {
+          el.dismissPoster()
+        }
+        if (typeof el.jumpCameraToGoal === "function") {
+          el.jumpCameraToGoal()
+        }
+      }
+    }
+
+    window.addEventListener("focus", handleViewerRecovery)
+    window.addEventListener("pageshow", handleViewerRecovery)
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        handleViewerRecovery()
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+
+    return () => {
+      window.removeEventListener("focus", handleViewerRecovery)
+      window.removeEventListener("pageshow", handleViewerRecovery)
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+    }
+  }, [])
+
   // Hide the initial controls hint after 5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -297,33 +336,32 @@ export default function ModelViewer3D({
         />
       </model-viewer>
 
-      {/* Top Bar: Title & AR Launcher & Optional Close Button */}
+      {/* Top Bar: Title & AR Launcher & Unified Close Button */}
       <div
         className="absolute top-2.5 left-2.5 right-2.5 sm:top-4 sm:left-4 sm:right-4 z-20 flex items-center justify-between pointer-events-none gap-2"
         style={{
           paddingTop: "env(safe-area-inset-top, 0px)",
         }}
       >
-        <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-[var(--gold)]/30 pointer-events-auto shrink-0 max-w-[48%] sm:max-w-none truncate">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-[var(--gold)]/30 pointer-events-auto shrink-0 max-w-[55%] sm:max-w-none truncate shadow-lg">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399] shrink-0" />
           <span
-            className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase truncate"
+            className="text-xs sm:text-sm font-semibold tracking-wide text-[#fff7ec] truncate"
             style={{
-              color: "var(--gold)",
-              fontFamily: '"Alegreya Sans", sans-serif',
+              fontFamily: '"Vollkorn", serif',
             }}
           >
-            Không gian 3D
+            {title}
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto shrink-0">
-          {/* Action: Open AR (Native iOS Quick Look anchor vs Android Scene Viewer button) */}
+        <div className="flex items-center gap-2 pointer-events-auto shrink-0">
+          {/* Action: Open AR (Native iOS Quick Look sheet anchor vs Android Scene Viewer button) */}
           {isIOS && iosSrc ? (
             <a
               rel="ar"
-              href={iosSrc}
-              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 no-underline"
+              href={`${iosSrc.split("#")[0]}#allowsContentScaling=0`}
+              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 no-underline"
               style={{
                 background:
                   "linear-gradient(135deg, rgba(255, 209, 141, 0.95) 0%, rgba(232, 186, 117, 0.95) 100%)",
@@ -337,7 +375,7 @@ export default function ModelViewer3D({
               <img
                 src={poster || "/favicon.png"}
                 alt=""
-                style={{ display: "none" }}
+                className="opacity-0 absolute w-px h-px pointer-events-none"
                 aria-hidden="true"
               />
               <Smartphone size={16} className="shrink-0" />
@@ -348,7 +386,7 @@ export default function ModelViewer3D({
             <button
               type="button"
               onClick={handleArClick}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
               style={{
                 background:
                   "linear-gradient(135deg, rgba(255, 209, 141, 0.95) 0%, rgba(232, 186, 117, 0.95) 100%)",
@@ -379,16 +417,19 @@ export default function ModelViewer3D({
             </button>
           )}
 
-          {/* Close button if onClose prop is passed */}
+          {/* Single prominent Close button if onClose prop is passed */}
           {onClose && (
             <button
               type="button"
               onClick={onClose}
-              className="min-h-[44px] min-w-[44px] p-2.5 rounded-full bg-black/75 hover:bg-[#8f0019]/90 text-[#fff7ec] border border-[var(--gold)]/35 backdrop-blur-md transition-all shadow-lg flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 shrink-0"
+              className="min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full bg-black/80 hover:bg-[#8f0019]/90 active:scale-95 text-[#fff7ec] border border-[var(--gold)]/40 backdrop-blur-md transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 shrink-0"
               aria-label="Đóng khung nhìn 3D"
               title="Đóng khung nhìn 3D (Esc)"
             >
-              <X size={20} />
+              <X size={18} className="shrink-0" />
+              <span className="hidden sm:inline text-xs font-semibold tracking-wider uppercase">
+                Đóng
+              </span>
             </button>
           )}
         </div>
@@ -459,40 +500,13 @@ export default function ModelViewer3D({
         </div>
       )}
 
-      {/* Loading Overlay with Smooth Progress Indicator */}
+      {/* Non-blocking loading indicator (poster remains visible underneath) */}
       {isLoading && !hasError && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-4 sm:p-6 bg-[#16080a]/92 backdrop-blur-sm text-center">
-          <div className="relative w-14 h-14 sm:w-16 sm:h-16 mb-3 sm:mb-4 flex items-center justify-center">
-            {/* Spinning decorative ring */}
-            <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--gold)] border-r-[var(--gold)] animate-spin" />
-            <Box
-              size={22}
-              className="text-[var(--gold)] opacity-90 animate-pulse"
-            />
-          </div>
-
-          <h4
-            className="text-sm sm:text-base font-medium mb-2 text-[#fff7ec] px-4"
-            style={{ fontFamily: '"Vollkorn", serif' }}
-          >
-            Đang tải mô hình {title}...
-          </h4>
-
-          {/* Progress Bar */}
-          <div className="w-40 sm:w-48 h-1.5 rounded-full bg-black/50 overflow-hidden border border-[var(--gold)]/20 mb-2">
-            <div
-              className="h-full bg-gradient-to-r from-[var(--gold)] to-[#e8ba75] transition-all duration-300"
-              style={{ width: `${Math.max(10, loadProgress)}%` }}
-            />
-          </div>
-
-          <p className="text-xs text-[var(--gold)] font-mono">
-            {loadProgress > 0
-              ? `${loadProgress}%`
-              : "Khởi tạo WebGL & Tối ưu hóa GPU..."}
-          </p>
-          <span className="text-[10.5px] sm:text-[11px] text-[#fff7ec]/50 mt-2 max-w-xs px-2">
-            Mô hình tối ưu mượt mà (~2.2 MB).
+        <div className="absolute top-16 sm:top-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/85 backdrop-blur-md border border-[var(--gold)]/35 shadow-2xl pointer-events-none transition-all duration-300 animate-fade-in max-w-[90vw]">
+          <div className="w-3.5 h-3.5 rounded-full border-2 border-transparent border-t-[var(--gold)] border-r-[var(--gold)] animate-spin shrink-0" />
+          <span className="text-xs text-[#fff7ec] font-medium tracking-wide truncate">
+            Đang tải mô hình 3D{" "}
+            {loadProgress > 0 ? `(${loadProgress}%)` : "..."}
           </span>
         </div>
       )}
@@ -526,7 +540,12 @@ export default function ModelViewer3D({
 
       {/* AR Device Guidance Modal / Popover */}
       {showArModal && (
-        <div className="absolute inset-0 z-40 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+        <div
+          className="absolute inset-0 z-40 flex items-center justify-center p-3 sm:p-4 bg-black/90 animate-fade-in overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowArModal(false)
+          }}
+        >
           <div
             className="max-w-md w-full p-5 sm:p-6 rounded-2xl border text-center shadow-2xl relative my-auto"
             style={{
