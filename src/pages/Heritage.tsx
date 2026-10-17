@@ -1500,6 +1500,7 @@ export default function Heritage() {
                 poster={product.image}
                 alt={`Mô hình 3D tương tác ${product.name} - Di sản Kiến Tích Việt`}
                 title={product.name}
+                onClose={() => setIs3DModalOpen(false)}
               />
             </div>
           </div>

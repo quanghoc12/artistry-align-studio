@@ -52,13 +52,25 @@ export default function ModelViewer3D({
   const [showControlsHint, setShowControlsHint] = useState(true)
   const [loadKey, setLoadKey] = useState(0)
   const [isMobileDevice, setIsMobileDevice] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
+  const [isAndroid, setIsAndroid] = useState(false)
 
-  // Detect mobile device
+  // Detect mobile device & OS platform
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const ua = navigator.userAgent || ""
+      const ios =
+        /iPhone|iPad|iPod/i.test(ua) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+      const android = /Android/i.test(ua)
       const mobile =
-        /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-        window.matchMedia("(max-width: 768px)").matches
+        ios ||
+        android ||
+        window.matchMedia("(max-width: 768px)").matches ||
+        "ontouchstart" in window
+
+      setIsIOS(ios)
+      setIsAndroid(android)
       setIsMobileDevice(mobile)
     }
   }, [])
@@ -105,7 +117,7 @@ export default function ModelViewer3D({
         const script = document.createElement("script")
         script.type = "module"
         script.src =
-          "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"
+          "https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"
         script.setAttribute("data-model-viewer", "true")
         script.onload = () => {
           if (mounted) checkArSupport()
@@ -126,7 +138,7 @@ export default function ModelViewer3D({
     return () => {
       mounted = false
     }
-  }, [loadKey, checkArSupport])
+  }, [checkArSupport])
 
   // Bind model-viewer custom events and lifecycle cleanup
   useEffect(() => {
@@ -251,7 +263,8 @@ export default function ModelViewer3D({
         camera-controls
         touch-action="pan-y"
         render-scale="auto"
-        power-preference="high-performance"
+        reveal="auto"
+        power-preference="default"
         loading="eager"
         auto-rotate={autoRotate ? "" : undefined}
         auto-rotate-delay="2500"
@@ -305,39 +318,66 @@ export default function ModelViewer3D({
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto shrink-0">
-          {/* Action: Open AR */}
-          <button
-            type="button"
-            onClick={handleArClick}
-            className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(255, 209, 141, 0.95) 0%, rgba(232, 186, 117, 0.95) 100%)",
-              color: "#351b18",
-              border: "1px solid rgba(255, 209, 141, 0.5)",
-              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.4)",
-            }}
-            title={
-              isArSupported
-                ? "Xem trong không gian thực qua camera"
-                : isMobileDevice
-                  ? "Hướng dẫn trải nghiệm AR"
-                  : "AR hỗ trợ trên điện thoại di động"
-            }
-            aria-label={
-              isArSupported
-                ? "Xem trong không gian thực qua camera"
-                : "Hướng dẫn trải nghiệm AR"
-            }
-          >
-            <Smartphone size={16} className="shrink-0" />
-            <span className="hidden sm:inline">
-              {isArSupported ? "Xem không gian thực" : "Hướng dẫn AR"}
-            </span>
-            <span className="sm:hidden text-[11px]">
-              {isArSupported ? "Xem AR" : "AR"}
-            </span>
-          </button>
+          {/* Action: Open AR (Native iOS Quick Look anchor vs Android Scene Viewer button) */}
+          {isIOS && iosSrc ? (
+            <a
+              rel="ar"
+              href={iosSrc}
+              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 no-underline"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(255, 209, 141, 0.95) 0%, rgba(232, 186, 117, 0.95) 100%)",
+                color: "#351b18",
+                border: "1px solid rgba(255, 209, 141, 0.5)",
+                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.4)",
+              }}
+              title="Khám phá trong không gian thực qua Apple AR Quick Look"
+              aria-label="Khám phá trong không gian thực qua Apple AR"
+            >
+              <img
+                src={poster || "/favicon.png"}
+                alt=""
+                style={{ display: "none" }}
+                aria-hidden="true"
+              />
+              <Smartphone size={16} className="shrink-0" />
+              <span className="hidden sm:inline">Xem không gian thực</span>
+              <span className="sm:hidden text-[11px]">Xem AR</span>
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={handleArClick}
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(255, 209, 141, 0.95) 0%, rgba(232, 186, 117, 0.95) 100%)",
+                color: "#351b18",
+                border: "1px solid rgba(255, 209, 141, 0.5)",
+                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.4)",
+              }}
+              title={
+                isArSupported
+                  ? "Xem trong không gian thực qua camera"
+                  : isMobileDevice
+                    ? "Hướng dẫn trải nghiệm AR"
+                    : "AR hỗ trợ trên điện thoại di động"
+              }
+              aria-label={
+                isArSupported
+                  ? "Xem trong không gian thực qua camera"
+                  : "Hướng dẫn trải nghiệm AR"
+              }
+            >
+              <Smartphone size={16} className="shrink-0" />
+              <span className="hidden sm:inline">
+                {isArSupported ? "Xem không gian thực" : "Hướng dẫn AR"}
+              </span>
+              <span className="sm:hidden text-[11px]">
+                {isArSupported ? "Xem AR" : "AR"}
+              </span>
+            </button>
+          )}
 
           {/* Close button if onClose prop is passed */}
           {onClose && (

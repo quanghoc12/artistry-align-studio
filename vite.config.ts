@@ -42,6 +42,8 @@ export default defineConfig(({ mode }) => {
       figmaReactRefreshBoundaryFallback(),
 
       figmaMakeKitPlugin({ storiesGlob: "/src/**/*.stories.{ts,tsx,js,jsx}" }),
+
+      figmaUsdzMimePlugin(),
     ],
 
     resolve: {
@@ -580,6 +582,30 @@ function figmaMakeKitPlugin(options: {
           next(err as Error)
         }
       })
+    },
+  }
+}
+
+/**
+ * Ensures Apple AR Quick Look receives the required model/vnd.usdz+zip
+ * MIME type when serving .usdz assets in development and preview modes.
+ */
+function figmaUsdzMimePlugin(): Plugin {
+  const applyUsdzHeader = (req: any, res: any, next: any) => {
+    const pathname = (req.url || "").split("?")[0]
+    if (pathname.endsWith(".usdz")) {
+      res.setHeader("Content-Type", "model/vnd.usdz+zip")
+    }
+    next()
+  }
+
+  return {
+    name: "figma-usdz-mime",
+    configureServer(server) {
+      server.middlewares.use(applyUsdzHeader)
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(applyUsdzHeader)
     },
   }
 }

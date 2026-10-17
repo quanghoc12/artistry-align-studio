@@ -1,7 +1,18 @@
 {
+  "headers": [
+    {
+      "source": "/(.*)\\.usdz",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "model/vnd.usdz+zip"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
-      "source": "/((?!images/|assets/|favicon.png|robots.txt).*)",
+      "source": "/((?!images/|models/|audio/|assets/|favicon.png|robots.txt).*)",
       "destination": "/index.html"
     }
   ]
