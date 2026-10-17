@@ -58,14 +58,10 @@ export default function OurStory() {
         <div className="reveal">
           <p className="kicker">Về chúng tôi · Thương hiệu</p>
           <h1>
-            Có những công trình được xây bằng đá.
-            <br />
-            <em>Có những ký ức được xây bằng thời gian.</em>
+            Kiến Tích Việt là công ty nghiên cứu, sản xuất mô hình lắp ráp 3D tái hiện những công trình kiến trúc và di sản Việt Nam kết hợp trải nghiệm công nghệ
           </h1>
           <p className="lead">
-            Dọc chiều dài đất nước, những công trình cổ là chứng nhân của lịch
-            sử. Kiến Tích Việt tin còn một cách khác để trải nghiệm chúng:{" "}
-            <strong>tự tay dựng lại một phần ký ức ấy.</strong>
+            Với triết lí <em>“Lấy di sản làm gốc, lấy sáng tạo làm cầu nối”</em>, Kiến Tích Việt phát triển mô hình lắp ghép kết hợp công nghệ, mang đến trải nghiệm khám phá kiến trúc và văn hóa Việt Nam trực quan, sáng tạo và gần gũi hơn đến người dân Việt Nam và bạn bè quốc tế.
           </p>
         </div>
         <div className="story-hero-logo reveal">
@@ -78,36 +74,27 @@ export default function OurStory() {
         </div>
       </section>
 
-      {/* Mission & Vision trước khi nói về Kiến Tích Việt */}
+      {/* Mission & Vision trước khi nói về Kiến - Tích - Việt */}
       <section className="story-mission-vision reveal" aria-label="Sứ mệnh và Tầm nhìn">
         <div className="mission-vision-grid">
-          <div className="mission-card">
-            <span className="mv-kicker">Sứ Mệnh · Mission</span>
-            <h3>
+          <div className="mv-card">
+            <div className="mv-header">
+              <span className="mv-kicker">Sứ Mệnh</span>
+              <span className="mv-sub">Mission</span>
+            </div>
+            <p className="mv-text">
               Biến những dấu tích của quá khứ thành trải nghiệm của thế hệ hôm nay.
-            </h3>
-          </div>
-          <div className="vision-card">
-            <span className="mv-kicker">Tầm Nhìn · Vision</span>
-            <p>
-              Kiến Tích Việt xây dựng hệ sinh thái sản phẩm và nền tảng số về di sản,
-              góp phần số hóa, bảo tồn và lan tỏa những giá trị kiến trúc, văn hóa
-              Việt Nam đến các thế hệ tương lai và bạn bè quốc tế.
             </p>
           </div>
-        </div>
-
-        <div className="about-ktv-card">
-          <p className="about-ktv-intro">
-            <strong>Kiến Tích Việt</strong> là công ty nghiên cứu, sản xuất mô hình lắp ráp 3D
-            tái hiện những công trình kiến trúc và di sản Việt Nam kết hợp trải nghiệm công nghệ.
-          </p>
-          <p className="about-ktv-philosophy">
-            Với triết lí <em>“Lấy di sản làm gốc, lấy sáng tạo làm cầu nối”</em>, Kiến Tích Việt
-            phát triển mô hình lắp ghép kết hợp công nghệ, mang đến trải nghiệm khám phá kiến
-            trúc và văn hóa Việt Nam trực quan, sáng tạo và gần gũi hơn đến người dân Việt Nam
-            và bạn bè quốc tế.
-          </p>
+          <div className="mv-card">
+            <div className="mv-header">
+              <span className="mv-kicker">Tầm Nhìn</span>
+              <span className="mv-sub">Vision</span>
+            </div>
+            <p className="mv-text">
+              Kiến Tích Việt xây dựng hệ sinh thái sản phẩm và nền tảng số về di sản, góp phần số hóa, bảo tồn và lan tỏa những giá trị kiến trúc, văn hóa Việt Nam đến các thế hệ tương lai và bạn bè quốc tế.
+            </p>
+          </div>
         </div>
       </section>
 
