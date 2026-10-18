@@ -20,7 +20,12 @@ logs/
 /.plugins/
 /.opencode-skills/
 
-
+*.env
 .env*
 .supabase/
 supabase/.temp/
+supabase/.branches/
+
+  
+
+  
