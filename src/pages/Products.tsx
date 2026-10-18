@@ -14,7 +14,7 @@ const THEME_CATEGORIES = [
     dropdownLabel: "Chủ đề: Hồ Gươm",
   },
   {
-    value: "Di sản Thăng Long",
+    value: "Hà Nội · Di sản Thăng Long",
     shortLabel: "Thăng Long",
     dropdownLabel: "Chủ đề: Thăng Long",
   },

@@ -45,8 +45,6 @@ const chapters = [
     alt: false,
     body: [
       "Khẳng định nguồn cảm hứng và giá trị cốt lõi đến từ văn hóa, lịch sử và di sản Việt Nam.",
-      "Cảm hứng của chúng tôi khởi nguồn từ dòng chảy văn hóa, kiến trúc và con người Việt Nam — tìm một ngôn ngữ đương đại để đưa di sản đến gần cuộc sống hôm nay.",
-      "Kiến tạo những dấu tích Việt bằng đôi tay và khối óc của thế hệ hôm nay.",
     ],
   },
 ]
@@ -120,7 +118,6 @@ export default function OurStory() {
             <span className="seal">{c.seal}</span>
           </div>
           <div>
-            <p className="kicker">{c.no}</p>
             <div className="chapter-word">{c.word}</div>
             <p className="chapter-meaning">{c.meaning}</p>
             <h3>{c.title}</h3>

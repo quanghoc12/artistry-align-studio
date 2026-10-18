@@ -3,8 +3,7 @@ import { Icon, LinkButton, stories } from "../components/Shared"
 import { products } from "../data/products"
 import { Link } from "react-router-dom"
 
-const heritageImage =
-  "https://images.unsplash.com/photo-1618165220283-e85246c4171c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=88&w=1600"
+const heritageImage = "/images/thap-rua.jpg"
 
 function ArrowIcon() {
   return (

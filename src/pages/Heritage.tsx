@@ -476,7 +476,7 @@ export default function Heritage() {
                   }}
                 >
                   {isThapRua
-                    ? "“Giữa lòng Hồ Hoàn Kiếm, trên gò đất nhỏ mang tên Gò Rùa, Tháp Rùa nổi bật như một biểu tượng gắn liền với hình ảnh Hà Nội — lưu giữ những dấu ấn lịch sử, nét kiến trúc độc đáo cùng những câu chuyện văn hóa qua nhiều thế hệ.”"
+                    ? "“Giữa lòng Hồ Hoàn Kiếm, trên gò đất nhỏ mang tên Gò Rùa, Tháp Rùa nổi bật như một biểu tượng gắn liền với hình ảnh Hà Nội. Không chỉ gây ấn tượng bởi dáng vẻ cổ kính giữa mặt hồ, công trình còn lưu giữ những dấu ấn lịch sử, nét kiến trúc độc đáo cùng những câu chuyện văn hóa gắn với Hồ Gươm qua nhiều thế hệ.”"
                     : isHangTrong
                       ? "“Dẫu những cửa hàng xưa đã thưa vắng, những nét khắc trên gỗ và sắc màu trên giấy dó vẫn tiếp tục kể câu chuyện về người Hà Nội, về nghệ thuật dân gian và về những giá trị văn hóa cần được trao truyền cho các thế hệ mai sau.”"
                       : "“Mùa đông tháng 10 năm Kỷ Dậu (1049), dựng chùa Diên Hựu. Vua Lý Thái Tông chiêm bao thấy Phật Quan Âm dắt lên tòa sen, bèn sai dựng chùa, xây cột đá ở giữa hồ, làm tòa sen của Phật Quan Âm đặt trên cột như đã thấy trong mộng...”"}

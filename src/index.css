@@ -1027,8 +1027,8 @@ h3 {
 /* Monument-specific color-grading */
 .product-card[data-slug="thap-rua"] .product-image img,
 .product-card[data-slug="thap-pho-minh"] .product-image img {
-  /* Lift shadows and architecture clarity */
-  filter: sepia(0.22) saturate(0.92) brightness(1.15) contrast(1.05);
+  /* Balanced warm heritage tone without glare */
+  filter: sepia(0.12) saturate(0.95) brightness(1) contrast(1.02);
 }
 .product-card[data-slug="pho-hang-trong"] .product-image img,
 .product-card[data-slug="khue-van-cac"] .product-image img {
