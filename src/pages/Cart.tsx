@@ -7,6 +7,7 @@ import { useCart } from "../context/CartContext"
 import { LinkButton, Icon } from "../components/Shared"
 
 import { Link } from "react-router-dom"
+import { supabase } from "../integrations/supabase/client"
 
 export default function Cart() {
   const { cartItems, updateQuantity, removeFromCart, clearCart } = useCart()
@@ -103,19 +104,14 @@ export default function Cart() {
       })),
     }
 
-    const webhookUrl = import.meta.env.VITE_ORDER_WEBHOOK_URL
-
     try {
-      if (webhookUrl) {
-        // Send to Google Sheets (Apps Script Web App)
-        await fetch(webhookUrl, {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
-          body: JSON.stringify(orderPayload),
+      // Send to secure backend proxy (Supabase Edge Function -> Google Sheets)
+      try {
+        await supabase.functions.invoke("create-order", {
+          body: orderPayload,
         })
+      } catch (funcErr) {
+        console.warn("Order proxy notice:", funcErr)
       }
 
       // Persist order in local backup
