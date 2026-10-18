@@ -9,7 +9,7 @@ const OFFICIAL_DATA = `
 Thương hiệu: Kiến Tích Việt — mô hình lắp ghép gỗ di sản Việt Nam. Slogan: "Dựng hình di sản, nối nhịp thời gian". Mỗi bộ: tự lắp ghép → trưng bày → chạm NFC để nghe câu chuyện (audio), trải nghiệm AR trên điện thoại.
 Sản phẩm:
 1. Tháp Rùa (Hà Nội · Hồ Gươm) — Giá dự kiến: 820.000₫ — 148 mảnh. Nhãn: Sắp ra mắt. (Lưu ý: Không dùng truyền thuyết trả gươm thần, Tháp Rùa tọa lạc trên Gò Rùa, từng có Điếu Đài thời Lê Thánh Tông, đình Tả Vọng thời chúa Trịnh, xây dựng 1884-1886 gắn với Bá hộ Kim / thế hậu chẩm chùa Báo Ân, kiến trúc giao thoa Đông - Tây, chiến sĩ Nguyễn Trọng Quang treo cờ đỏ sao vàng năm 1948).
-2. Chùa Một Cột (Di sản Thăng Long) — 890.000₫ — Số mảnh: xxx mảnh (đang cập nhật). Nhãn: Mới.
+2. Chùa Một Cột (Hà Nội · Di sản Thăng Long) — 890.000₫ — Số mảnh: xxx mảnh (đang cập nhật). Nhãn: Mới.
 3. Phố Hàng Trống (Hà Nội · Phố cổ Hà Nội) — 790.000₫ — Số mảnh: xxx mảnh (đang cập nhật). Nhãn: Bán chạy. (Phố nghề thủ công truyền thống, nổi tiếng với tranh dân gian Hàng Trống, kỹ thuật vờn màu độc đáo).
 Chưa được cung cấp: tồn kho, chính sách đổi trả/vận chuyển/bảo hành.`
 
@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
 
     const contents = messages
       .slice(-20)
-      .map((m: { sender: string text: string }) => ({
+      .map((m: { sender: string; text: string }) => ({
         role: m.sender === "user" ? "user" : "model",
 
         parts: [{ text: String(m.text).slice(0, 2000) }],
