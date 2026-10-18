@@ -1,8 +1,48 @@
-const cors = {
-  "Access-Control-Allow-Origin": "*",
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get("origin") || ""
+  const isAllowed =
+    !origin ||
+    origin.endsWith(".vercel.app") ||
+    origin.includes("kientichviet.com") ||
+    origin.startsWith("http://localhost:") ||
+    origin.startsWith("http://127.0.0.1:") ||
+    origin.startsWith("https://localhost:")
 
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  return {
+    "Access-Control-Allow-Origin": isAllowed ? (origin || "*") : "https://kientichviet.com",
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  }
+}
+
+// In-memory sliding window rate limiter: 12 requests / 60 seconds per IP
+interface RateLimitRecord {
+  count: number
+  resetAt: number
+}
+const chatRateLimitMap = new Map<string, RateLimitRecord>()
+
+function isRateLimited(ip: string, maxRequests = 12, windowMs = 60_000): boolean {
+  const now = Date.now()
+  if (chatRateLimitMap.size > 1000) {
+    for (const [key, val] of chatRateLimitMap.entries()) {
+      if (now > val.resetAt) chatRateLimitMap.delete(key)
+    }
+  }
+
+  const record = chatRateLimitMap.get(ip)
+  if (!record || now > record.resetAt) {
+    chatRateLimitMap.set(ip, { count: 1, resetAt: now + windowMs })
+    return false
+  }
+
+  if (record.count >= maxRequests) {
+    return true
+  }
+
+  record.count += 1
+  return false
 }
 
 const OFFICIAL_DATA = `
@@ -21,7 +61,21 @@ Tuân thủ 3 tầng:
 DỮ LIỆU CHÍNH THỨC:${OFFICIAL_DATA}`
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: cors })
+  const corsHeaders = getCorsHeaders(req)
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders })
+
+  const clientIp =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("cf-connecting-ip") ||
+    "client-default"
+
+  if (isRateLimited(clientIp, 12, 60_000)) {
+    return json(
+      { error: "Bạn đang gửi câu hỏi quá nhanh. Vui lòng chờ 1 phút trước khi hỏi tiếp nhé." },
+      429,
+      corsHeaders
+    )
+  }
 
   try {
     const { messages } = await req.json()
@@ -31,37 +85,29 @@ Deno.serve(async (req) => {
       messages.length === 0 ||
       messages.length > 30
     ) {
-      return json({ error: "Yêu cầu không hợp lệ." }, 400)
+      return json({ error: "Yêu cầu không hợp lệ." }, 400, corsHeaders)
     }
 
     const contents = messages
       .slice(-20)
       .map((m: { sender: string; text: string }) => ({
         role: m.sender === "user" ? "user" : "model",
-
         parts: [{ text: String(m.text).slice(0, 2000) }],
       }))
 
     const rawKeys = [
       "GOOGLE_API_KEY",
-
       "GEMINI_API_KEY",
-
       "GEMINI_API_KEY_1",
-
       "GEMINI_API_KEY_2",
-
       "GEMINI_API_KEY_3",
-
       "GEMINI_API_KEY_4",
-
       "GEMINI_API_KEY_5",
     ]
       .map((k) => Deno.env.get(k))
       .filter(Boolean) as string[]
 
     // Remove duplicates and keep only API keys
-
     const keys = Array.from(new Set(rawKeys))
 
     if (keys.length === 0) {
@@ -72,6 +118,7 @@ Deno.serve(async (req) => {
       return json(
         { error: "Chưa cấu hình API Key (GOOGLE_API_KEY) trên Supabase." },
         500,
+        corsHeaders
       )
     }
 
@@ -79,18 +126,13 @@ Deno.serve(async (req) => {
 
     const models = [
       "gemini-2.5-flash",
-
       "gemini-2.5-flash-lite",
-
       "gemini-2.0-flash",
-
       "gemini-1.5-flash",
-
       "gemini-flash-latest",
     ]
 
     // Shuffle keys per request for even load balancing across all available API keys
-
     const shuffledKeys = [...keys].sort(() => Math.random() - 0.5)
 
     const attempts = models.flatMap((model) =>
@@ -101,15 +143,12 @@ Deno.serve(async (req) => {
       try {
         const r = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-
           {
             method: "POST",
-
             headers: {
               "Content-Type": "application/json",
               "x-goog-api-key": key,
             },
-
             body: JSON.stringify({
               systemInstruction: { parts: [{ text: SYSTEM }] },
               contents,
@@ -119,21 +158,18 @@ Deno.serve(async (req) => {
 
         if (r.ok) {
           const d = await r.json()
-
           const text = d?.candidates?.[0]?.content?.parts
             ?.map((p: { text?: string }) => p.text ?? "")
             .join("")
             .trim()
 
           if (text) {
-            return json({ reply: text })
+            return json({ reply: text }, 200, corsHeaders)
           }
         }
 
         lastStatus = r.status
-
         const errText = await r.text()
-
         console.error(
           `Gemini request failed [${model}]:`,
           r.status,
@@ -152,17 +188,17 @@ Deno.serve(async (req) => {
             : "Trợ lý tạm thời không phản hồi. Vui lòng thử lại.",
       },
       503,
+      corsHeaders
     )
   } catch (e) {
     console.error("Heritage chat error:", e)
-
-    return json({ error: "Có lỗi xảy ra, vui lòng thử lại." }, 500)
+    return json({ error: "Có lỗi xảy ra, vui lòng thử lại." }, 500, corsHeaders)
   }
 })
 
-function json(body: unknown, status = 200) {
+function json(body: unknown, status = 200, corsHeaders: Record<string, string>) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...cors, "Content-Type": "application/json" },
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   })
 }
