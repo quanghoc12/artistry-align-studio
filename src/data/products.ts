@@ -40,7 +40,7 @@ export const products: Product[] = [
       "Mô hình lắp ghép gỗ 3D tái hiện Tháp Rùa, biểu tượng quen thuộc giữa lòng Hồ Gươm.",
     modelUrl: "/models/Thap-rua-model.glb",
     usdzUrl: "/models/Thap-rua-model.usdz",
-    audioUrl: encodeURI("/audio/Audio Tháp Rùa.MP3"),
+    audioUrl: "/audio/thap-rua.mp3",
     audioTitle: "Tháp Rùa — Biểu tượng giữa lòng Hồ Hoàn Kiếm",
     audioAuthor: "Thuyết minh Di sản · Kiến Tích Việt",
     specifications: {
@@ -90,7 +90,7 @@ export const products: Product[] = [
     accent: "Bán chạy",
     description:
       "Mô hình lắp ghép gỗ 3D lấy cảm hứng từ kiến trúc phố Hàng Trống, tái hiện một góc phố nghề mang dấu ấn tranh dân gian Hà Nội xưa.",
-    audioUrl: encodeURI("/audio/Audio phố Hàng Trống.MP3"),
+    audioUrl: "/audio/pho-hang-trong.mp3",
     audioTitle:
       "Phố Hàng Trống — Nơi sắc màu dân gian lưu dấu giữa lòng Hà Nội",
     audioAuthor: "Thuyết minh Di sản · Kiến Tích Việt",
