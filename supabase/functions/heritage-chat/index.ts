@@ -122,27 +122,22 @@ Deno.serve(async (req) => {
       )
     }
 
-    let lastStatus = 500
+    const MODEL = "gemini-1.5-flash"
 
-    const models = [
-      "gemini-2.5-flash",
-      "gemini-2.5-flash-lite",
-      "gemini-2.0-flash",
-      "gemini-1.5-flash",
-      "gemini-flash-latest",
-    ]
-
-    // Shuffle keys per request for even load balancing across all available API keys
+    // Trộn ngẫu nhiên các key để phân tải đều giữa các dự án (load balancing)
     const shuffledKeys = [...keys].sort(() => Math.random() - 0.5)
 
-    const attempts = models.flatMap((model) =>
-      shuffledKeys.map((key) => ({ model, key })),
-    )
+    // Cơ chế 1 - 1: Thử tối đa 2 key (Key chính 1 lần -> Nếu lỗi 429/5xx thì chuyển sang Key dự phòng 1 lần rồi dừng)
+    // Tuyệt đối không thử hàng loạt để tránh đốt sạch hạn ngạch RPM / RPD trong 1 câu hỏi
+    const candidateKeys = shuffledKeys.slice(0, Math.min(2, shuffledKeys.length))
 
-    for (const { model, key } of attempts) {
+    let lastStatus = 500
+
+    for (let i = 0; i < candidateKeys.length; i++) {
+      const key = candidateKeys[i]
       try {
         const r = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
           {
             method: "POST",
             headers: {
@@ -170,13 +165,18 @@ Deno.serve(async (req) => {
 
         lastStatus = r.status
         const errText = await r.text()
-        console.error(
-          `Gemini request failed [${model}]:`,
+        console.warn(
+          `Gemini request attempt ${i + 1}/${candidateKeys.length} failed [${MODEL}]:`,
           r.status,
-          errText.slice(0, 300),
+          errText.slice(0, 200),
         )
+
+        // Nếu lỗi 400 (Bad Request do nội dung câu hỏi) thì không cần thử tiếp key khác
+        if (r.status === 400) {
+          break
+        }
       } catch (err) {
-        console.error(`Network error calling Gemini [${model}]:`, err)
+        console.error(`Network error calling Gemini attempt ${i + 1}:`, err)
       }
     }
 
@@ -184,10 +184,10 @@ Deno.serve(async (req) => {
       {
         error:
           lastStatus === 429
-            ? "Trợ lý đang quá tải (Rate Limit), vui lòng thử lại sau ít phút."
-            : "Trợ lý tạm thời không phản hồi. Vui lòng thử lại.",
+            ? "Trợ lý đang bận xử lý nhiều câu hỏi. Bạn vui lòng đợi 1 chút rồi thử lại nhé!"
+            : "Trợ lý tạm thời không phản hồi. Vui lòng thử lại sau giây lát.",
       },
-      503,
+      lastStatus === 429 ? 429 : 503,
       corsHeaders
     )
   } catch (e) {
