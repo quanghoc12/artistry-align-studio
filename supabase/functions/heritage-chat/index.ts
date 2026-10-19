@@ -122,22 +122,31 @@ Deno.serve(async (req) => {
       )
     }
 
-    const MODEL = "gemini-1.5-flash"
+    // Các model thực tế:
+    // - gemini-3.8-flash: Model Gemini 3.8 Flash trong bảng hạn ngạch Google AI Studio của bạn
+    // - gemini-3.5-flash: Model dự phòng có tỷ lệ sẵn sàng cao, đảm bảo không bị gián đoạn khi 3.8-flash chạm trần ngày
+    const PRIMARY_MODEL = "gemini-3.8-flash"
+    const FALLBACK_MODEL = "gemini-3.5-flash"
 
     // Trộn ngẫu nhiên các key để phân tải đều giữa các dự án (load balancing)
     const shuffledKeys = [...keys].sort(() => Math.random() - 0.5)
 
-    // Cơ chế 1 - 1: Thử tối đa 2 key (Key chính 1 lần -> Nếu lỗi 429/5xx thì chuyển sang Key dự phòng 1 lần rồi dừng)
-    // Tuyệt đối không thử hàng loạt để tránh đốt sạch hạn ngạch RPM / RPD trong 1 câu hỏi
-    const candidateKeys = shuffledKeys.slice(0, Math.min(2, shuffledKeys.length))
+    // Cơ chế 1 - 1 nghiêm ngặt:
+    // Lần 1: Gọi PRIMARY_MODEL với Key A
+    // Lần 2 (nếu Lần 1 bị lỗi 503/429): Gọi FALLBACK_MODEL với Key B
+    // Tối đa 2 lần gọi. Tuyệt đối không thử tiếp để bảo vệ hạn ngạch RPM / RPD của các key khác.
+    const attempts = [
+      { key: shuffledKeys[0], model: PRIMARY_MODEL },
+      { key: shuffledKeys[1] || shuffledKeys[0], model: FALLBACK_MODEL },
+    ]
 
     let lastStatus = 500
 
-    for (let i = 0; i < candidateKeys.length; i++) {
-      const key = candidateKeys[i]
+    for (let i = 0; i < attempts.length; i++) {
+      const { key, model } = attempts[i]
       try {
         const r = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
           {
             method: "POST",
             headers: {
@@ -166,12 +175,12 @@ Deno.serve(async (req) => {
         lastStatus = r.status
         const errText = await r.text()
         console.warn(
-          `Gemini request attempt ${i + 1}/${candidateKeys.length} failed [${MODEL}]:`,
+          `Gemini request attempt ${i + 1}/${attempts.length} failed [${model}]:`,
           r.status,
           errText.slice(0, 200),
         )
 
-        // Nếu lỗi 400 (Bad Request do nội dung câu hỏi) thì không cần thử tiếp key khác
+        // Nếu lỗi 400 (Bad Request do nội dung câu hỏi) thì không cần thử tiếp
         if (r.status === 400) {
           break
         }
@@ -183,11 +192,11 @@ Deno.serve(async (req) => {
     return json(
       {
         error:
-          lastStatus === 429
+          lastStatus === 429 || lastStatus === 503
             ? "Trợ lý đang bận xử lý nhiều câu hỏi. Bạn vui lòng đợi 1 chút rồi thử lại nhé!"
             : "Trợ lý tạm thời không phản hồi. Vui lòng thử lại sau giây lát.",
       },
-      lastStatus === 429 ? 429 : 503,
+      lastStatus === 429 || lastStatus === 503 ? 429 : 503,
       corsHeaders
     )
   } catch (e) {
