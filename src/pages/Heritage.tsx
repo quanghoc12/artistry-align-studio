@@ -50,7 +50,9 @@ export default function Heritage() {
         <h1
           style={{
             color: "var(--red)",
+
             marginBottom: "15px",
+
             fontFamily: '"Vollkorn", serif',
           }}
         >
@@ -81,6 +83,7 @@ export default function Heritage() {
   useEffect(() => {
     if (is3DModalOpen) {
       scrollPositionRef.current = window.scrollY
+
       document.body.style.overflow = "hidden"
 
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -93,15 +96,18 @@ export default function Heritage() {
 
       return () => {
         window.removeEventListener("keydown", handleKeyDown)
+
         document.body.style.overflow = ""
       }
     } else {
       document.body.style.overflow = ""
 
       // Reliably restore previous scroll position on closing 3D viewer
+
       if (scrollPositionRef.current > 0) {
         window.scrollTo({
           top: scrollPositionRef.current,
+
           behavior: "instant",
         })
       }
@@ -113,19 +119,29 @@ export default function Heritage() {
   }, [is3DModalOpen])
 
   // Prefetch 3D model files in background to eliminate load wait time
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const glbLink = document.createElement("link")
+
       glbLink.rel = "prefetch"
+
       glbLink.href = "/models/Thap-rua-model.glb"
+
       glbLink.as = "fetch"
+
       glbLink.crossOrigin = "anonymous"
+
       document.head.appendChild(glbLink)
 
       const usdzLink = document.createElement("link")
+
       usdzLink.rel = "prefetch"
+
       usdzLink.href = "/models/Thap-rua-model.usdz"
+
       usdzLink.as = "fetch"
+
       document.head.appendChild(usdzLink)
     }, 1200)
 
@@ -309,6 +325,7 @@ export default function Heritage() {
         <div
           style={{
             background: "#150a0b",
+
             padding: "40px clamp(24px, 5vw, 80px) 100px",
           }}
         >
@@ -368,6 +385,7 @@ export default function Heritage() {
               </div>
 
               <AudioGuidePlayer
+                key={product.slug}
                 audioUrl={product.audioUrl}
                 title={
                   isThapRua
@@ -386,6 +404,13 @@ export default function Heritage() {
                 }
                 heritageName={product.name}
                 coverImage={product.image}
+                caption={
+                  isThapRua
+                    ? "Âm vang Hồ Gươm"
+                    : isHangTrong
+                      ? "Âm sắc phố nghề"
+                      : "Âm vang sen ngọc"
+                }
               />
             </section>
           )}
@@ -434,8 +459,11 @@ export default function Heritage() {
                 <div
                   style={{
                     display: "flex",
+
                     alignItems: "center",
+
                     gap: "8px",
+
                     marginBottom: "12px",
                   }}
                 >
@@ -527,8 +555,8 @@ export default function Heritage() {
                       triều đại trước. Theo các tư liệu được ghi lại, dưới thời
                       vua Lê Thánh Tông, nơi đây có Điếu Đài, là nơi nhà vua câu
                       cá và ngâm vịnh thơ ca. Đến thời Lê Trung Hưng, chúa Trịnh
-                      cho xây dựng đình Tả Vọng trên gò. Về sau, những công trình
-                      này bị phá bỏ và không còn tồn tại.
+                      cho xây dựng đình Tả Vọng trên gò. Về sau, những công
+                      trình này bị phá bỏ và không còn tồn tại.
                     </p>
                     <p
                       style={{
@@ -606,12 +634,12 @@ export default function Heritage() {
                     >
                       Ngày ấy, Hàng Trống không chỉ có một nghề. Người dân từ
                       làng Liên Thượng mang nghề làm trống đến đây, tạo ra nhiều
-                      loại trống phục vụ đời sống và các hoạt động văn hóa. Những
-                      người thợ từ Đào Xá lại nổi tiếng với nghề làm lọng, làm
-                      tàn, tán dùng trong các nghi lễ và tại đình, đền, chùa,
-                      miếu. Ở một đoạn khác của phố, những người thợ thêu từ vùng
-                      Quất Động, Hướng Dương cũng góp mặt, khiến nơi đây từng có
-                      đoạn được gọi là phố Hàng Thêu.
+                      loại trống phục vụ đời sống và các hoạt động văn hóa.
+                      Những người thợ từ Đào Xá lại nổi tiếng với nghề làm lọng,
+                      làm tàn, tán dùng trong các nghi lễ và tại đình, đền,
+                      chùa, miếu. Ở một đoạn khác của phố, những người thợ thêu
+                      từ vùng Quất Động, Hướng Dương cũng góp mặt, khiến nơi đây
+                      từng có đoạn được gọi là phố Hàng Thêu.
                     </p>
                     <p
                       style={{
@@ -731,8 +759,8 @@ export default function Heritage() {
                       Trải qua thời gian, Tháp Rùa không chỉ là một công trình
                       kiến trúc giữa hồ mà còn trở thành biểu tượng gắn liền với
                       Hồ Gươm và Hà Nội. Hình ảnh ngọn tháp xuất hiện trong thơ
-                      ca, hội họa, âm nhạc và ký ức của nhiều thế hệ. Giá trị của
-                      Tháp Rùa vì thế không chỉ nằm ở tuổi đời hay hình dáng
+                      ca, hội họa, âm nhạc và ký ức của nhiều thế hệ. Giá trị
+                      của Tháp Rùa vì thế không chỉ nằm ở tuổi đời hay hình dáng
                       kiến trúc, mà còn ở những câu chuyện lịch sử, văn hóa và
                       tình cảm mà cộng đồng đã gửi gắm vào công trình qua nhiều
                       thế hệ.
@@ -759,8 +787,8 @@ export default function Heritage() {
                       nét rõ ràng, vừa mang vẻ uyển chuyển và giàu sức sống. Nếu
                       tranh Đông Hồ thường in màu bằng các bản khắc riêng, thì
                       với tranh Hàng Trống, bàn tay và cảm quan màu sắc của
-                      người nghệ nhân đóng vai trò đặc biệt quan trọng trong công
-                      đoạn hoàn thiện.
+                      người nghệ nhân đóng vai trò đặc biệt quan trọng trong
+                      công đoạn hoàn thiện.
                     </p>
                     <p
                       style={{
@@ -773,14 +801,15 @@ export default function Heritage() {
                         marginBottom: "16px",
                       }}
                     >
-                      Mỗi bức tranh lại kể một câu chuyện khác nhau. Tranh Ngũ Hổ
-                      gắn với tín ngưỡng dân gian; tranh Tố Nữ và Tứ Quý thể hiện
-                      vẻ đẹp thanh nhã, hài hòa; còn tranh Lý Ngư Vọng Nguyệt
-                      mang đến hình ảnh giàu tính biểu tượng. Có cả những bức
-                      tranh tái hiện các nhân vật lịch sử như Hai Bà Trưng, Bà
-                      Triệu và Trần Hưng Đạo. Qua từng nét khắc, từng lớp màu,
-                      người xưa gửi gắm vào tranh niềm tin, quan niệm thẩm mỹ và
-                      những giá trị được truyền từ thế hệ này sang thế hệ khác.
+                      Mỗi bức tranh lại kể một câu chuyện khác nhau. Tranh Ngũ
+                      Hổ gắn với tín ngưỡng dân gian; tranh Tố Nữ và Tứ Quý thể
+                      hiện vẻ đẹp thanh nhã, hài hòa; còn tranh Lý Ngư Vọng
+                      Nguyệt mang đến hình ảnh giàu tính biểu tượng. Có cả những
+                      bức tranh tái hiện các nhân vật lịch sử như Hai Bà Trưng,
+                      Bà Triệu và Trần Hưng Đạo. Qua từng nét khắc, từng lớp
+                      màu, người xưa gửi gắm vào tranh niềm tin, quan niệm thẩm
+                      mỹ và những giá trị được truyền từ thế hệ này sang thế hệ
+                      khác.
                     </p>
                     <p
                       style={{
@@ -791,16 +820,16 @@ export default function Heritage() {
                         fontSize: "16px",
                       }}
                     >
-                      Ngày nay, phố Hàng Trống không còn giữ nguyên không khí của
-                      một phố nghề xưa, nhưng tên gọi của nó vẫn gợi nhắc về một
-                      thời kỳ mà những người thợ làm trống, làm lọng, thêu thùa
-                      và vẽ tranh cùng góp phần tạo nên bản sắc của Hà Nội. Đặc
-                      biệt, tranh Hàng Trống vẫn là minh chứng cho sự khéo léo,
-                      óc sáng tạo và đời sống tinh thần phong phú của người Việt.
-                      Dẫu những cửa hàng xưa đã thưa vắng, những nét khắc trên gỗ
-                      và sắc màu trên giấy dó vẫn tiếp tục kể câu chuyện về người
-                      Hà Nội, về nghệ thuật dân gian và về những giá trị văn hóa
-                      cần được trao truyền cho các thế hệ mai sau.
+                      Ngày nay, phố Hàng Trống không còn giữ nguyên không khí
+                      của một phố nghề xưa, nhưng tên gọi của nó vẫn gợi nhắc về
+                      một thời kỳ mà những người thợ làm trống, làm lọng, thêu
+                      thùa và vẽ tranh cùng góp phần tạo nên bản sắc của Hà Nội.
+                      Đặc biệt, tranh Hàng Trống vẫn là minh chứng cho sự khéo
+                      léo, óc sáng tạo và đời sống tinh thần phong phú của người
+                      Việt. Dẫu những cửa hàng xưa đã thưa vắng, những nét khắc
+                      trên gỗ và sắc màu trên giấy dó vẫn tiếp tục kể câu chuyện
+                      về người Hà Nội, về nghệ thuật dân gian và về những giá
+                      trị văn hóa cần được trao truyền cho các thế hệ mai sau.
                     </p>
                   </>
                 ) : (
@@ -817,9 +846,9 @@ export default function Heritage() {
                       }}
                     >
                       Khác với cấu trúc chùa chiền truyền thống nhiều gian, Chùa
-                      Một Cột sở hữu giải pháp kiến trúc độc nhất vô nhị trên thế
-                      giới: Toàn bộ ngôi chùa gỗ hình vuông (mỗi cạnh 3m) được
-                      nâng đỡ bởi
+                      Một Cột sở hữu giải pháp kiến trúc độc nhất vô nhị trên
+                      thế giới: Toàn bộ ngôi chùa gỗ hình vuông (mỗi cạnh 3m)
+                      được nâng đỡ bởi
                       <strong> một cột đá trụ tròn duy nhất</strong> có đường
                       kính 1.2m, chôn sâu vững chãi giữa lòng hồ.
                     </p>
@@ -1034,8 +1063,11 @@ export default function Heritage() {
                 <div
                   style={{
                     display: "flex",
+
                     alignItems: "center",
+
                     gap: "10px",
+
                     marginBottom: "14px",
                   }}
                 >
@@ -1124,7 +1156,9 @@ export default function Heritage() {
                   <div
                     style={{
                       display: "flex",
+
                       alignItems: "center",
+
                       gap: "10px",
                     }}
                   >
@@ -1144,6 +1178,7 @@ export default function Heritage() {
                     <span
                       style={{
                         fontSize: "13px",
+
                         color: "rgba(255, 235, 209, 0.85)",
                       }}
                     >
@@ -1288,7 +1323,9 @@ export default function Heritage() {
                       <div
                         style={{
                           height: "210px",
+
                           overflow: "hidden",
+
                           position: "relative",
                         }}
                       >
@@ -1596,6 +1633,7 @@ export default function Heritage() {
                       <span
                         style={{
                           fontSize: "13px",
+
                           color: "rgba(255, 235, 209, 0.7)",
                         }}
                       >
@@ -1654,7 +1692,9 @@ export default function Heritage() {
             className="w-full h-full sm:h-[90vh] sm:max-h-[820px] max-w-[1080px] flex flex-col sm:rounded-2xl overflow-hidden shadow-2xl relative"
             style={{
               background: "linear-gradient(145deg, #250f13 0%, #16080a 100%)",
+
               border: "1px solid rgba(255, 209, 141, 0.35)",
+
               boxShadow:
                 "0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(143, 0, 25, 0.25)",
             }}
