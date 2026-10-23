@@ -317,6 +317,7 @@ export default function ModelViewer3D({
         field-of-view="32deg"
         ar
         ar-modes="webxr scene-viewer quick-look"
+        quick-look-browsers="safari chrome"
         ar-scale="auto"
         interaction-prompt="none"
         style={{
