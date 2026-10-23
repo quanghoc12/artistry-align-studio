@@ -19,13 +19,17 @@ import {
 } from "lucide-react"
 
 import ModelViewer3D from "../components/ModelViewer3D"
+import HeritageHub from "../components/HeritageHub"
 
 export default function Heritage() {
   const { id } = useParams<{ id: string }>()
 
-  const currentSlug = id || products[0]?.slug || "thap-rua"
+  // If no ID is specified in URL (e.g. visiting /heritage), show the selection hub
+  if (!id) {
+    return <HeritageHub />
+  }
 
-  const product = findProduct(currentSlug) || products[0]
+  const product = findProduct(id)
 
   if (!product) {
     return (
@@ -61,7 +65,10 @@ export default function Heritage() {
         <p style={{ color: "rgba(255, 235, 209, 0.7)", marginBottom: "30px" }}>
           Nội dung bạn đang tìm kiếm không tồn tại hoặc đã được di dời.
         </p>
-        <LinkButton href="/">Trở về trang chủ</LinkButton>
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center" }}>
+          <LinkButton href="/heritage">Xem danh sách di sản</LinkButton>
+          <LinkButton href="/">Trở về trang chủ</LinkButton>
+        </div>
       </div>
     )
   }
@@ -119,34 +126,28 @@ export default function Heritage() {
   }, [is3DModalOpen])
 
   // Prefetch 3D model files in background to eliminate load wait time
-
   useEffect(() => {
+    if (!product?.modelUrl) return
+
     const timer = setTimeout(() => {
       const glbLink = document.createElement("link")
-
       glbLink.rel = "prefetch"
-
-      glbLink.href = "/models/Thap-rua-model.glb"
-
+      glbLink.href = product.modelUrl!
       glbLink.as = "fetch"
-
       glbLink.crossOrigin = "anonymous"
-
       document.head.appendChild(glbLink)
 
-      const usdzLink = document.createElement("link")
-
-      usdzLink.rel = "prefetch"
-
-      usdzLink.href = "/models/Thap-rua-model.usdz"
-
-      usdzLink.as = "fetch"
-
-      document.head.appendChild(usdzLink)
+      if (product.usdzUrl) {
+        const usdzLink = document.createElement("link")
+        usdzLink.rel = "prefetch"
+        usdzLink.href = product.usdzUrl
+        usdzLink.as = "fetch"
+        document.head.appendChild(usdzLink)
+      }
     }, 1200)
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [product?.modelUrl, product?.usdzUrl])
 
   return (
     <div
@@ -235,6 +236,40 @@ export default function Heritage() {
               zIndex: 5,
             }}
           >
+            {/* Top Navigation Back Link */}
+            <div style={{ marginBottom: "16px" }}>
+              <Link
+                to="/heritage"
+                style={{
+                  display: "inline-flex",
+
+                  alignItems: "center",
+
+                  gap: "6px",
+
+                  color: "rgba(255, 235, 209, 0.75)",
+
+                  fontSize: "12px",
+
+                  letterSpacing: "0.1em",
+
+                  textTransform: "uppercase",
+
+                  textDecoration: "none",
+
+                  transition: "color 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--gold)"
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "rgba(255, 235, 209, 0.75)"
+                }}
+              >
+                <span>← Khám phá di sản</span>
+              </Link>
+            </div>
+
             {/* Elegant Kicker Badge */}
             <div style={{ marginBottom: "16px" }}>
               <span
@@ -377,10 +412,10 @@ export default function Heritage() {
                   }}
                 >
                   {isThapRua
-                    ? "Giữa lòng Hồ Hoàn Kiếm, trên gò đất nhỏ mang tên Gò Rùa, Tháp Rùa nổi bật như một biểu tượng gắn liền với hình ảnh Hà Nội. Không chỉ gây ấn tượng bởi dáng vẻ cổ kính giữa mặt hồ, công trình còn lưu giữ những dấu ấn lịch sử, nét kiến trúc độc đáo cùng những câu chuyện văn hóa gắn với Hồ Gươm qua nhiều thế hệ. Hãy cùng Kiến Tích Việt lắng nghe câu chuyện về ngọn tháp giữa lòng hồ xanh."
+                    ? "Đeo tai nghe và hòa mình vào thanh âm trầm lắng của Hà Nội xưa. Bản thuyết minh âm thanh sẽ cùng bạn lần giở huyền tích gươm báu, dấu ấn Gò Rùa và những thăng trầm lịch sử qua bao thế kỷ của ngọn tháp rêu phong giữa lòng hồ xanh."
                     : isHangTrong
-                      ? "Giữa lòng Hà Nội, gần hồ Hoàn Kiếm, có một con phố mang tên Hàng Trống. Nơi đây từng là một không gian phố nghề nhộn nhịp, nơi hội tụ những người thợ thủ công tài hoa và lưu giữ dòng tranh dân gian độc đáo. Hãy cùng Kiến Tích Việt lắng nghe câu chuyện về sắc màu dân gian lưu dấu giữa lòng Thủ đô."
-                      : "Chùa Một Cột (Diên Hựu Tự) – kiệt tác kiến trúc tượng trưng cho đóa sen ngàn năm vươn lên từ mặt nước thanh tịnh của đất Thăng Long. Mời bạn lắng nghe câu chuyện về biểu tượng linh thiêng triều Lý qua bản thuyết minh âm thanh dưới đây."}
+                      ? "Lắng nghe âm sắc phố nghề và dòng tranh dân gian cổ truyền. Cùng Kiến Tích Việt ngược dòng thời gian về với nhịp sống phố thị nhộn nhịp, kỹ thuật vờn màu độc bản và ký ức văn hóa tao nhã của người Tràng An."
+                      : "Lắng nghe câu chuyện về Diên Hựu Tự nghìn năm văn hiến. Mời bạn cùng bước vào hành trình tâm linh từ giấc mộng đài sen của vua Lý Thái Tông đến kiệt tác kiến trúc mộng mộc độc nhất vô nhị giữa lòng Thăng Long."}
                 </p>
               </div>
 
@@ -504,7 +539,7 @@ export default function Heritage() {
                   }}
                 >
                   {isThapRua
-                    ? "“Giữa lòng Hồ Hoàn Kiếm, trên gò đất nhỏ mang tên Gò Rùa, Tháp Rùa nổi bật như một biểu tượng gắn liền với hình ảnh Hà Nội. Không chỉ gây ấn tượng bởi dáng vẻ cổ kính giữa mặt hồ, công trình còn lưu giữ những dấu ấn lịch sử, nét kiến trúc độc đáo cùng những câu chuyện văn hóa gắn với Hồ Gươm qua nhiều thế hệ.”"
+                    ? "“Hồ Gươm nước biếc bốn mùa, ngọn tháp rêu phong soi bóng gò xưa. Không chỉ là nét chấm phá cổ kính giữa lòng Hà Nội, Tháp Rùa còn là chứng nhân của lịch sử, nơi lắng đọng linh khí đất trời và ký ức thiêng liêng của người Thăng Long qua bao thăng trầm dâu bể.”"
                     : isHangTrong
                       ? "“Dẫu những cửa hàng xưa đã thưa vắng, những nét khắc trên gỗ và sắc màu trên giấy dó vẫn tiếp tục kể câu chuyện về người Hà Nội, về nghệ thuật dân gian và về những giá trị văn hóa cần được trao truyền cho các thế hệ mai sau.”"
                       : "“Mùa đông tháng 10 năm Kỷ Dậu (1049), dựng chùa Diên Hựu. Vua Lý Thái Tông chiêm bao thấy Phật Quan Âm dắt lên tòa sen, bèn sai dựng chùa, xây cột đá ở giữa hồ, làm tòa sen của Phật Quan Âm đặt trên cột như đã thấy trong mộng...”"}
@@ -1235,57 +1270,114 @@ export default function Heritage() {
             </div>
           </div>
 
-          {/* Heritage Cards / Explore Destinations (High contrast, improved readability) */}
+          {/* Section: Next Heritage Journey / Other Destinations (Unified, no duplicates) */}
           <section
-            id="destinations"
+            id="other-heritages"
             className="reveal"
-            style={{ marginBottom: "90px", scrollMarginTop: "120px" }}
+            style={{
+              marginTop: "40px",
+
+              paddingTop: "60px",
+
+              borderTop: "1px solid rgba(255, 209, 141, 0.16)",
+
+              maxWidth: "1200px",
+
+              margin: "0 auto",
+            }}
           >
-            <div style={{ textAlign: "center", marginBottom: "40px" }}>
-              <p
+            <div
+              style={{
+                display: "flex",
+
+                alignItems: "flex-end",
+
+                justifyContent: "space-between",
+
+                flexWrap: "wrap",
+
+                gap: "20px",
+
+                marginBottom: "36px",
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    color: "var(--gold)",
+
+                    fontSize: "12px",
+
+                    textTransform: "uppercase",
+
+                    letterSpacing: "0.15em",
+
+                    marginBottom: "8px",
+
+                    fontWeight: 600,
+                  }}
+                >
+                  TIẾP TỤC HÀNH TRÌNH DI SẢN
+                </p>
+                <h3
+                  style={{
+                    fontSize: "clamp(26px, 3.5vw, 34px)",
+
+                    color: "#fff7ec",
+
+                    fontFamily: '"Vollkorn", serif',
+
+                    margin: 0,
+                  }}
+                >
+                  Khám phá các điểm đến tiếp theo
+                </h3>
+              </div>
+
+              <Link
+                to="/heritage"
                 style={{
+                  display: "inline-flex",
+
+                  alignItems: "center",
+
+                  gap: "8px",
+
                   color: "var(--gold)",
 
                   fontSize: "13px",
 
                   textTransform: "uppercase",
 
-                  letterSpacing: "0.15em",
-
-                  marginBottom: "8px",
+                  letterSpacing: "0.1em",
 
                   fontWeight: 600,
+
+                  padding: "8px 18px",
+
+                  borderRadius: "99px",
+
+                  border: "1px solid rgba(255, 209, 141, 0.3)",
+
+                  background: "rgba(143, 0, 25, 0.35)",
+
+                  transition: "all 0.2s ease",
+
+                  textDecoration: "none",
                 }}
               >
-                KHO TÀNG KIẾN TRÚC VIỆT
-              </p>
-              <h3
-                style={{
-                  fontSize: "clamp(26px, 3.5vw, 36px)",
-
-                  color: "#fff7ec",
-
-                  fontFamily: '"Vollkorn", serif',
-
-                  margin: 0,
-                }}
-              >
-                Khám phá các điểm đến di sản
-              </h3>
+                <Compass size={15} />
+                <span>Xem tất cả di sản</span>
+              </Link>
             </div>
 
             <div
-              className="reveal"
               style={{
                 display: "grid",
 
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
 
-                gap: "32px",
-
-                maxWidth: "1200px",
-
-                margin: "0 auto",
+                gap: "28px",
               }}
             >
               {products.map((p) => {
@@ -1303,11 +1395,13 @@ export default function Heritage() {
 
                       border: isCurrent
                         ? "1px solid rgba(255, 209, 141, 0.45)"
-                        : "1px solid rgba(255, 209, 141, 0.16)",
+                        : "1px solid rgba(255, 209, 141, 0.18)",
 
                       overflow: "hidden",
 
-                      boxShadow: "0 12px 30px rgba(0, 0, 0, 0.4)",
+                      boxShadow: isCurrent
+                        ? "0 14px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(143, 0, 25, 0.25)"
+                        : "0 12px 30px rgba(0, 0, 0, 0.4)",
 
                       display: "flex",
 
@@ -1319,7 +1413,6 @@ export default function Heritage() {
                     }}
                   >
                     <div>
-                      {/* Image container with subtle zoom effect */}
                       <div
                         style={{
                           height: "210px",
@@ -1342,6 +1435,36 @@ export default function Heritage() {
                             transition: "transform 0.5s ease",
                           }}
                         />
+                        <span
+                          style={{
+                            position: "absolute",
+
+                            top: "14px",
+
+                            left: "14px",
+
+                            padding: "4px 10px",
+
+                            borderRadius: "99px",
+
+                            background: "rgba(143, 0, 25, 0.85)",
+
+                            border: "1px solid rgba(255, 209, 141, 0.4)",
+
+                            color: "var(--gold)",
+
+                            fontSize: "11px",
+
+                            fontWeight: 600,
+
+                            textTransform: "uppercase",
+
+                            letterSpacing: "0.1em",
+                          }}
+                        >
+                          DI SẢN {p.number}
+                        </span>
+
                         {isCurrent && (
                           <span
                             style={{
@@ -1355,15 +1478,15 @@ export default function Heritage() {
 
                               borderRadius: "99px",
 
-                              background: "rgba(143, 0, 25, 0.85)",
+                              background: "rgba(143, 0, 25, 0.95)",
 
-                              border: "1px solid rgba(255, 209, 141, 0.4)",
+                              border: "1px solid var(--gold)",
 
                               color: "var(--gold)",
 
                               fontSize: "11px",
 
-                              fontWeight: 600,
+                              fontWeight: 700,
 
                               textTransform: "uppercase",
 
@@ -1410,7 +1533,7 @@ export default function Heritage() {
                           style={{
                             color: "rgba(255, 235, 209, 0.8)",
 
-                            fontSize: "14.5px",
+                            fontSize: "14px",
 
                             lineHeight: 1.6,
 
@@ -1433,6 +1556,11 @@ export default function Heritage() {
                     <div style={{ padding: "0 24px 24px" }}>
                       <Link
                         to={`/heritage/${p.slug}`}
+                        onClick={() => {
+                          if (isCurrent) {
+                            window.scrollTo({ top: 0, behavior: "smooth" })
+                          }
+                        }}
                         style={{
                           display: "inline-flex",
 
@@ -1442,7 +1570,7 @@ export default function Heritage() {
 
                           color: "var(--gold)",
 
-                          fontSize: "13.5px",
+                          fontSize: "13px",
 
                           textTransform: "uppercase",
 
@@ -1455,220 +1583,16 @@ export default function Heritage() {
                           borderTop: "1px solid rgba(255, 209, 141, 0.12)",
 
                           width: "100%",
+
+                          textDecoration: "none",
                         }}
                       >
-                        Khám phá di sản <ArrowRight size={15} />
+                        {isCurrent ? "Đang khám phá" : "Khám phá di sản"} <ArrowRight size={15} />
                       </Link>
                     </div>
                   </div>
                 )
               })}
-            </div>
-          </section>
-
-          {/* Section: Next Heritage Journey Destination Cards (High Polish) */}
-          <section
-            className="reveal"
-            style={{
-              marginTop: "40px",
-
-              paddingTop: "60px",
-
-              borderTop: "1px solid rgba(255, 209, 141, 0.16)",
-
-              maxWidth: "1200px",
-
-              margin: "0 auto",
-            }}
-          >
-            <div style={{ textAlign: "center", marginBottom: "36px" }}>
-              <p
-                style={{
-                  color: "var(--gold)",
-
-                  fontSize: "12px",
-
-                  textTransform: "uppercase",
-
-                  letterSpacing: "0.15em",
-
-                  marginBottom: "8px",
-
-                  fontWeight: 600,
-                }}
-              >
-                TIẾP TỤC HÀNH TRÌNH
-              </p>
-              <h3
-                style={{
-                  fontSize: "28px",
-
-                  color: "#fff7ec",
-
-                  fontFamily: '"Vollkorn", serif',
-
-                  margin: 0,
-                }}
-              >
-                Hành trình di sản tiếp theo
-              </h3>
-            </div>
-
-            <div
-              style={{
-                display: "grid",
-
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-
-                gap: "28px",
-              }}
-            >
-              {otherHeritages.map((p) => (
-                <Link
-                  to={`/heritage/${p.slug}`}
-                  key={p.id}
-                  style={{
-                    position: "relative",
-
-                    height: "170px",
-
-                    borderRadius: "14px",
-
-                    overflow: "hidden",
-
-                    border: "1px solid rgba(255, 209, 141, 0.2)",
-
-                    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.4)",
-
-                    display: "flex",
-
-                    alignItems: "flex-end",
-
-                    padding: "24px",
-
-                    textDecoration: "none",
-
-                    transition: "transform 0.3s ease, border-color 0.3s ease",
-                  }}
-                  className="group"
-                >
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    style={{
-                      position: "absolute",
-
-                      inset: 0,
-
-                      width: "100%",
-
-                      height: "100%",
-
-                      objectFit: "cover",
-
-                      opacity: 0.5,
-
-                      transition: "transform 0.5s ease",
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-
-                      inset: 0,
-
-                      background:
-                        "linear-gradient(to top, rgba(16, 7, 8, 0.95) 0%, rgba(20, 8, 10, 0.55) 60%, rgba(0, 0, 0, 0.2) 100%)",
-                    }}
-                  />
-
-                  <div
-                    style={{
-                      position: "relative",
-
-                      zIndex: 2,
-
-                      width: "100%",
-
-                      display: "flex",
-
-                      alignItems: "center",
-
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div>
-                      <span
-                        style={{
-                          fontSize: "11px",
-
-                          textTransform: "uppercase",
-
-                          letterSpacing: "0.15em",
-
-                          color: "var(--gold)",
-
-                          display: "block",
-
-                          marginBottom: "4px",
-
-                          fontWeight: 600,
-                        }}
-                      >
-                        ĐIỂM DỪNG TIẾP THEO
-                      </span>
-                      <h4
-                        style={{
-                          fontSize: "22px",
-
-                          color: "#fff7ec",
-
-                          margin: 0,
-
-                          fontFamily: '"Vollkorn", serif',
-                        }}
-                      >
-                        {p.name}
-                      </h4>
-                      <span
-                        style={{
-                          fontSize: "13px",
-
-                          color: "rgba(255, 235, 209, 0.7)",
-                        }}
-                      >
-                        {p.eyebrow}
-                      </span>
-                    </div>
-
-                    <span
-                      style={{
-                        width: "42px",
-
-                        height: "42px",
-
-                        borderRadius: "50%",
-
-                        background: "rgba(143, 0, 25, 0.7)",
-
-                        border: "1px solid rgba(255, 209, 141, 0.35)",
-
-                        display: "flex",
-
-                        alignItems: "center",
-
-                        justifyContent: "center",
-
-                        color: "var(--gold)",
-
-                        flexShrink: 0,
-                      }}
-                    >
-                      <ArrowRight size={18} />
-                    </span>
-                  </div>
-                </Link>
-              ))}
             </div>
           </section>
         </div>
@@ -1703,7 +1627,7 @@ export default function Heritage() {
             <div className="flex-1 relative min-h-0 w-full flex">
               <ModelViewer3D
                 src={product.modelUrl || "/models/Thap-rua-model.glb"}
-                iosSrc={product.usdzUrl || "/models/Thap-rua-model.usdz"}
+                iosSrc={product.usdzUrl}
                 poster={product.image}
                 alt={`Mô hình 3D tương tác ${product.name} - Di sản Kiến Tích Việt`}
                 title={product.name}

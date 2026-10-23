@@ -24,10 +24,10 @@ interface ModelViewer3DProps {
 
 export default function ModelViewer3D({
   src,
-  iosSrc = "/models/Thap-rua-model.usdz",
+  iosSrc,
   poster,
   alt,
-  title = "Mô hình 3D Tháp Rùa",
+  title = "Mô hình 3D tương tác",
   onClose,
 }: ModelViewer3DProps) {
   const viewerRef = useRef<any>(null)

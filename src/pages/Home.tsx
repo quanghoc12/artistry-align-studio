@@ -341,7 +341,7 @@ export default function Home() {
             </div>
           </div>
           <LinkButton
-            href={`/heritage/${products[0]?.slug || "thap-rua"}`}
+            href="/heritage"
             dark
           >
             Khám phá trải nghiệm số
@@ -363,7 +363,7 @@ export default function Home() {
           </p>
           <Link
             className="text-link"
-            to={`/heritage/${products[0]?.slug || "thap-rua"}`}
+            to="/heritage"
           >
             Khám phá di sản <Icon name="arrow" />
           </Link>

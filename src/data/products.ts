@@ -90,6 +90,8 @@ export const products: Product[] = [
     accent: "Bán chạy",
     description:
       "Mô hình lắp ghép gỗ 3D lấy cảm hứng từ kiến trúc phố Hàng Trống, tái hiện một góc phố nghề mang dấu ấn tranh dân gian Hà Nội xưa.",
+    modelUrl: "/models/Hang-Trong-Model.glb",
+    usdzUrl: "/models/Hang-Trong-Model.usdz",
     audioUrl: "/audio/pho-hang-trong.mp3",
     audioTitle:
       "Phố Hàng Trống — Nơi sắc màu dân gian lưu dấu giữa lòng Hà Nội",
