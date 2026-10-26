@@ -1480,6 +1480,10 @@ footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(2
   .main-nav.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
   .main-nav a { font-family: "Vollkorn", serif; font-size: 19px; letter-spacing: 0.04em; }
   .main-nav a.active { color: var(--red); font-weight: 700; }
+  .site-header.is-hero-theme .main-nav, .site-header.is-hero-theme .main-nav.is-open { background: var(--wine-deep); border-bottom: 1px solid rgba(255, 209, 141, 0.3); }
+  .site-header.is-dark-theme .main-nav, .site-header.is-dark-theme .main-nav.is-open { background: #180a0c; border-bottom: 1px solid rgba(255, 209, 141, 0.3); box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65); }
+  .site-header.is-hero-theme .main-nav a, .site-header.is-dark-theme .main-nav a { color: var(--cream); }
+  .site-header.is-hero-theme .main-nav a.active, .site-header.is-hero-theme .main-nav.is-open a.active, .site-header.is-dark-theme .main-nav a.active, .site-header.is-dark-theme .main-nav.is-open a.active { color: var(--gold); }
   .statement-outline { display: none !important; }
   .header-actions { position: relative; z-index: 2; }
   .menu-button { display: flex; margin-left: 15px; }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { Icon, Logo } from "../Shared"
 
@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router-dom"
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
   const { cartCount, setCartOpen } = useCart()
   const location = useLocation()
   const isHome = location.pathname === "/"
@@ -23,11 +24,55 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Tự động đóng menu khi chuyển đường dẫn (ví dụ bấm nút Back/Forward)
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
+
+  // Tự động đóng menu khi chạm ra ngoài vùng Header, cuộn trang hoặc nhấn phím Esc
+  useEffect(() => {
+    if (!menuOpen) return
+
+    const initialScrollY = window.scrollY
+
+    const handlePointerDownOutside = (event: PointerEvent) => {
+      if (
+        headerRef.current &&
+        !headerRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false)
+      }
+    }
+
+    const handleScrollClose = () => {
+      if (Math.abs(window.scrollY - initialScrollY) > 25) {
+        setMenuOpen(false)
+      }
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDownOutside)
+    window.addEventListener("scroll", handleScrollClose, { passive: true })
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDownOutside)
+      window.removeEventListener("scroll", handleScrollClose)
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [menuOpen])
+
   const isHeroTheme = (isHome || isHeritage) && !scrolled
   const isDarkHeritageScrolled = isHeritage && scrolled
 
   return (
     <header
+      ref={headerRef}
       className={`site-header ${isHeroTheme ? "is-hero-theme" : ""} ${
         isDarkHeritageScrolled ? "is-dark-theme" : ""
       }`}
@@ -90,7 +135,10 @@ export default function Header() {
       <div className="header-actions">
         <button
           className="cart-button"
-          onClick={() => setCartOpen(true)}
+          onClick={() => {
+            setMenuOpen(false)
+            setCartOpen(true)
+          }}
           aria-label="Mở giỏ hàng"
         >
           <Icon name="bag" size={22} />
