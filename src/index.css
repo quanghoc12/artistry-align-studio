@@ -1390,7 +1390,7 @@ footer { background: var(--red-dark); color: var(--cream); padding: 80px clamp(2
 .modal-close { align-items: center; background: var(--cream); border: 0; cursor: pointer; display: flex; height: 46px; justify-content: center; position: absolute; right: 0; top: 0; width: 46px; z-index: 2; }
 .modal-image { min-height: 620px; position: relative; }
 .modal-image img { filter: sepia(0.2); height: 100%; object-fit: cover; position: absolute; width: 100%; }
-.modal-image span { background: var(--red); bottom: 20px; color: white; font-size: 12px; left: 20px; letter-spacing: 0.1em; padding: 9px 12px; position: absolute; text-transform: uppercase; }
+.modal-image > span { background: var(--red); bottom: 20px; color: white; font-size: 12px; left: 20px; letter-spacing: 0.1em; padding: 9px 12px; position: absolute; text-transform: uppercase; }
 .modal-copy { align-self: center; padding: clamp(35px, 6vw, 85px); }
 .modal-copy h2 { color: var(--red); font-size: clamp(43px, 5vw, 68px); line-height: 1; margin-bottom: 28px; }
 .modal-copy > p:not(.kicker) { color: var(--muted); }

@@ -1,4 +1,4 @@
-import { useParams, Link, useLocation } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 
 import { products, findProduct } from "../data/products"
 
@@ -6,11 +6,7 @@ import { Icon, LinkButton } from "../components/Shared"
 
 import { useCart } from "../context/CartContext"
 
-import { useState, useEffect } from "react"
-
-import ModelViewer3D from "../components/ModelViewer3D"
-
-import { Box, Image as ImageIcon } from "lucide-react"
+import { useState } from "react"
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -20,26 +16,6 @@ export default function ProductDetail() {
   const [playing, setPlaying] = useState(false)
 
   const product = findProduct(slug)
-
-  const location = useLocation()
-  const [viewMode, setViewMode] = useState<"3d" | "photo">(() => {
-    if (product?.modelUrl) {
-      return location.hash === "#photo" ? "photo" : "3d"
-    }
-    return "photo"
-  })
-
-  useEffect(() => {
-    if (product?.modelUrl) {
-      if (location.hash === "#photo") {
-        setViewMode("photo")
-      } else if (location.hash === "#3d") {
-        setViewMode("3d")
-      }
-    } else {
-      setViewMode("photo")
-    }
-  }, [location.hash, product?.modelUrl])
 
   if (!product) {
     return (
@@ -78,98 +54,12 @@ export default function ProductDetail() {
           }}
         >
           <div className="modal-image reveal" style={{ position: "relative" }}>
-            {product.modelUrl && (
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "20px",
-                  right: "20px",
-                  zIndex: 25,
-                  display: "flex",
-                  gap: "6px",
-                  background: "rgba(21, 10, 11, 0.85)",
-                  backdropFilter: "blur(12px)",
-                  padding: "4px",
-                  borderRadius: "99px",
-                  border: "1px solid rgba(255, 209, 141, 0.3)",
-                  boxShadow: "0 8px 25px rgba(0,0,0,0.4)",
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setViewMode("3d")}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "6px 14px",
-                    borderRadius: "99px",
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                    cursor: "pointer",
-                    border: "none",
-                    transition: "all 0.25s ease",
-                    background:
-                      viewMode === "3d"
-                        ? "linear-gradient(135deg, var(--gold) 0%, #e8ba75 100%)"
-                        : "transparent",
-                    color: viewMode === "3d" ? "#351b18" : "var(--gold)",
-                  }}
-                  aria-label="Xem không gian 3D và thực tế ảo AR"
-                >
-                  <Box size={14} />
-                  <span>Mô hình 3D</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("photo")}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "6px 14px",
-                    borderRadius: "99px",
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                    cursor: "pointer",
-                    border: "none",
-                    transition: "all 0.25s ease",
-                    background:
-                      viewMode === "photo"
-                        ? "linear-gradient(135deg, var(--gold) 0%, #e8ba75 100%)"
-                        : "transparent",
-                    color: viewMode === "photo" ? "#351b18" : "var(--gold)",
-                  }}
-                  aria-label="Xem hình ảnh chụp thực tế"
-                >
-                  <ImageIcon size={14} />
-                  <span>Hình ảnh</span>
-                </button>
-              </div>
-            )}
-
-            {product.modelUrl && viewMode === "3d" ? (
-              <ModelViewer3D
-                src={product.modelUrl}
-                iosSrc={product.usdzUrl}
-                poster={product.image}
-                alt={`Mô hình 3D tương tác ${product.name} - Di sản Kiến Tích Việt`}
-                title={product.name}
-              />
-            ) : (
-              <>
-                <img
-                  className="reveal-image"
-                  src={product.image}
-                  alt={product.name}
-                />
-                <span>Mô hình gỗ · Tỉ lệ 1:120</span>
-              </>
-            )}
+            <img
+              className="reveal-image"
+              src={product.image}
+              alt={product.name}
+            />
+            <span>Mô hình gỗ · Tỉ lệ 1:120</span>
           </div>
           <div className="modal-copy reveal stagger-1">
             <p className="kicker">{product.eyebrow}</p>
