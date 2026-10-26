@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Icon, LinkButton, stories } from "../components/Shared"
 import { products } from "../data/products"
 import { Link } from "react-router-dom"
@@ -28,6 +28,31 @@ function SoundIcon() {
 
 export default function Home() {
   const [playing, setPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause()
+      }
+    }
+  }, [])
+
+  const handleTogglePlay = async () => {
+    const audio = audioRef.current
+    if (!audio) return
+    if (playing) {
+      audio.pause()
+      setPlaying(false)
+    } else {
+      try {
+        await audio.play()
+        setPlaying(true)
+      } catch (err) {
+        console.error("Không thể phát âm thanh:", err)
+      }
+    }
+  }
 
   return (
     <>
@@ -282,19 +307,28 @@ export default function Home() {
         <div className="tech-visual reveal">
           <div className="phone">
             <div className="phone-screen">
+              <audio
+                ref={audioRef}
+                src="/audio/thap-rua.mp3"
+                preload="none"
+                onEnded={() => setPlaying(false)}
+                onPause={() => setPlaying(false)}
+                onPlay={() => setPlaying(true)}
+              />
               <span className="phone-label">Kiến Tích Việt</span>
               <img src="/images/thap-rua.jpg" alt="Mô hình Tháp Rùa" />
               <button
+                type="button"
                 className={`play-button ${playing ? "is-playing" : ""}`}
-                onClick={() => setPlaying(!playing)}
+                onClick={handleTogglePlay}
                 aria-label={playing ? "Tạm dừng audio" : "Phát audio"}
               >
                 <Icon name={playing ? "close" : "play"} size={25} />
               </button>
               <div className="audio-copy">
-                <small>Đang nghe</small>
+                <small>{playing ? "Đang nghe" : "Thuyết minh Audio"}</small>
                 <strong>Tháp Rùa — Biểu tượng giữa lòng Hồ Hoàn Kiếm</strong>
-                <span className="audio-wave">
+                <span className={`audio-wave ${playing ? "is-playing" : ""}`}>
                   {Array.from({ length: 17 }).map((_, index) => (
                     <i key={index} />
                   ))}
