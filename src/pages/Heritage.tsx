@@ -1205,9 +1205,9 @@ export default function Heritage() {
 
                         borderRadius: "50%",
 
-                        background: "#10b981",
+                        background: product.modelUrl ? "#10b981" : "var(--gold)",
 
-                        boxShadow: "0 0 10px #10b981",
+                        boxShadow: product.modelUrl ? "0 0 10px #10b981" : "0 0 10px rgba(255, 209, 141, 0.5)",
                       }}
                     />
                     <span
@@ -1217,15 +1217,22 @@ export default function Heritage() {
                         color: "rgba(255, 235, 209, 0.85)",
                       }}
                     >
-                      Hỗ trợ iOS (QuickLook) & Android (WebXR)
+                      {product.modelUrl ? "Hỗ trợ iOS (QuickLook) & Android (WebXR)" : "Mô hình 3D & AR đang được hoàn thiện"}
                     </span>
                   </div>
 
                   <button
                     ref={open3DButtonRef}
                     type="button"
-                    onClick={() => setIs3DModalOpen(true)}
-                    className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                    disabled={!product.modelUrl}
+                    onClick={() => {
+                      if (product.modelUrl) setIs3DModalOpen(true)
+                    }}
+                    className={
+                      product.modelUrl
+                        ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                        : "cursor-not-allowed opacity-75"
+                    }
                     style={{
                       display: "inline-flex",
 
@@ -1263,7 +1270,7 @@ export default function Heritage() {
                     aria-controls="heritage-3d-dialog"
                   >
                     <Box size={16} />
-                    <span>Xem mẫu 3D</span>
+                    <span>{product.modelUrl ? "Xem mẫu 3D" : "Sắp ra mắt"}</span>
                   </button>
                 </div>
               </div>
@@ -1599,7 +1606,7 @@ export default function Heritage() {
       </main>
 
       {/* 3D & AR Interactive Modal Dialog */}
-      {is3DModalOpen && (
+      {is3DModalOpen && product.modelUrl && (
         <div
           id="heritage-3d-dialog"
           role="dialog"
@@ -1626,7 +1633,7 @@ export default function Heritage() {
             {/* Modal Body: 3D Viewer with unified, integrated header and single close button */}
             <div className="flex-1 relative min-h-0 w-full flex">
               <ModelViewer3D
-                src={product.modelUrl || "/models/Thap-rua-model.glb"}
+                src={product.modelUrl}
                 iosSrc={product.usdzUrl}
                 poster={product.image}
                 alt={`Mô hình 3D tương tác ${product.name} - Di sản Kiến Tích Việt`}

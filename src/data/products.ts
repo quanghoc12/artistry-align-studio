@@ -35,7 +35,7 @@ export const products: Product[] = [
     price: "820.000 ₫",
     image: "/images/thap-rua.jpg",
     number: "01",
-    accent: "Sắp ra mắt",
+    accent: "Bán chạy",
     description:
       "Mô hình lắp ghép gỗ 3D tái hiện Tháp Rùa, biểu tượng quen thuộc giữa lòng Hồ Gươm.",
     modelUrl: "/models/Thap-rua-model.glb",
@@ -61,7 +61,7 @@ export const products: Product[] = [
     price: "890.000 ₫",
     image: "/images/chua-mot-cot.jpg",
     number: "02",
-    accent: "Mới",
+    accent: "Sắp ra mắt",
     description:
       "Mô hình lắp ghép gỗ 3D lấy cảm hứng từ kiến trúc độc đáo mang hình tượng đóa sen của Chùa Một Cột.",
     audioUrl:
@@ -87,7 +87,7 @@ export const products: Product[] = [
     price: "790.000 ₫",
     image: "/images/pho-hang-trong.jpg",
     number: "03",
-    accent: "Bán chạy",
+    accent: "Mới",
     description:
       "Mô hình lắp ghép gỗ 3D lấy cảm hứng từ kiến trúc phố Hàng Trống, tái hiện một góc phố nghề mang dấu ấn tranh dân gian Hà Nội xưa.",
     modelUrl: "/models/Hang-Trong-Model.glb",
