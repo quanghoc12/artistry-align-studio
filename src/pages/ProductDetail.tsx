@@ -616,7 +616,7 @@ export default function ProductDetail() {
                         <>
                           {relatedProduct.detailedInfo?.variants &&
                             relatedProduct.detailedInfo.variants.length > 1 && (
-                              <span className="price-label">Từ</span>
+                              <span className="price-label">Giá chỉ từ</span>
                             )}
                           <strong className="product-price">
                             {relatedProduct.price}

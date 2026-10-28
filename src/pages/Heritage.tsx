@@ -1935,7 +1935,7 @@ export default function Heritage() {
                           ? "Giá dự kiến"
                           : product.detailedInfo?.variants &&
                               product.detailedInfo.variants.length > 1
-                            ? `Giá từ (${product.detailedInfo.variants.length} phiên bản)`
+                            ? `Giá chỉ từ (${product.detailedInfo.variants.length} phiên bản)`
                             : "Giá phát hành"}
                       </span>
                       <strong

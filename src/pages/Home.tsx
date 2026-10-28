@@ -286,7 +286,7 @@ export default function Home() {
                       <>
                         {product.detailedInfo?.variants &&
                           product.detailedInfo.variants.length > 1 && (
-                            <span className="price-label">Từ</span>
+                            <span className="price-label">Giá chỉ từ</span>
                           )}
                         <strong className="product-price">{product.price}</strong>
                       </>
