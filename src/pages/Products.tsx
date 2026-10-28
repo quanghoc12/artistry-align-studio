@@ -208,17 +208,19 @@ export default function Products() {
                       </p>
                     )}
                     <div className="product-card-meta">
-                      {product.specifications?.pieces ? (
+                      {product.detailedInfo?.variants &&
+                      product.detailedInfo.variants.length > 0 ? (
+                        <span>
+                          {product.detailedInfo.variants.length} phiên bản
+                        </span>
+                      ) : product.specifications?.pieces &&
+                        product.specifications.pieces !== "xxx" ? (
                         <span>{product.specifications.pieces} mảnh</span>
                       ) : (
                         <span>Đang cập nhật</span>
                       )}
-                      {product.specifications?.time && (
-                        <>
-                          <i>·</i>
-                          <span>{product.specifications.time}</span>
-                        </>
-                      )}
+                      <i>·</i>
+                      <span>{product.specifications.material}</span>
                       <i>·</i>
                       <span>Chạm NFC</span>
                     </div>
@@ -231,7 +233,13 @@ export default function Products() {
                           <strong className="product-price">{product.price}</strong>
                         </>
                       ) : (
-                        <strong className="product-price">{product.price}</strong>
+                        <>
+                          {product.detailedInfo?.variants &&
+                            product.detailedInfo.variants.length > 1 && (
+                              <span className="price-label">Từ</span>
+                            )}
+                          <strong className="product-price">{product.price}</strong>
+                        </>
                       )}
                     </div>
                     <Link

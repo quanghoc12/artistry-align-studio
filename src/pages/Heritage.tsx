@@ -1933,12 +1933,15 @@ export default function Heritage() {
                       >
                         {product.accent === "Sắp ra mắt"
                           ? "Giá dự kiến"
-                          : "Giá phát hành"}
+                          : product.detailedInfo?.variants &&
+                              product.detailedInfo.variants.length > 1
+                            ? `Giá từ (${product.detailedInfo.variants.length} phiên bản)`
+                            : "Giá phát hành"}
                       </span>
                       <strong
                         style={{ fontSize: "22px", color: "var(--gold)" }}
                       >
-                        {product.price}
+                        {product.priceRange || product.price}
                       </strong>
                     </div>
 

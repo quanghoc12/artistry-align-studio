@@ -48,9 +48,18 @@ function isRateLimited(ip: string, maxRequests = 12, windowMs = 60_000): boolean
 const OFFICIAL_DATA = `
 Thương hiệu: Kiến Tích Việt — mô hình lắp ghép gỗ di sản Việt Nam. Slogan: "Dựng hình di sản, nối nhịp thời gian". Mỗi bộ: tự lắp ghép → trưng bày → chạm NFC để nghe câu chuyện (audio), trải nghiệm AR trên điện thoại.
 Sản phẩm:
-1. Tháp Rùa (Hà Nội · Hồ Gươm) — Giá dự kiến: 820.000₫ — 148 mảnh. Nhãn: Sắp ra mắt. (Lưu ý: Không dùng truyền thuyết trả gươm thần, Tháp Rùa tọa lạc trên Gò Rùa, từng có Điếu Đài thời Lê Thánh Tông, đình Tả Vọng thời chúa Trịnh, xây dựng 1884-1886 gắn với Bá hộ Kim / thế hậu chẩm chùa Báo Ân, kiến trúc giao thoa Đông - Tây, chiến sĩ Nguyễn Trọng Quang treo cờ đỏ sao vàng năm 1948).
-2. Chùa Một Cột (Hà Nội · Di sản Thăng Long) — 890.000₫ — Số mảnh: xxx mảnh (đang cập nhật). Nhãn: Mới.
-3. Phố Hàng Trống (Hà Nội · Phố cổ Hà Nội) — 790.000₫ — Số mảnh: xxx mảnh (đang cập nhật). Nhãn: Bán chạy. (Phố nghề thủ công truyền thống, nổi tiếng với tranh dân gian Hàng Trống, kỹ thuật vờn màu độc đáo).
+1. Mô hình lắp ghép gỗ 3D Tháp Rùa (Hà Nội · Hồ Gươm):
+   - Kích thước: khoảng 20 × 20 × 30 cm | Chất liệu chính: Gỗ basswood | Đối tượng: 18-30 tuổi | Cấu trúc module (đế, thân tháp nhiều tầng, hệ cửa - tường, mái, chi tiết trang trí).
+   - 3 phiên bản:
+     + Tháp Rùa Basic (369.000đ): Bề mặt gỗ mộc nguyên bản, tập trung trải nghiệm DIY tối giản (Không có NFC/AR, không Audio Storytelling, không trang trí mosaic).
+     + Tháp Rùa Signature (499.000đ): Bề mặt hoàn thiện có màu, tích hợp công nghệ NFC & AR và Audio Storytelling.
+     + Tháp Rùa Premium (669.000đ): Bề mặt khảm thủ công đá mosaic, tích hợp NFC & AR, Audio Storytelling, có cá nhân hóa trong bảng màu cho phép, đi kèm bộ dụng cụ (Nhíp, bọt biển, bột trám, keo sữa, que trộn, cốc).
+2. Chùa Một Cột (Hà Nội · Di sản Thăng Long) — Giá dự kiến: 890.000₫ — Nhãn: Sắp ra mắt.
+3. Mô hình lắp ghép gỗ 3D Hàng Trống (Hà Nội · Phố cổ Hà Nội):
+   - Kích thước: khoảng 15 × 15 × 20 cm | Chất liệu chính: Gỗ basswood | Đối tượng: 18-30 tuổi | Cấu trúc nhà chữ L (khung nhà, biển hiệu, bàn ghế, giá trưng bày tranh và bộ sticker tranh dân gian thu nhỏ).
+   - 2 phiên bản:
+     + Phố Hàng Trống - Basic (219.000đ): Bề mặt gỗ mộc không phủ màu, kèm bộ sticker tranh dân gian, biển hiệu và chi tiết trang trí (Không có NFC/AR, không Audio Storytelling).
+     + Phố Hàng Trống - Signature (289.000đ): Bề mặt gỗ hoàn thiện có màu, kèm sticker tranh dân gian, tích hợp công nghệ NFC & AR và Audio Storytelling.
 Chưa được cung cấp: tồn kho, chính sách đổi trả/vận chuyển/bảo hành.`
 
 const SYSTEM = `Bạn là "Trợ lý Kiến Tích Việt", trả lời bằng tiếng Việt, thân thiện, ngắn gọn (≤150 từ).
