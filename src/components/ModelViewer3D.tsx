@@ -282,6 +282,9 @@ export default function ModelViewer3D({
   return (
     <div
       ref={containerRef}
+      onPointerDown={() => setShowControlsHint(false)}
+      onWheel={() => setShowControlsHint(false)}
+      onTouchStart={() => setShowControlsHint(false)}
       className="model-viewer-container relative w-full h-full min-h-[340px] sm:min-h-[460px] md:min-h-[580px] lg:min-h-[640px] flex flex-col items-center justify-center overflow-hidden select-none"
       style={{
         background:
@@ -291,6 +294,24 @@ export default function ModelViewer3D({
       role="region"
       aria-label={alt}
     >
+      {/* Subtle Architectural Grid & Soft Pedestal Glow (No Dashed Oval Ring) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255, 209, 141, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 209, 141, 0.045) 1px, transparent 1px)",
+          backgroundSize: "36px 36px",
+        }}
+      />
+      <div
+        className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[65%] max-w-[520px] h-[72px] rounded-full pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(255, 209, 141, 0.14) 0%, rgba(143, 0, 25, 0.16) 50%, transparent 75%)",
+          filter: "blur(10px)",
+        }}
+      />
+
       {/* 3D Web Component with Adaptive Resolution & High-Performance flags */}
       <model-viewer
         ref={viewerRef}
@@ -344,8 +365,14 @@ export default function ModelViewer3D({
           paddingTop: "env(safe-area-inset-top, 0px)",
         }}
       >
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-[var(--gold)]/30 pointer-events-auto shrink-0 max-w-[55%] sm:max-w-none truncate shadow-lg">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399] shrink-0" />
+        <div
+          className="flex items-center gap-2 px-3.5 py-2 rounded-full backdrop-blur-md pointer-events-auto shrink-0 max-w-[55%] sm:max-w-none truncate shadow-lg"
+          style={{
+            background: "rgba(74, 8, 20, 0.92)",
+            border: "1px solid rgba(255, 209, 141, 0.4)",
+          }}
+        >
+          <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] shrink-0" />
           <span
             className="text-xs sm:text-sm font-semibold tracking-wide text-[#fff7ec] truncate"
             style={{
@@ -423,7 +450,11 @@ export default function ModelViewer3D({
             <button
               type="button"
               onClick={onClose}
-              className="min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full bg-black/80 hover:bg-[#8f0019]/90 active:scale-95 text-[#fff7ec] border border-[var(--gold)]/40 backdrop-blur-md transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 shrink-0"
+              className="min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full hover:brightness-110 active:scale-95 text-[#fff7ec] backdrop-blur-md transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 shrink-0"
+              style={{
+                background: "rgba(94, 0, 18, 0.92)",
+                border: "1px solid rgba(255, 209, 141, 0.45)",
+              }}
               aria-label="Đóng khung nhìn 3D"
               title="Đóng khung nhìn 3D (Esc)"
             >
@@ -439,8 +470,10 @@ export default function ModelViewer3D({
       {/* Interactive Controls Bar (Bottom Center) - Responsive for 320px - 430px */}
       {!isLoading && !hasError && (
         <div
-          className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-[var(--gold)]/30 shadow-2xl pointer-events-auto max-w-[95vw] sm:max-w-[90vw]"
+          className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full backdrop-blur-md shadow-2xl pointer-events-auto max-w-[95vw] sm:max-w-[90vw]"
           style={{
+            background: "rgba(74, 8, 20, 0.92)",
+            border: "1px solid rgba(255, 209, 141, 0.4)",
             paddingBottom: "max(6px, env(safe-area-inset-bottom, 6px))",
           }}
         >

@@ -121,9 +121,9 @@ export default function Chatbox() {
         aria-label="Mở Trợ lý Kiến Tích AI"
       >
         <span className="chat-trigger-icon">
-          <Icon name="sparkle" size={22} />
+          <Icon name="sparkle" size={17} />
         </span>
-        <span className="chat-trigger-text">Hỏi Trợ lý AI</span>
+        <span className="chat-trigger-text">Trợ lý</span>
       </button>
 
       {isOpen && (

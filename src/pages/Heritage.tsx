@@ -16,6 +16,13 @@ import {
   Compass,
   Layers,
   X,
+  Smartphone,
+  RotateCcw,
+  Maximize2,
+  ZoomIn,
+  ZoomOut,
+  RefreshCw,
+  CheckCircle2,
 } from "lucide-react"
 
 import ModelViewer3D from "../components/ModelViewer3D"
@@ -83,9 +90,120 @@ export default function Heritage() {
 
   const [is3DModalOpen, setIs3DModalOpen] = useState(false)
 
+  const [showArGuideModal, setShowArGuideModal] = useState(false)
+
+  const [inlineAutoRotate, setInlineAutoRotate] = useState(true)
+
+  const [isInlineZoomed, setIsInlineZoomed] = useState(false)
+
+  const [hasInteractedInline, setHasInteractedInline] = useState(false)
+
+  const [activeMobileTool, setActiveMobileTool] = useState<string | null>(null)
+
+  const [isIOSDevice, setIsIOSDevice] = useState(false)
+
+  const [isMobileDevice, setIsMobileDevice] = useState(false)
+
+  const inlineViewerRef = useRef<any>(null)
+
   const open3DButtonRef = useRef<HTMLButtonElement>(null)
 
   const scrollPositionRef = useRef<number>(0)
+
+  // Detect mobile & iOS for smart AR button label and direct QuickLook launch
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ua = navigator.userAgent || ""
+      const ios =
+        /iPhone|iPad|iPod/i.test(ua) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+      const android = /Android/i.test(ua)
+      const mobile =
+        ios ||
+        android ||
+        window.matchMedia("(max-width: 768px)").matches ||
+        "ontouchstart" in window
+      setIsIOSDevice(ios)
+      setIsMobileDevice(mobile)
+    }
+  }, [])
+
+  // Reset inline 3D state when navigating between heritages
+  useEffect(() => {
+    setHasInteractedInline(false)
+    setIsInlineZoomed(false)
+    setInlineAutoRotate(true)
+    setShowArGuideModal(false)
+  }, [product.slug])
+
+  // Ensure @google/model-viewer is registered for the inline 3D gallery stage
+  useEffect(() => {
+    if (!product?.modelUrl || typeof window === "undefined") return
+    if (customElements.get("model-viewer")) return
+
+    import("@google/model-viewer").catch(() => {
+      if (!document.querySelector('script[data-model-viewer="true"]')) {
+        const script = document.createElement("script")
+        script.type = "module"
+        script.src =
+          "https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"
+        script.setAttribute("data-model-viewer", "true")
+        document.head.appendChild(script)
+      }
+    })
+  }, [product?.modelUrl])
+
+  const handleInlineToggleRotate = () => {
+    const el = inlineViewerRef.current
+    const next = !inlineAutoRotate
+    setInlineAutoRotate(next)
+    setActiveMobileTool("rotate")
+    if (el) {
+      if (next) {
+        el.setAttribute("auto-rotate", "")
+      } else {
+        el.removeAttribute("auto-rotate")
+      }
+    }
+  }
+
+  const handleInlineZoomToggle = () => {
+    const el = inlineViewerRef.current
+    const nextZoom = !isInlineZoomed
+    setIsInlineZoomed(nextZoom)
+    setHasInteractedInline(true)
+    setActiveMobileTool("zoom")
+    if (el) {
+      el.cameraOrbit = nextZoom ? "35deg 72deg 64%" : "35deg 75deg 98%"
+    }
+  }
+
+  const handleInlineResetCamera = () => {
+    const el = inlineViewerRef.current
+    setIsInlineZoomed(false)
+    setActiveMobileTool("reset")
+    if (el) {
+      el.cameraOrbit = "35deg 75deg 98%"
+      el.cameraTarget = "auto auto auto"
+      if (typeof el.jumpCameraToGoal === "function") {
+        el.jumpCameraToGoal()
+      }
+    }
+  }
+
+  const handleInlineArTrigger = () => {
+    const el = inlineViewerRef.current
+    if (el && el.canActivateAR && typeof el.activateAR === "function") {
+      try {
+        el.activateAR()
+        return
+      } catch {
+        setShowArGuideModal(true)
+      }
+    } else {
+      setShowArGuideModal(true)
+    }
+  }
 
   useEffect(() => {
     if (is3DModalOpen) {
@@ -367,11 +485,14 @@ export default function Heritage() {
           {/* Audio Guide Section */}
           {product.audioUrl && (
             <section
+              id="audio-guide"
               className="reveal"
               style={{
                 maxWidth: "920px",
 
                 margin: "0 auto 80px",
+
+                scrollMarginTop: "120px",
               }}
             >
               <div
@@ -907,24 +1028,798 @@ export default function Heritage() {
               </div>
             </div>
 
-            {/* Column Right (45%): Wooden Model Craft & AR Experience */}
+            {/* Column Right (45%): 3D & AR Interactive Showcase Stage (Spotlight #1) + Wooden Craft Model */}
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "35px" }}
+              style={{ display: "flex", flexDirection: "column", gap: "36px" }}
             >
-              {/* Product Card: Royal Deep Lacquer Ruby (Refined, no harsh red) */}
+              {/* SPOTLIGHT #1: Royal Lacquer & Gold Interactive 3D & AR Gallery Showcase */}
+              <div
+                id="experience-3d"
+                style={{
+                  background:
+                    "linear-gradient(155deg, #3b0f18 0%, #220a0f 52%, #140609 100%)",
+                  borderRadius: "20px",
+                  border: "1px solid rgba(255, 209, 141, 0.42)",
+                  boxShadow:
+                    "0 26px 65px rgba(0, 0, 0, 0.7), 0 0 45px rgba(143, 0, 25, 0.32), inset 0 1px 0 rgba(255, 209, 141, 0.28)",
+                  position: "relative",
+                  overflow: "hidden",
+                  scrollMarginTop: "120px",
+                }}
+              >
+                {/* Ambient Golden-Ruby Spotlight Glow */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-18%",
+                    right: "-12%",
+                    width: "320px",
+                    height: "320px",
+                    background:
+                      "radial-gradient(circle, rgba(255, 209, 141, 0.16) 0%, rgba(143, 0, 25, 0.12) 45%, transparent 70%)",
+                    pointerEvents: "none",
+                    zIndex: 0,
+                  }}
+                />
+
+                {/* Top Studio Broadcast Header Bar (Harmonized with AudioGuidePlayer) */}
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 2,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: "10px",
+                    padding: "15px 26px",
+                    background: "rgba(0, 0, 0, 0.32)",
+                    borderBottom: "1px solid rgba(255, 209, 141, 0.18)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                        background:
+                          "linear-gradient(135deg, #8f0019 0%, #590010 100%)",
+                        border: "1px solid rgba(255, 209, 141, 0.45)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "var(--gold)",
+                        boxShadow: "0 0 14px rgba(255, 209, 141, 0.25)",
+                      }}
+                    >
+                      <Box size={15} />
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "11.5px",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.15em",
+                        color: "var(--gold)",
+                      }}
+                    >
+                      TRẢI NGHIỆM TƯƠNG TÁC · 3D & AR
+                    </span>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "7px",
+                      padding: "4px 12px",
+                      borderRadius: "99px",
+                      background: product.modelUrl
+                        ? "rgba(16, 185, 129, 0.12)"
+                        : "rgba(255, 209, 141, 0.1)",
+                      border: product.modelUrl
+                        ? "1px solid rgba(52, 211, 153, 0.35)"
+                        : "1px solid rgba(255, 209, 141, 0.25)",
+                    }}
+                  >
+                    <span
+                      className={product.modelUrl ? "animate-pulse" : ""}
+                      style={{
+                        width: "7px",
+                        height: "7px",
+                        borderRadius: "50%",
+                        background: product.modelUrl
+                          ? "#34d399"
+                          : "var(--gold)",
+                        boxShadow: product.modelUrl
+                          ? "0 0 8px #34d399"
+                          : "0 0 8px rgba(255, 209, 141, 0.5)",
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontSize: "11.5px",
+                        fontWeight: 600,
+                        color: product.modelUrl
+                          ? "#a7f3d0"
+                          : "rgba(255, 235, 209, 0.8)",
+                      }}
+                    >
+                      {product.modelUrl
+                        ? "Sẵn sàng trên thiết bị này"
+                        : "Đang số hóa 3D"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Main Studio Card Body */}
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 2,
+                    padding: "24px 26px 26px",
+                  }}
+                >
+                  {/* Title & Subtitle */}
+                  <div style={{ marginBottom: "18px" }}>
+                    <h3
+                      style={{
+                        fontSize: "clamp(22px, 2.4vw, 26px)",
+                        color: "#fff7ec",
+                        fontFamily: '"Vollkorn", serif',
+                        margin: "0 0 6px",
+                        lineHeight: 1.22,
+                      }}
+                    >
+                      Khám phá {product.name} trong không gian 3D
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: "14.5px",
+                        lineHeight: 1.55,
+                        color: "rgba(255, 235, 209, 0.8)",
+                        margin: 0,
+                      }}
+                    >
+                      Xoay mô hình 360°, quan sát từng chi tiết kiến trúc và đặt
+                      mô hình vào không gian thật qua AR.
+                    </p>
+                  </div>
+
+                  {/* RECESSED ROYAL LACQUER & GOLD 3D VITRINE STAGE (65-70% of Card Area) */}
+                  <div
+                    className="heritage-3d-viewport relative overflow-hidden select-none flex items-center justify-center"
+                    onPointerDown={() => setHasInteractedInline(true)}
+                    onWheel={() => setHasInteractedInline(true)}
+                    onTouchStart={() => setHasInteractedInline(true)}
+                    style={{
+                      borderRadius: "16px",
+                      marginBottom: "16px",
+                      background:
+                        "radial-gradient(circle at 50% 42%, rgba(168, 14, 42, 0.52) 0%, rgba(36, 10, 15, 0.95) 58%, #0b0305 100%)",
+                      border: "1px solid rgba(255, 209, 141, 0.38)",
+                      boxShadow:
+                        "inset 0 0 55px rgba(0, 0, 0, 0.8), 0 12px 30px rgba(0, 0, 0, 0.45)",
+                    }}
+                  >
+                    {/* Subtle Architectural Blueprint Grid Background */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        backgroundImage:
+                          "linear-gradient(rgba(255, 209, 141, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 209, 141, 0.055) 1px, transparent 1px)",
+                        backgroundSize: "28px 28px",
+                        opacity: 0.7,
+                        pointerEvents: "none",
+                      }}
+                    />
+
+                    {/* Warm Golden-Ruby Museum Spotlight Halo Behind Model */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "44%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: "300px",
+                        height: "300px",
+                        borderRadius: "50%",
+                        background:
+                          "radial-gradient(circle, rgba(255, 209, 141, 0.22) 0%, rgba(143, 0, 25, 0.22) 48%, transparent 72%)",
+                        filter: "blur(12px)",
+                        pointerEvents: "none",
+                        zIndex: 0,
+                      }}
+                    />
+
+                    {/* Soft Pedestal Floor Glow (Without Dashed Oval Border) */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "18px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "76%",
+                        height: "62px",
+                        borderRadius: "50%",
+                        background:
+                          "radial-gradient(ellipse at center, rgba(255, 209, 141, 0.16) 0%, rgba(143, 0, 25, 0.15) 55%, transparent 75%)",
+                        filter: "blur(8px)",
+                        pointerEvents: "none",
+                        zIndex: 1,
+                      }}
+                    />
+
+                    {/* 4 Delicate Gold Viewfinder Corner Brackets */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "12px",
+                        left: "12px",
+                        width: "16px",
+                        height: "16px",
+                        borderTop: "2px solid var(--gold)",
+                        borderLeft: "2px solid var(--gold)",
+                        opacity: 0.72,
+                        pointerEvents: "none",
+                        zIndex: 3,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "12px",
+                        right: "12px",
+                        width: "16px",
+                        height: "16px",
+                        borderTop: "2px solid var(--gold)",
+                        borderRight: "2px solid var(--gold)",
+                        opacity: 0.72,
+                        pointerEvents: "none",
+                        zIndex: 3,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "12px",
+                        left: "12px",
+                        width: "16px",
+                        height: "16px",
+                        borderBottom: "2px solid var(--gold)",
+                        borderLeft: "2px solid var(--gold)",
+                        opacity: 0.72,
+                        pointerEvents: "none",
+                        zIndex: 3,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "12px",
+                        right: "12px",
+                        width: "16px",
+                        height: "16px",
+                        borderBottom: "2px solid var(--gold)",
+                        borderRight: "2px solid var(--gold)",
+                        opacity: 0.72,
+                        pointerEvents: "none",
+                        zIndex: 3,
+                      }}
+                    />
+
+                    {/* Top-Left HUD Badge: 360 Orbit */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "15px",
+                        left: "16px",
+                        zIndex: 4,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "4px 10px",
+                        borderRadius: "99px",
+                        background: "rgba(12, 4, 6, 0.76)",
+                        border: "1px solid rgba(255, 209, 141, 0.35)",
+                        color: "var(--gold)",
+                        fontSize: "10.5px",
+                        fontWeight: 600,
+                        letterSpacing: "0.06em",
+                        backdropFilter: "blur(6px)",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      <RotateCcw size={11} />
+                      <span>XOAY 360°</span>
+                    </div>
+
+                    {/* Top-Right HUD Badge: AR Ready */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "15px",
+                        right: "16px",
+                        zIndex: 4,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "4px 10px",
+                        borderRadius: "99px",
+                        background: "rgba(143, 0, 25, 0.82)",
+                        border: "1px solid rgba(255, 209, 141, 0.42)",
+                        color: "#fff7ec",
+                        fontSize: "10.5px",
+                        fontWeight: 600,
+                        letterSpacing: "0.06em",
+                        backdropFilter: "blur(6px)",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      <Smartphone size={11} color="var(--gold)" />
+                      <span>THỰC TẾ ẢO AR</span>
+                    </div>
+
+                    {/* Live Interactive 3D Model (When modelUrl is available) */}
+                    {product.modelUrl ? (
+                      !is3DModalOpen && (
+                        <model-viewer
+                          ref={inlineViewerRef}
+                          src={product.modelUrl}
+                          ios-src={product.usdzUrl}
+                          poster={product.image}
+                          alt={`Mô hình 3D ${product.name}`}
+                          camera-controls
+                          touch-action="pan-y"
+                          render-scale="auto"
+                          reveal="auto"
+                          loading="eager"
+                          auto-rotate={inlineAutoRotate ? "" : undefined}
+                          auto-rotate-delay="1800"
+                          rotation-per-second="14deg"
+                          shadow-intensity="1.15"
+                          shadow-softness="0.45"
+                          exposure="1.05"
+                          camera-orbit="35deg 75deg 98%"
+                          min-camera-orbit="auto auto 45%"
+                          max-camera-orbit="auto auto 220%"
+                          field-of-view="30deg"
+                          ar
+                          ar-modes="webxr scene-viewer quick-look"
+                          quick-look-browsers="safari chrome"
+                          ar-scale="auto"
+                          interaction-prompt="none"
+                          style={{
+                            position: "relative",
+                            zIndex: 2,
+                            width: "100%",
+                            height: "100%",
+                            outline: "none",
+                          }}
+                        />
+                      )
+                    ) : (
+                      /* Elegant Stage Preview when 3D model is upcoming */
+                      <>
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            opacity: 0.55,
+                          }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background:
+                              "radial-gradient(circle at 50% 48%, rgba(21, 10, 11, 0.2) 0%, rgba(12, 4, 6, 0.9) 100%)",
+                            pointerEvents: "none",
+                          }}
+                        />
+                        <div
+                          style={{
+                            position: "relative",
+                            zIndex: 3,
+                            width: "56px",
+                            height: "56px",
+                            borderRadius: "50%",
+                            background: "rgba(94, 0, 18, 0.88)",
+                            border: "1px solid rgba(255, 209, 141, 0.55)",
+                            color: "var(--gold)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            boxShadow: "0 0 28px rgba(255, 209, 141, 0.35)",
+                          }}
+                        >
+                          <Box size={24} />
+                        </div>
+                      </>
+                    )}
+
+                    {/* Subtle Bottom Gesture Guide Pill (Auto-hides after first user interaction) */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "14px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 5,
+                        padding: "5px 14px",
+                        borderRadius: "99px",
+                        background: "rgba(15, 5, 7, 0.85)",
+                        border: "1px solid rgba(255, 209, 141, 0.35)",
+                        color: "var(--gold)",
+                        fontSize: "11.5px",
+                        fontWeight: 600,
+                        letterSpacing: "0.03em",
+                        whiteSpace: "nowrap",
+                        pointerEvents: "none",
+                        opacity: hasInteractedInline ? 0 : 1,
+                        transition: "opacity 0.35s ease",
+                        backdropFilter: "blur(8px)",
+                        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.5)",
+                      }}
+                    >
+                      {product.modelUrl
+                        ? "Kéo để xoay 360° · Cuộn để phóng to"
+                        : "Bản số hóa 3D đang được hoàn thiện"}
+                    </div>
+                  </div>
+
+                  {/* Compact Interactive Toolbar */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "6px",
+                      padding: "8px 10px",
+                      borderRadius: "12px",
+                      background: "rgba(0, 0, 0, 0.32)",
+                      border: "1px solid rgba(255, 209, 141, 0.16)",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {/* Tool 1: Xoay (Toggle Auto-Rotate) */}
+                      <button
+                        type="button"
+                        disabled={!product.modelUrl}
+                        onClick={handleInlineToggleRotate}
+                        className={
+                          product.modelUrl
+                            ? "cursor-pointer"
+                            : "cursor-not-allowed opacity-50"
+                        }
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "7px 12px",
+                          borderRadius: "8px",
+                          background: inlineAutoRotate
+                            ? "rgba(143, 0, 25, 0.72)"
+                            : "rgba(255, 255, 255, 0.04)",
+                          border: inlineAutoRotate
+                            ? "1px solid rgba(255, 209, 141, 0.42)"
+                            : "1px solid rgba(255, 209, 141, 0.12)",
+                          color: inlineAutoRotate ? "var(--gold)" : "#fff7ec",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          transition: "all 0.2s ease",
+                        }}
+                        title="Bật / Tắt tự động xoay"
+                      >
+                        <RefreshCw size={13} />
+                        <span
+                          className={
+                            activeMobileTool === "rotate"
+                              ? "inline"
+                              : "hidden sm:inline"
+                          }
+                        >
+                          Xoay
+                        </span>
+                      </button>
+
+                      {/* Tool 2: Phóng to (Toggle Zoom) */}
+                      <button
+                        type="button"
+                        disabled={!product.modelUrl}
+                        onClick={handleInlineZoomToggle}
+                        className={
+                          product.modelUrl
+                            ? "cursor-pointer"
+                            : "cursor-not-allowed opacity-50"
+                        }
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "7px 12px",
+                          borderRadius: "8px",
+                          background: isInlineZoomed
+                            ? "rgba(143, 0, 25, 0.72)"
+                            : "rgba(255, 255, 255, 0.04)",
+                          border: isInlineZoomed
+                            ? "1px solid rgba(255, 209, 141, 0.42)"
+                            : "1px solid rgba(255, 209, 141, 0.12)",
+                          color: isInlineZoomed ? "var(--gold)" : "#fff7ec",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          transition: "all 0.2s ease",
+                        }}
+                        title="Phóng to / Thu nhỏ góc nhìn"
+                      >
+                        {isInlineZoomed ? (
+                          <ZoomOut size={13} />
+                        ) : (
+                          <ZoomIn size={13} />
+                        )}
+                        <span
+                          className={
+                            activeMobileTool === "zoom"
+                              ? "inline"
+                              : "hidden sm:inline"
+                          }
+                        >
+                          {isInlineZoomed ? "Thu nhỏ" : "Phóng to"}
+                        </span>
+                      </button>
+
+                      {/* Tool 3: Đặt lại góc nhìn */}
+                      <button
+                        type="button"
+                        disabled={!product.modelUrl}
+                        onClick={handleInlineResetCamera}
+                        className={
+                          product.modelUrl
+                            ? "cursor-pointer"
+                            : "cursor-not-allowed opacity-50"
+                        }
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "7px 12px",
+                          borderRadius: "8px",
+                          background: "rgba(255, 255, 255, 0.04)",
+                          border: "1px solid rgba(255, 209, 141, 0.12)",
+                          color: "#fff7ec",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          transition: "all 0.2s ease",
+                        }}
+                        title="Đặt lại góc nhìn mặc định"
+                      >
+                        <RotateCcw size={13} />
+                        <span
+                          className={
+                            activeMobileTool === "reset"
+                              ? "inline"
+                              : "hidden sm:inline"
+                          }
+                        >
+                          Đặt lại góc nhìn
+                        </span>
+                      </button>
+                    </div>
+
+                    {/* Tool 4 (Right): Toàn màn hình */}
+                    <button
+                      type="button"
+                      disabled={!product.modelUrl}
+                      onClick={() => {
+                        if (product.modelUrl) setIs3DModalOpen(true)
+                      }}
+                      className={
+                        product.modelUrl
+                          ? "cursor-pointer"
+                          : "cursor-not-allowed opacity-50"
+                      }
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "7px 12px",
+                        borderRadius: "8px",
+                        background: "rgba(143, 0, 25, 0.45)",
+                        border: "1px solid rgba(255, 209, 141, 0.3)",
+                        color: "var(--gold)",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        transition: "all 0.2s ease",
+                      }}
+                      title="Mở chế độ toàn màn hình (90%)"
+                    >
+                      <Maximize2 size={13} />
+                      <span className="hidden sm:inline">Toàn màn hình</span>
+                    </button>
+                  </div>
+
+                  {/* Split CTA Row: Primary 3D Button + Secondary AR Button */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fit, minmax(190px, 1fr))",
+                      gap: "12px",
+                    }}
+                  >
+                    {/* Primary CTA: Khám phá mô hình 3D */}
+                    <button
+                      ref={open3DButtonRef}
+                      type="button"
+                      disabled={!product.modelUrl}
+                      onClick={() => {
+                        if (product.modelUrl) setIs3DModalOpen(true)
+                      }}
+                      className={
+                        product.modelUrl
+                          ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                          : "cursor-not-allowed opacity-60"
+                      }
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        minHeight: "50px",
+                        padding: "12px 18px",
+                        borderRadius: "11px",
+                        background: product.modelUrl
+                          ? "linear-gradient(135deg, #ffe2ad 0%, var(--gold) 55%, #dfab60 100%)"
+                          : "rgba(255, 209, 141, 0.15)",
+                        border: "1px solid rgba(255, 247, 236, 0.65)",
+                        color: product.modelUrl ? "#2b110e" : "var(--gold)",
+                        fontSize: "13.5px",
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        boxShadow: product.modelUrl
+                          ? "0 8px 24px rgba(0, 0, 0, 0.45), 0 0 22px rgba(255, 209, 141, 0.25)"
+                          : "none",
+                        transition:
+                          "transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (product.modelUrl) {
+                          e.currentTarget.style.transform = "translateY(-2px)"
+                          e.currentTarget.style.filter = "brightness(1.04)"
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (product.modelUrl) {
+                          e.currentTarget.style.transform = "translateY(0)"
+                          e.currentTarget.style.filter = "brightness(1)"
+                        }
+                      }}
+                      aria-haspopup="dialog"
+                      aria-expanded={is3DModalOpen}
+                      aria-controls="heritage-3d-dialog"
+                    >
+                      <Box size={16} />
+                      <span>
+                        {product.modelUrl
+                          ? "Khám phá mô hình 3D"
+                          : "Mô hình 3D sắp ra mắt"}
+                      </span>
+                    </button>
+
+                    {/* Secondary CTA: Xem trong không gian AR / Xem AR trên điện thoại */}
+                    {isIOSDevice && product.usdzUrl ? (
+                      <a
+                        rel="ar"
+                        href={`${product.usdzUrl.split("#")[0]}#allowsContentScaling=0`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "8px",
+                          minHeight: "50px",
+                          padding: "12px 18px",
+                          borderRadius: "11px",
+                          background:
+                            "linear-gradient(135deg, rgba(143, 0, 25, 0.72) 0%, rgba(89, 0, 16, 0.72) 100%)",
+                          border: "1px solid rgba(255, 209, 141, 0.42)",
+                          color: "var(--gold)",
+                          fontSize: "13.5px",
+                          fontWeight: 600,
+                          textDecoration: "none",
+                          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.35)",
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        <Smartphone size={16} color="var(--gold)" />
+                        <span>Xem trong không gian AR</span>
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled={!product.modelUrl}
+                        onClick={handleInlineArTrigger}
+                        className={
+                          product.modelUrl
+                            ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                            : "cursor-not-allowed opacity-60"
+                        }
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "8px",
+                          minHeight: "50px",
+                          padding: "12px 18px",
+                          borderRadius: "11px",
+                          background:
+                            "linear-gradient(135deg, rgba(143, 0, 25, 0.72) 0%, rgba(89, 0, 16, 0.72) 100%)",
+                          border: "1px solid rgba(255, 209, 141, 0.42)",
+                          color: "var(--gold)",
+                          fontSize: "13.5px",
+                          fontWeight: 600,
+                          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.35)",
+                          transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (product.modelUrl) {
+                            e.currentTarget.style.transform = "translateY(-2px)"
+                            e.currentTarget.style.borderColor =
+                              "rgba(255, 209, 141, 0.7)"
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (product.modelUrl) {
+                            e.currentTarget.style.transform = "translateY(0)"
+                            e.currentTarget.style.borderColor =
+                              "rgba(255, 209, 141, 0.42)"
+                          }
+                        }}
+                      >
+                        <Smartphone size={16} color="var(--gold)" />
+                        <span>
+                          {isMobileDevice
+                            ? "Xem trong không gian AR"
+                            : "Xem AR trên điện thoại"}
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* SPOTLIGHT #2: Product Card - Physical Wooden Craft Model */}
               <div
                 style={{
                   background:
-                    "linear-gradient(145deg, #380e15 0%, #220a0e 100%)",
+                    "linear-gradient(145deg, #2d0d13 0%, #1c080c 100%)",
 
-                  padding: "36px",
+                  padding: "32px",
 
-                  borderRadius: "16px",
+                  borderRadius: "18px",
 
-                  border: "1px solid rgba(255, 209, 141, 0.28)",
+                  border: "1px solid rgba(255, 209, 141, 0.24)",
 
-                  boxShadow:
-                    "0 18px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(143, 0, 25, 0.2)",
+                  boxShadow: "0 16px 40px rgba(0, 0, 0, 0.45)",
 
                   position: "relative",
 
@@ -936,7 +1831,7 @@ export default function Heritage() {
                     style={{
                       color: "var(--gold)",
 
-                      fontSize: "12px",
+                      fontSize: "11.5px",
 
                       textTransform: "uppercase",
 
@@ -944,14 +1839,14 @@ export default function Heritage() {
 
                       fontWeight: 600,
 
-                      marginBottom: "8px",
+                      marginBottom: "6px",
                     }}
                   >
                     MÔ HÌNH LẮP GHÉP GỖ NGUYÊN BẢN
                   </p>
                   <h3
                     style={{
-                      fontSize: "26px",
+                      fontSize: "24px",
 
                       color: "#fff7ec",
 
@@ -960,7 +1855,7 @@ export default function Heritage() {
                       fontFamily: '"Vollkorn", serif',
                     }}
                   >
-                    Mô hình {product.name}
+                    Sở hữu Mô hình {product.name}
                   </h3>
 
                   <div
@@ -969,7 +1864,7 @@ export default function Heritage() {
 
                       overflow: "hidden",
 
-                      marginBottom: "20px",
+                      marginBottom: "18px",
 
                       border: "1px solid rgba(255, 209, 141, 0.2)",
                     }}
@@ -980,7 +1875,7 @@ export default function Heritage() {
                       style={{
                         width: "100%",
 
-                        height: "220px",
+                        height: "195px",
 
                         objectFit: "cover",
 
@@ -997,7 +1892,7 @@ export default function Heritage() {
 
                       color: "rgba(255, 235, 209, 0.8)",
 
-                      marginBottom: "24px",
+                      marginBottom: "20px",
                     }}
                   >
                     {product.description}
@@ -1052,18 +1947,19 @@ export default function Heritage() {
 
                         gap: "8px",
 
-                        padding: "12px 24px",
+                        padding: "11px 22px",
 
                         borderRadius: "99px",
 
-                        background:
-                          "linear-gradient(135deg, var(--gold) 0%, #e8ba75 100%)",
+                        background: "rgba(143, 0, 25, 0.65)",
 
-                        color: "#351b18",
+                        border: "1px solid rgba(255, 209, 141, 0.45)",
+
+                        color: "var(--gold)",
 
                         fontWeight: 700,
 
-                        fontSize: "14px",
+                        fontSize: "13px",
 
                         textTransform: "uppercase",
 
@@ -1071,207 +1967,21 @@ export default function Heritage() {
 
                         boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
 
-                        transition: "transform 0.2s ease",
+                        transition: "all 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "var(--gold)"
+                        e.currentTarget.style.color = "#2b110e"
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(143, 0, 25, 0.65)"
+                        e.currentTarget.style.color = "var(--gold)"
                       }}
                     >
-                      Khám phá chi tiết <ArrowRight size={16} />
+                      Xem chi tiết sản phẩm <ArrowRight size={15} />
                     </Link>
                   </div>
-                </div>
-              </div>
-
-              {/* AR 3D Experience Portal Card */}
-              <div
-                style={{
-                  background:
-                    "linear-gradient(145deg, #201215 0%, #15090b 100%)",
-
-                  padding: "32px",
-
-                  borderRadius: "16px",
-
-                  border: "1px solid rgba(255, 209, 141, 0.18)",
-
-                  boxShadow: "0 12px 35px rgba(0, 0, 0, 0.4)",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-
-                    alignItems: "center",
-
-                    gap: "10px",
-
-                    marginBottom: "14px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "36px",
-
-                      height: "36px",
-
-                      borderRadius: "8px",
-
-                      background: "rgba(143, 0, 25, 0.6)",
-
-                      display: "flex",
-
-                      alignItems: "center",
-
-                      justifyContent: "center",
-
-                      color: "var(--gold)",
-
-                      border: "1px solid rgba(255, 209, 141, 0.25)",
-                    }}
-                  >
-                    <Box size={20} />
-                  </div>
-                  <div>
-                    <h3
-                      style={{
-                        fontSize: "20px",
-
-                        color: "#fff7ec",
-
-                        fontFamily: '"Vollkorn", serif',
-
-                        margin: 0,
-                      }}
-                    >
-                      Trải nghiệm Không gian AR & 3D
-                    </h3>
-                    <span style={{ fontSize: "12px", color: "var(--gold)" }}>
-                      Thực tế tăng cường trên điện thoại
-                    </span>
-                  </div>
-                </div>
-
-                <p
-                  style={{
-                    fontSize: "14.5px",
-
-                    lineHeight: 1.6,
-
-                    color: "rgba(255, 235, 209, 0.75)",
-
-                    marginBottom: "20px",
-                  }}
-                >
-                  {isThapRua
-                    ? "Quan sát mô hình Tháp Rùa 3D từ nhiều góc nhìn, phóng to để khám phá từng chi tiết thiết kế. Với thiết bị hỗ trợ AR, bạn còn có thể đặt mô hình ảo vào không gian thực thông qua camera điện thoại."
-                    : isHangTrong
-                      ? "Khám phá không gian kiến trúc phố Hàng Trống và tranh dân gian qua góc nhìn 3D trực quan cùng công nghệ thực tế tăng cường AR trên điện thoại."
-                      : "Chiêm ngưỡng từng chi tiết mộng gỗ di sản xoay 360 độ hoặc đặt trực tiếp mô hình vào không gian phòng của bạn thông qua camera và chip NFC gắn kèm sản phẩm."}
-                </p>
-
-                <div
-                  style={{
-                    background: "rgba(0, 0, 0, 0.3)",
-
-                    borderRadius: "10px",
-
-                    padding: "16px",
-
-                    border: "1px dashed rgba(255, 209, 141, 0.2)",
-
-                    display: "flex",
-
-                    alignItems: "center",
-
-                    justifyContent: "space-between",
-
-                    flexWrap: "wrap",
-
-                    gap: "15px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-
-                      alignItems: "center",
-
-                      gap: "10px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: "8px",
-
-                        height: "8px",
-
-                        borderRadius: "50%",
-
-                        background: product.modelUrl ? "#10b981" : "var(--gold)",
-
-                        boxShadow: product.modelUrl ? "0 0 10px #10b981" : "0 0 10px rgba(255, 209, 141, 0.5)",
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: "13px",
-
-                        color: "rgba(255, 235, 209, 0.85)",
-                      }}
-                    >
-                      {product.modelUrl ? "Hỗ trợ iOS (QuickLook) & Android (WebXR)" : "Mô hình 3D & AR đang được hoàn thiện"}
-                    </span>
-                  </div>
-
-                  <button
-                    ref={open3DButtonRef}
-                    type="button"
-                    disabled={!product.modelUrl}
-                    onClick={() => {
-                      if (product.modelUrl) setIs3DModalOpen(true)
-                    }}
-                    className={
-                      product.modelUrl
-                        ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
-                        : "cursor-not-allowed opacity-75"
-                    }
-                    style={{
-                      display: "inline-flex",
-
-                      alignItems: "center",
-
-                      gap: "8px",
-
-                      minHeight: "44px",
-
-                      padding: "10px 20px",
-
-                      borderRadius: "8px",
-
-                      background:
-                        "linear-gradient(135deg, var(--gold) 0%, #e8ba75 100%)",
-
-                      border: "1px solid rgba(255, 209, 141, 0.4)",
-
-                      color: "#351b18",
-
-                      fontSize: "12.5px",
-
-                      fontWeight: 700,
-
-                      textTransform: "uppercase",
-
-                      letterSpacing: "0.06em",
-
-                      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.35)",
-
-                      transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                    }}
-                    aria-haspopup="dialog"
-                    aria-expanded={is3DModalOpen}
-                    aria-controls="heritage-3d-dialog"
-                  >
-                    <Box size={16} />
-                    <span>{product.modelUrl ? "Xem mẫu 3D" : "Sắp ra mắt"}</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -1391,8 +2101,13 @@ export default function Heritage() {
                 const isCurrent = p.slug === product.slug
 
                 return (
-                  <div
+                  <Link
                     key={p.id}
+                    to={`/heritage/${p.slug}`}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }}
+                    className="group"
                     style={{
                       background: isCurrent
                         ? "linear-gradient(145deg, #2a1217 0%, #1a0b0e 100%)"
@@ -1416,7 +2131,28 @@ export default function Heritage() {
 
                       justifyContent: "space-between",
 
-                      transition: "transform 0.3s ease, border-color 0.3s ease",
+                      textDecoration: "none",
+
+                      cursor: "pointer",
+
+                      transition:
+                        "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-7px)"
+                      e.currentTarget.style.borderColor =
+                        "rgba(255, 209, 141, 0.65)"
+                      e.currentTarget.style.boxShadow =
+                        "0 22px 48px rgba(0, 0, 0, 0.65), 0 0 30px rgba(143, 0, 25, 0.32), 0 0 18px rgba(255, 209, 141, 0.14)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)"
+                      e.currentTarget.style.borderColor = isCurrent
+                        ? "rgba(255, 209, 141, 0.45)"
+                        : "rgba(255, 209, 141, 0.18)"
+                      e.currentTarget.style.boxShadow = isCurrent
+                        ? "0 14px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(143, 0, 25, 0.25)"
+                        : "0 12px 30px rgba(0, 0, 0, 0.4)"
                     }}
                   >
                     <div>
@@ -1432,14 +2168,13 @@ export default function Heritage() {
                         <img
                           src={p.image}
                           alt={p.name}
+                          className="transition-transform duration-500 ease-out group-hover:scale-105"
                           style={{
                             width: "100%",
 
                             height: "100%",
 
                             objectFit: "cover",
-
-                            transition: "transform 0.5s ease",
                           }}
                         />
                         <span
@@ -1522,6 +2257,7 @@ export default function Heritage() {
                           {p.eyebrow}
                         </p>
                         <h4
+                          className="transition-colors duration-300 group-hover:text-[#ffd18d]"
                           style={{
                             fontSize: "22px",
 
@@ -1561,13 +2297,7 @@ export default function Heritage() {
                     </div>
 
                     <div style={{ padding: "0 24px 24px" }}>
-                      <Link
-                        to={`/heritage/${p.slug}`}
-                        onClick={() => {
-                          if (isCurrent) {
-                            window.scrollTo({ top: 0, behavior: "smooth" })
-                          }
-                        }}
+                      <span
                         style={{
                           display: "inline-flex",
 
@@ -1590,14 +2320,18 @@ export default function Heritage() {
                           borderTop: "1px solid rgba(255, 209, 141, 0.12)",
 
                           width: "100%",
-
-                          textDecoration: "none",
                         }}
                       >
-                        {isCurrent ? "Đang khám phá" : "Khám phá di sản"} <ArrowRight size={15} />
-                      </Link>
+                        <span>
+                          {isCurrent ? "Đang khám phá" : "Khám phá di sản"}
+                        </span>
+                        <ArrowRight
+                          size={15}
+                          className="transition-transform duration-300 group-hover:translate-x-1.5"
+                        />
+                      </span>
                     </div>
-                  </div>
+                  </Link>
                 )
               })}
             </div>
@@ -1605,7 +2339,7 @@ export default function Heritage() {
         </div>
       </main>
 
-      {/* 3D & AR Interactive Modal Dialog */}
+      {/* 3D & AR Interactive Modal Dialog (90% Screen Gallery View) */}
       {is3DModalOpen && product.modelUrl && (
         <div
           id="heritage-3d-dialog"
@@ -1620,7 +2354,7 @@ export default function Heritage() {
           }}
         >
           <div
-            className="w-full h-full sm:h-[90vh] sm:max-h-[820px] max-w-[1080px] flex flex-col sm:rounded-2xl overflow-hidden shadow-2xl relative"
+            className="w-full h-full sm:w-[92vw] sm:h-[90vh] max-w-[1240px] flex flex-col sm:rounded-2xl overflow-hidden shadow-2xl relative"
             style={{
               background: "linear-gradient(145deg, #250f13 0%, #16080a 100%)",
 
@@ -1641,6 +2375,128 @@ export default function Heritage() {
                 onClose={() => setIs3DModalOpen(false)}
               />
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* AR Device Guidance Modal (When clicking "Xem AR trên điện thoại" on PC) */}
+      {showArGuideModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-xs"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowArGuideModal(false)
+            }
+          }}
+        >
+          <div
+            className="max-w-md w-full p-6 rounded-2xl relative shadow-2xl"
+            style={{
+              background: "linear-gradient(155deg, #2b0d13 0%, #17070a 100%)",
+              border: "1px solid rgba(255, 209, 141, 0.35)",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setShowArGuideModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-[#fff7ec]/70 hover:text-[#fff7ec] hover:bg-white/10 cursor-pointer"
+              aria-label="Đóng hướng dẫn AR"
+            >
+              <X size={18} />
+            </button>
+
+            <div
+              style={{
+                width: "46px",
+                height: "46px",
+                borderRadius: "50%",
+                background: "rgba(143, 0, 25, 0.55)",
+                border: "1px solid rgba(255, 209, 141, 0.4)",
+                color: "var(--gold)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "14px",
+              }}
+            >
+              <Smartphone size={22} />
+            </div>
+
+            <h3
+              style={{
+                fontSize: "21px",
+                color: "#fff7ec",
+                fontFamily: '"Vollkorn", serif',
+                margin: "0 0 8px",
+              }}
+            >
+              Xem {product.name} trong không gian AR
+            </h3>
+
+            <p
+              style={{
+                fontSize: "14px",
+                lineHeight: 1.6,
+                color: "rgba(255, 235, 209, 0.8)",
+                marginBottom: "16px",
+              }}
+            >
+              Tính năng Thực tế tăng cường (AR) sử dụng camera trên điện thoại
+              hoặc máy tính bảng để đặt mô hình 3D trực tiếp lên mặt bàn và
+              không gian thật của bạn:
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                marginBottom: "22px",
+                padding: "14px",
+                borderRadius: "12px",
+                background: "rgba(0, 0, 0, 0.28)",
+                border: "1px solid rgba(255, 209, 141, 0.14)",
+                fontSize: "13.5px",
+                color: "rgba(255, 235, 209, 0.88)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <CheckCircle2 size={16} color="#34d399" style={{ marginTop: "2px", flexShrink: 0 }} />
+                <span>
+                  <strong>iPhone / iPad (iOS):</strong> Mở trang này bằng trình
+                  duyệt Safari và bấm <em>“Xem trong không gian AR”</em> để khởi
+                  chạy Apple AR Quick Look.
+                </span>
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <CheckCircle2 size={16} color="#34d399" style={{ marginTop: "2px", flexShrink: 0 }} />
+                <span>
+                  <strong>Android:</strong> Mở bằng trình duyệt Chrome trên điện
+                  thoại hỗ trợ Google Play Services for AR (Scene Viewer / WebXR).
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowArGuideModal(false)}
+              className="cursor-pointer"
+              style={{
+                width: "100%",
+                padding: "12px",
+                borderRadius: "10px",
+                background:
+                  "linear-gradient(135deg, #ffe2ad 0%, var(--gold) 55%, #e2ac60 100%)",
+                border: "none",
+                color: "#2b110e",
+                fontSize: "13.5px",
+                fontWeight: 700,
+              }}
+            >
+              Đã hiểu
+            </button>
           </div>
         </div>
       )}
