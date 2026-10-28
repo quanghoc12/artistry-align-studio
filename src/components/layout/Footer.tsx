@@ -55,15 +55,8 @@ export default function Footer() {
           </div>
           <div>
             <strong>Liên hệ</strong>
-            <a href="tel:0982127964" className="footer-contact-link">
-              Hotline: 0982 127 964
-            </a>
-            <a
-              href="mailto:kientichviet.official@gmail.com"
-              className="footer-contact-link"
-            >
-              Email: kientichviet.official@gmail.com
-            </a>
+            <span>Hotline: 0982 127 964</span>
+            <span>Email: kientichviet.official@gmail.com</span>
             <span>Địa chỉ: 68 Doãn Kế Thiện, Phú Diễn, Hà Nội</span>
           </div>
         </div>
@@ -111,4 +104,3 @@ export default function Footer() {
     </footer>
   )
 }
-
