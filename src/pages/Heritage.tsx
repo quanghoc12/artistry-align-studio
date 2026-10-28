@@ -574,7 +574,7 @@ export default function Heritage() {
           {/* Heritage Story & Cultural Architecture: Balanced 55/45 Two-Column Layout */}
           <div
             id="story"
-            className="reveal"
+            className="reveal heritage-story-grid"
             style={{
               display: "grid",
 
@@ -591,6 +591,7 @@ export default function Heritage() {
           >
             {/* Column Left (55%): Deep Narrative, Ancient Chronicles & Architecture */}
             <div
+              className="heritage-story-narrative"
               style={{ display: "flex", flexDirection: "column", gap: "32px" }}
             >
               {/* Ancient Chronicle Quote Block */}
@@ -1030,11 +1031,13 @@ export default function Heritage() {
 
             {/* Column Right (45%): 3D & AR Interactive Showcase Stage (Spotlight #1) + Wooden Craft Model */}
             <div
+              className="heritage-story-sidebar"
               style={{ display: "flex", flexDirection: "column", gap: "36px" }}
             >
               {/* SPOTLIGHT #1: Royal Lacquer & Gold Interactive 3D & AR Gallery Showcase */}
               <div
                 id="experience-3d"
+                className="heritage-3d-card"
                 style={{
                   background:
                     "linear-gradient(155deg, #3b0f18 0%, #220a0f 52%, #140609 100%)",
@@ -1809,6 +1812,7 @@ export default function Heritage() {
 
               {/* SPOTLIGHT #2: Product Card - Physical Wooden Craft Model */}
               <div
+                className="heritage-product-card"
                 style={{
                   background:
                     "linear-gradient(145deg, #2d0d13 0%, #1c080c 100%)",
