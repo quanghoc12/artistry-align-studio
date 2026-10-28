@@ -2293,22 +2293,143 @@ h2 { letter-spacing: -0.015em !important; }
   }
 }
 
-/* ===== Product Detail: Version Selector, Overview & Spec Table ===== */
+/* ===== 4-Column Steps Grid for ProductDetail ("Khám phá từng mảnh ghép") ===== */
+.steps.steps-four {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.steps.steps-four .step-card {
+  padding: 0 clamp(18px, 2.2vw, 34px);
+  min-height: 340px;
+}
+
+.steps.steps-four .step-card:first-child {
+  padding-left: 0;
+}
+
+@media (max-width: 1050px) {
+  .steps.steps-four {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 36px;
+  }
+  .steps.steps-four .step-card:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .steps.steps-four .step-card:nth-child(n + 3) {
+    border-top: 1px solid color-mix(in srgb, var(--red) 18%, transparent);
+    padding-top: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .steps.steps-four {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+  .steps.steps-four .step-card {
+    padding: 24px 0;
+    min-height: auto;
+  }
+  .steps.steps-four .step-card + .step-card {
+    border-left: 0;
+    border-top: 1px solid color-mix(in srgb, var(--red) 18%, transparent);
+  }
+}
+
+/* Cohesive alignment for .tech section on wide screens & WCAG button contrast */
+@media (min-width: 1051px) {
+  .tech {
+    gap: clamp(32px, 4.5vw, 64px);
+    grid-template-columns: minmax(320px, 520px) minmax(340px, 540px);
+    justify-content: center;
+  }
+}
+
+.button-dark {
+  background: var(--gold);
+  color: #38000c;
+  border: 1.5px solid #fff5e4;
+  box-shadow: 0 10px 26px rgba(25, 0, 5, 0.32);
+}
+
+.button-dark:hover {
+  background: #ffe4b5;
+  color: #260007;
+}
+
+/* ===== Product Detail: Version Selector, Overview & Spec Table (WCAG AA) ===== */
+.modal-image-badges {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  z-index: 3;
+}
+
+.modal-image-tag {
+  background: rgba(35, 14, 16, 0.86);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--cream-light);
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 9px 13px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 209, 141, 0.35);
+}
+
+.modal-image-3d-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: #351b18;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 9px 14px;
+  border-radius: 6px;
+  border: 1.5px solid #fff6e6;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-image-3d-btn:hover {
+  background: #ffe2b0;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+}
+
 .pd-subtitle {
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 600;
-  color: var(--muted);
-  margin: -18px 0 18px !important;
-  letter-spacing: 0.02em;
+  color: #4a322d;
+  margin: -16px 0 18px !important;
+  letter-spacing: 0.01em;
+}
+
+.modal-copy > p:not(.kicker):not(.pd-subtitle) {
+  color: #432a25;
+  font-size: 16.5px;
+  line-height: 1.65;
 }
 
 .pd-variant-picker {
   margin: 24px 0 22px;
-  padding: 18px;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--gold) 14%, var(--white));
-  border: 1px solid color-mix(in srgb, var(--red) 16%, transparent);
+  padding: 24px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--gold) 12%, var(--white));
+  border: 1px solid color-mix(in srgb, var(--red) 20%, transparent);
 }
 
 .pd-variant-picker-head {
@@ -2316,71 +2437,73 @@ h2 { letter-spacing: -0.015em !important; }
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   flex-wrap: wrap;
 }
 
 .pd-variant-picker-label {
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.09em;
   color: var(--red);
 }
 
 .pd-compare-jump {
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--red);
   text-decoration: underline;
   text-underline-offset: 3px;
-  opacity: 0.85;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .pd-compare-jump:hover {
-  opacity: 1;
+  color: var(--red-dark);
 }
 
 .pd-variant-tabs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  gap: 12px;
 }
 
+/* Outlined active style so it never competes with the primary "Thêm vào giỏ" CTA */
 .pd-variant-tab {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 3px;
-  padding: 11px 13px;
-  border-radius: 6px;
-  background: var(--white);
-  border: 1.5px solid color-mix(in srgb, var(--red) 18%, transparent);
+  gap: 5px;
+  padding: 13px 15px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1.5px solid rgba(143, 0, 25, 0.22);
   cursor: pointer;
   text-align: left;
   transition: all 0.2s ease;
 }
 
 .pd-variant-tab:hover {
-  border-color: color-mix(in srgb, var(--red) 50%, transparent);
+  border-color: rgba(143, 0, 25, 0.55);
+  background: #fffdf9;
   transform: translateY(-1px);
 }
 
 .pd-variant-tab.is-active {
-  background: var(--red);
-  border-color: var(--red);
-  color: var(--cream-light);
-  box-shadow: 0 8px 20px -8px rgba(143, 0, 25, 0.45);
+  background: #fff6e8;
+  border: 2px solid var(--red);
+  padding: 12.5px 14.5px;
+  color: var(--ink);
+  box-shadow: 0 6px 16px -6px rgba(143, 0, 25, 0.22);
 }
 
 .pd-variant-tab-name {
   font-family: "Be Vietnam Pro", sans-serif;
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--ink);
+  color: #4a322d;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2388,63 +2511,100 @@ h2 { letter-spacing: -0.015em !important; }
 }
 
 .pd-variant-tab.is-active .pd-variant-tab-name {
-  color: var(--gold);
+  color: var(--red);
+}
+
+.pd-variant-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(143, 0, 25, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: transparent;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pd-variant-tab.is-active .pd-variant-radio {
+  background: var(--red);
+  border-color: var(--red);
+  color: #ffffff;
 }
 
 .pd-variant-tab-price {
   font-family: "Vollkorn", serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--red);
+  color: var(--ink);
 }
 
 .pd-variant-tab.is-active .pd-variant-tab-price {
-  color: var(--cream-light);
+  color: var(--red-dark);
 }
 
 .pd-variant-active-summary {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed color-mix(in srgb, var(--red) 18%, transparent);
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--ink);
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(143, 0, 25, 0.22);
 }
 
 .pd-variant-active-summary strong {
   color: var(--red);
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 13px;
+  font-size: 13.5px;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .pd-variant-active-summary p {
   margin: 0;
-  color: var(--muted);
-  font-size: 14.5px;
+  color: #432a25;
+  font-size: 15.5px;
+  line-height: 1.62;
+}
+
+.specs small {
+  color: #4a322d;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .pd-buy-price-wrap {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .pd-buy-version-tag {
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 11.5px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted);
+  letter-spacing: 0.07em;
+  color: #4a322d;
 }
 
 .pd-buy-price-wrap > strong {
   color: var(--red);
-  font-size: 28px;
+  font-size: 30px;
   font-family: "Vollkorn", serif;
   line-height: 1.1;
+}
+
+.modal-buy button {
+  border-radius: 6px;
+  padding: 16px 24px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 14.5px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 10px 24px -8px rgba(143, 0, 25, 0.45);
 }
 
 /* Detailed Elaboration Section below Modal */
@@ -2465,7 +2625,7 @@ h2 { letter-spacing: -0.015em !important; }
 
 .pd-overview-grid {
   display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
+  grid-template-columns: 1.2fr 0.8fr;
   gap: clamp(28px, 4vw, 52px);
   align-items: start;
 }
@@ -2492,16 +2652,16 @@ h2 { letter-spacing: -0.015em !important; }
 
 .pd-general-card {
   background: var(--cream-light);
-  border: 1px solid color-mix(in srgb, var(--red) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 18%, transparent);
   border-top: 3px solid var(--red);
-  border-radius: 8px;
-  padding: clamp(22px, 3vw, 30px);
+  border-radius: 10px;
+  padding: clamp(24px, 3.2vw, 32px);
   box-shadow: 0 12px 30px -12px rgba(53, 27, 24, 0.08);
 }
 
 .pd-general-card h4 {
   font-family: "Vollkorn", serif;
-  font-size: 21px;
+  font-size: 22px;
   color: var(--red);
   margin: 0 0 18px;
   padding-bottom: 12px;
@@ -2520,9 +2680,9 @@ h2 { letter-spacing: -0.015em !important; }
 .pd-general-list li {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   padding-bottom: 12px;
-  border-bottom: 1px dashed color-mix(in srgb, var(--red) 14%, transparent);
+  border-bottom: 1px dashed color-mix(in srgb, var(--red) 16%, transparent);
 }
 
 .pd-general-list li:last-child {
@@ -2532,17 +2692,18 @@ h2 { letter-spacing: -0.015em !important; }
 
 .pd-general-list small {
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted);
+  letter-spacing: 0.07em;
+  color: #4a322d;
 }
 
 .pd-general-list strong {
   font-size: 16.5px;
   color: var(--ink);
   font-weight: 600;
+  line-height: 1.45;
 }
 
 /* Version Cards Grid */
@@ -2561,9 +2722,9 @@ h2 { letter-spacing: -0.015em !important; }
 
 .pd-version-card {
   background: var(--cream-light);
-  border: 1.5px solid color-mix(in srgb, var(--red) 15%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--red) 18%, transparent);
   border-radius: 10px;
-  padding: 26px 24px;
+  padding: 28px 26px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2574,11 +2735,11 @@ h2 { letter-spacing: -0.015em !important; }
 .pd-version-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 18px 36px -14px rgba(143, 0, 25, 0.18);
-  border-color: color-mix(in srgb, var(--red) 38%, transparent);
+  border-color: color-mix(in srgb, var(--red) 42%, transparent);
 }
 
 .pd-version-card.is-selected {
-  border-color: var(--red);
+  border: 2px solid var(--red);
   background: #fffdf9;
   box-shadow: 0 18px 38px -14px rgba(143, 0, 25, 0.22);
 }
@@ -2598,13 +2759,13 @@ h2 { letter-spacing: -0.015em !important; }
 
 .pd-version-index {
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  padding: 4px 10px;
+  letter-spacing: 0.1em;
+  padding: 4px 11px;
   border-radius: 99px;
-  background: color-mix(in srgb, var(--red) 10%, transparent);
+  background: rgba(143, 0, 25, 0.1);
   color: var(--red);
 }
 
@@ -2616,8 +2777,9 @@ h2 { letter-spacing: -0.015em !important; }
   letter-spacing: 0.08em;
   padding: 4px 10px;
   border-radius: 99px;
-  background: var(--red);
-  color: var(--gold);
+  background: #fff3db;
+  color: var(--red-dark);
+  border: 1px solid rgba(143, 0, 25, 0.3);
 }
 
 .pd-version-card h4 {
@@ -2638,27 +2800,27 @@ h2 { letter-spacing: -0.015em !important; }
 }
 
 .pd-version-desc {
-  font-size: 16px;
+  font-size: 16.5px;
   line-height: 1.65;
-  color: var(--muted);
+  color: #432a25;
   margin: 0 0 18px;
 }
 
 .pd-version-highlights {
   list-style: none;
   padding: 0;
-  margin: 0 0 22px;
+  margin: 0 0 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .pd-version-highlights li {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 14.5px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 1.5;
   color: var(--ink);
 }
 
@@ -2671,43 +2833,90 @@ h2 { letter-spacing: -0.015em !important; }
 }
 
 .pd-version-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
   gap: 10px;
   margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px dashed color-mix(in srgb, var(--red) 16%, transparent);
+  padding-top: 18px;
+  border-top: 1px dashed color-mix(in srgb, var(--red) 18%, transparent);
 }
 
-.pd-version-btn {
-  width: 100%;
-  padding: 12px 16px;
+.pd-version-select-btn {
+  padding: 11px 12px;
   border-radius: 6px;
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   transition: all 0.2s ease;
-  border: 1.5px solid var(--red);
-  background: transparent;
+  border: 1.5px solid rgba(143, 0, 25, 0.32);
+  background: #ffffff;
+  color: #4a322d;
+}
+
+.pd-version-select-btn:hover {
+  border-color: var(--red);
   color: var(--red);
 }
 
-.pd-version-btn:hover,
-.pd-version-card.is-selected .pd-version-btn {
+.pd-version-select-btn.is-active {
+  border-color: var(--red);
+  background: #fff6e8;
+  color: var(--red);
+}
+
+.pd-version-btn {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 6px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+  border: 1.5px solid var(--red);
   background: var(--red);
   color: var(--cream-light);
 }
 
-/* Technical Specifications Table */
+.pd-version-btn:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+}
+
+/* Technical Specifications Table (Light Editorial Header & High Contrast Cells) */
+.pd-table-scroll-hint {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #4a322d;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .pd-table-scroll-hint {
+    display: flex;
+  }
+}
+
 .pd-table-wrap {
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--red) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 22%, transparent);
   background: var(--cream-light);
   box-shadow: 0 12px 32px -14px rgba(53, 27, 24, 0.08);
 }
@@ -2721,42 +2930,48 @@ h2 { letter-spacing: -0.015em !important; }
 
 .pd-spec-table th,
 .pd-spec-table td {
-  padding: 16px 20px;
-  border-bottom: 1px solid color-mix(in srgb, var(--red) 12%, transparent);
+  padding: 18px 22px;
+  border-bottom: 1px solid color-mix(in srgb, var(--red) 14%, transparent);
   vertical-align: middle;
 }
 
 .pd-spec-table thead th {
-  background: var(--red);
-  color: var(--cream-light);
+  background: #f3e2ca;
+  color: var(--ink);
   font-family: "Vollkorn", serif;
-  font-size: 18px;
-  font-weight: 600;
-  border-bottom: 2px solid var(--red-dark);
+  font-size: 19px;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(143, 0, 25, 0.32);
+  transition: background 0.2s ease;
 }
 
 .pd-spec-table thead th:first-child {
   width: 28%;
-  color: var(--gold);
+  color: var(--red);
   font-family: "Be Vietnam Pro", sans-serif;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.09em;
 }
 
 .pd-spec-table thead th.is-active-col {
-  background: var(--red-dark);
-  box-shadow: inset 0 -3px 0 var(--gold);
+  background: #fae8cf;
+  color: var(--red);
+  box-shadow: inset 0 3px 0 var(--red);
 }
 
 .pd-th-price {
   display: block;
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--gold);
-  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a322d;
+  margin-top: 3px;
+}
+
+.pd-spec-table thead th.is-active-col .pd-th-price {
+  color: var(--red-dark);
 }
 
 .pd-spec-table tbody tr:last-child td {
@@ -2764,24 +2979,24 @@ h2 { letter-spacing: -0.015em !important; }
 }
 
 .pd-spec-table tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--gold) 10%, transparent);
+  background: rgba(242, 223, 199, 0.35);
 }
 
 .pd-spec-table tbody td:first-child {
   font-family: "Be Vietnam Pro", sans-serif;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 700;
-  color: var(--red);
+  color: #351b18;
 }
 
 .pd-spec-table tbody td {
   font-size: 16px;
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .pd-spec-table tbody td.is-active-col {
-  background: color-mix(in srgb, var(--gold) 22%, transparent);
+  background: rgba(255, 209, 141, 0.24);
   font-weight: 600;
 }
 
@@ -2789,19 +3004,26 @@ h2 { letter-spacing: -0.015em !important; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 99px;
-  background: rgba(27, 122, 58, 0.12);
-  color: #166534;
+  background: #dcfce7;
+  color: #14532d;
+  border: 1px solid #86efac;
   font-family: "Be Vietnam Pro", sans-serif;
   font-size: 13px;
   font-weight: 700;
 }
 
 .pd-spec-badge-no {
-  color: var(--muted);
-  opacity: 0.65;
-  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border-radius: 99px;
+  background: rgba(74, 50, 45, 0.09);
+  color: #4a322d;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 @media (max-width: 860px) {
@@ -2811,12 +3033,18 @@ h2 { letter-spacing: -0.015em !important; }
 }
 
 @media (max-width: 560px) {
+  .pd-variant-picker {
+    padding: 18px;
+  }
   .pd-variant-tabs {
+    grid-template-columns: 1fr;
+  }
+  .pd-version-actions {
     grid-template-columns: 1fr;
   }
   .pd-spec-table th,
   .pd-spec-table td {
-    padding: 13px 14px;
+    padding: 14px 15px;
   }
 }
 

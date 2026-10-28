@@ -135,7 +135,7 @@ export default function ProductDetail() {
             )}
             <p>{product.description}</p>
 
-            {/* Interactive Version Picker when product has multiple editions */}
+            {/* Interactive Version Picker (Outlined active state so primary CTA remains unique) */}
             {variants.length > 0 && selectedVariant && (
               <div className="pd-variant-picker">
                 <div className="pd-variant-picker-head">
@@ -146,7 +146,11 @@ export default function ProductDetail() {
                     Xem bảng so sánh ↓
                   </a>
                 </div>
-                <div className="pd-variant-tabs" role="radiogroup" aria-label="Chọn phiên bản sản phẩm">
+                <div
+                  className="pd-variant-tabs"
+                  role="radiogroup"
+                  aria-label="Chọn phiên bản sản phẩm"
+                >
                   {variants.map((v) => {
                     const isActive = v.id === selectedVariant.id
                     return (
@@ -160,7 +164,9 @@ export default function ProductDetail() {
                       >
                         <span className="pd-variant-tab-name">
                           <span>{v.name}</span>
-                          {isActive && <span aria-hidden="true">✓</span>}
+                          <span className="pd-variant-radio" aria-hidden="true">
+                            ✓
+                          </span>
                         </span>
                         <span className="pd-variant-tab-price">{v.price}</span>
                       </button>
@@ -176,7 +182,10 @@ export default function ProductDetail() {
               </div>
             )}
 
-            <div className="specs" style={{ margin: "24px 0", padding: "18px 0" }}>
+            <div
+              className="specs"
+              style={{ margin: "24px 0", padding: "18px 0" }}
+            >
               <span>
                 <small>Chất liệu chính</small>
                 <strong>{product.specifications.material}</strong>
@@ -247,9 +256,11 @@ export default function ProductDetail() {
                 </p>
                 <h3>{product.detailedInfo.fullTitle}</h3>
                 <div className="pd-story-paragraphs">
-                  {product.detailedInfo.introParagraphs.map((paragraph, idx) => (
-                    <p key={idx}>{paragraph}</p>
-                  ))}
+                  {product.detailedInfo.introParagraphs.map(
+                    (paragraph, idx) => (
+                      <p key={idx}>{paragraph}</p>
+                    ),
+                  )}
                 </div>
               </div>
 
@@ -258,11 +269,15 @@ export default function ProductDetail() {
                 <ul className="pd-general-list">
                   <li>
                     <small>Tên sản phẩm</small>
-                    <strong>{product.detailedInfo.generalInfo.productName}</strong>
+                    <strong>
+                      {product.detailedInfo.generalInfo.productName}
+                    </strong>
                   </li>
                   <li>
                     <small>Kích thước mô hình</small>
-                    <strong>{product.detailedInfo.generalInfo.dimensions}</strong>
+                    <strong>
+                      {product.detailedInfo.generalInfo.dimensions}
+                    </strong>
                   </li>
                   <li>
                     <small>Chất liệu chính</small>
@@ -306,7 +321,7 @@ export default function ProductDetail() {
                           </span>
                           {isSelected && (
                             <span className="pd-version-selected-pill">
-                              Đang chọn
+                              ✓ Đang chọn
                             </span>
                           )}
                         </div>
@@ -322,13 +337,22 @@ export default function ProductDetail() {
                       <div className="pd-version-actions">
                         <button
                           type="button"
+                          className={`pd-version-select-btn ${isSelected ? "is-active" : ""}`}
+                          onClick={() => setSelectedVariantId(v.id)}
+                        >
+                          <span>
+                            {isSelected ? "✓ Đang chọn" : "Chọn phiên bản"}
+                          </span>
+                        </button>
+                        <button
+                          type="button"
                           className="pd-version-btn"
                           onClick={() => {
                             setSelectedVariantId(v.id)
                             handleAddVariantToCart(v)
                           }}
                         >
-                          <span>Thêm bản {v.name} vào giỏ</span>
+                          <span>Thêm vào giỏ</span>
                           <Icon name="bag" size={16} />
                         </button>
                       </div>
@@ -344,6 +368,9 @@ export default function ProductDetail() {
                 03. So sánh phiên bản
               </p>
               <h3>Bảng thông số kỹ thuật</h3>
+              <div className="pd-table-scroll-hint">
+                <span>↔ Vuốt ngang để xem đầy đủ các cột</span>
+              </div>
               <div className="pd-table-wrap">
                 <table className="pd-spec-table">
                   <thead>
@@ -400,7 +427,7 @@ export default function ProductDetail() {
             từng mảnh ghép.
           </h2>
         </div>
-        <div className="steps">
+        <div className="steps steps-four">
           {[
             [
               "01",
