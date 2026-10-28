@@ -46,7 +46,7 @@ function isRateLimited(ip: string, maxRequests = 12, windowMs = 60_000): boolean
 }
 
 const OFFICIAL_DATA = `
-Thương hiệu: Kiến Tích Việt — mô hình lắp ghép gỗ di sản Việt Nam. Slogan: "Dựng hình di sản, nối nhịp thời gian". Mỗi bộ: tự lắp ghép → trưng bày → chạm NFC để nghe câu chuyện (audio), trải nghiệm AR trên điện thoại.
+Thương hiệu: Kiến Tích Việt - mô hình lắp ghép gỗ di sản Việt Nam. Slogan: "Dựng hình di sản, nối nhịp thời gian". Mỗi bộ: tự lắp ghép -> trưng bày -> chạm NFC để nghe câu chuyện (audio), trải nghiệm AR trên điện thoại.
 Sản phẩm:
 1. Mô hình lắp ghép gỗ 3D Tháp Rùa (Hà Nội · Hồ Gươm):
    - Kích thước: khoảng 20 × 20 × 30 cm | Chất liệu chính: Gỗ basswood | Đối tượng: 18-30 tuổi | Cấu trúc module (đế, thân tháp nhiều tầng, hệ cửa - tường, mái, chi tiết trang trí).
@@ -54,7 +54,7 @@ Sản phẩm:
      + Tháp Rùa Basic (369.000đ): Bề mặt gỗ mộc nguyên bản, tập trung trải nghiệm DIY tối giản (Không có NFC/AR, không Audio Storytelling, không trang trí mosaic).
      + Tháp Rùa Signature (499.000đ): Bề mặt hoàn thiện có màu, tích hợp công nghệ NFC & AR và Audio Storytelling.
      + Tháp Rùa Premium (669.000đ): Bề mặt khảm thủ công đá mosaic, tích hợp NFC & AR, Audio Storytelling, có cá nhân hóa trong bảng màu cho phép, đi kèm bộ dụng cụ (Nhíp, bọt biển, bột trám, keo sữa, que trộn, cốc).
-2. Chùa Một Cột (Hà Nội · Di sản Thăng Long) — Giá dự kiến: 890.000₫ — Nhãn: Sắp ra mắt.
+2. Chùa Một Cột (Hà Nội · Di sản Thăng Long) - Giá dự kiến: 890.000₫ - Nhãn: Sắp ra mắt.
 3. Mô hình lắp ghép gỗ 3D Hàng Trống (Hà Nội · Phố cổ Hà Nội):
    - Kích thước: khoảng 15 × 15 × 20 cm | Chất liệu chính: Gỗ basswood | Đối tượng: 18-30 tuổi | Cấu trúc nhà chữ L (khung nhà, biển hiệu, bàn ghế, giá trưng bày tranh và bộ sticker tranh dân gian thu nhỏ).
    - 2 phiên bản:

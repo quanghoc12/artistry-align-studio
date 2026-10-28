@@ -152,7 +152,7 @@ export default function HeritageHub() {
                 textShadow: "0 4px 25px rgba(0, 0, 0, 0.7)",
               }}
             >
-              Kho Tàng Di Sản Thăng Long — Hà Nội
+              Kho Tàng Di Sản Thăng Long - Hà Nội
             </h1>
 
             {/* Subtitle */}

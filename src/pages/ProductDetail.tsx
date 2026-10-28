@@ -76,7 +76,7 @@ export default function ProductDetail() {
       addToCart({
         ...product,
         id: `${product.id}-${targetVariant.id}`,
-        name: `${product.name} — Bản ${targetVariant.name}`,
+        name: `${product.name} - Bản ${targetVariant.name}`,
         price: targetVariant.price,
       })
     } else {
@@ -85,7 +85,7 @@ export default function ProductDetail() {
   }
 
   const renderSpecCellValue = (val: string | undefined) => {
-    if (!val) return <span className="pd-spec-badge-no">—</span>
+    if (!val) return <span className="pd-spec-badge-no">-</span>
     if (val.trim().toLowerCase() === "không") {
       return <span className="pd-spec-badge-no">Không</span>
     }
@@ -169,7 +169,7 @@ export default function ProductDetail() {
                 </div>
                 <div className="pd-variant-active-summary">
                   <strong>
-                    {selectedVariant.fullName} — {selectedVariant.tagline}
+                    {selectedVariant.fullName} · {selectedVariant.tagline}
                   </strong>
                   <p>{selectedVariant.description}</p>
                 </div>

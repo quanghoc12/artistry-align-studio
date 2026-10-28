@@ -65,7 +65,7 @@ export const products: Product[] = [
     name: "Tháp Rùa",
     eyebrow: "Hà Nội · Hồ Gươm",
     price: "369.000 ₫",
-    priceRange: "369.000 ₫ – 669.000 ₫",
+    priceRange: "369.000 ₫ - 669.000 ₫",
     image: "/images/thap-rua.jpg",
     number: "01",
     accent: "Bán chạy",
@@ -74,7 +74,7 @@ export const products: Product[] = [
     modelUrl: "/models/Thap-rua-model.glb",
     usdzUrl: "/models/Thap-rua-model.usdz",
     audioUrl: "/audio/thap-rua.mp3",
-    audioTitle: "Tháp Rùa — Biểu tượng giữa lòng Hồ Hoàn Kiếm",
+    audioTitle: "Tháp Rùa - Biểu tượng giữa lòng Hồ Hoàn Kiếm",
     audioAuthor: "Thuyết minh Di sản · Kiến Tích Việt",
     specifications: {
       pieces: "148",
@@ -232,7 +232,7 @@ export const products: Product[] = [
     name: "Phố Hàng Trống",
     eyebrow: "Hà Nội · Phố cổ Hà Nội",
     price: "219.000 ₫",
-    priceRange: "219.000 ₫ – 289.000 ₫",
+    priceRange: "219.000 ₫ - 289.000 ₫",
     image: "/images/pho-hang-trong.jpg",
     number: "03",
     accent: "Mới",
@@ -242,7 +242,7 @@ export const products: Product[] = [
     usdzUrl: "/models/Hang-Trong-Model.usdz",
     audioUrl: "/audio/pho-hang-trong.mp3",
     audioTitle:
-      "Phố Hàng Trống — Nơi sắc màu dân gian lưu dấu giữa lòng Hà Nội",
+      "Phố Hàng Trống - Nơi sắc màu dân gian lưu dấu giữa lòng Hà Nội",
     audioAuthor: "Thuyết minh Di sản · Kiến Tích Việt",
     specifications: {
       pieces: "xxx",

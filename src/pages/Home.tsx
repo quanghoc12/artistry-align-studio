@@ -335,7 +335,7 @@ export default function Home() {
               </button>
               <div className="audio-copy">
                 <small>{playing ? "Đang nghe" : "Thuyết minh Audio"}</small>
-                <strong>Tháp Rùa — Biểu tượng giữa lòng Hồ Hoàn Kiếm</strong>
+                <strong>Tháp Rùa - Biểu tượng giữa lòng Hồ Hoàn Kiếm</strong>
                 <span className={`audio-wave ${playing ? "is-playing" : ""}`}>
                   {Array.from({ length: 17 }).map((_, index) => (
                     <i key={index} />
@@ -352,7 +352,7 @@ export default function Home() {
           </div>
         </div>
         <div className="tech-copy reveal">
-          <p className="kicker light">03 – Trải nghiệm số</p>
+          <p className="kicker light">03. Trải nghiệm số</p>
           <h2>
             Một cú chạm.
             <br />
@@ -393,7 +393,7 @@ export default function Home() {
 
       <section className="journal section-pad" id="journal">
         <div className="journal-intro reveal">
-          <p className="kicker">04 – Câu chuyện di sản</p>
+          <p className="kicker">04. Câu chuyện di sản</p>
           <h2>
             Mỗi công trình
             <br />

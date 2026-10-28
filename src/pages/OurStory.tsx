@@ -142,7 +142,7 @@ export default function OurStory() {
           >
             Mô hình hoàn thiện mới chỉ là khởi đầu. Mảnh ghép vật lý kết hợp
             công nghệ tương tác đánh thức tư liệu, hình ảnh và âm thanh của quá
-            khứ — biến quan sát thụ động thành trải nghiệm văn hóa trọn vẹn.
+            khứ, biến quan sát thụ động thành trải nghiệm văn hóa trọn vẹn.
           </p>
           <div className="journey-steps">
             {["Nhìn", "Lắp ghép", "Khám phá", "Cảm nhận", "Hiểu"].map((s, i) => (
