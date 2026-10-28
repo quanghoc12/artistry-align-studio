@@ -1,4 +1,7 @@
 {
+  "github": {
+    "silent": true
+  },
   "headers": [
     {
       "source": "/(.*)\\.usdz",
@@ -17,6 +20,3 @@
     }
   ]
 }
-
-
-
